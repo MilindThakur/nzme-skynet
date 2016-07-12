@@ -29,10 +29,10 @@ class test_driverInit(unittest.TestCase):
     #     self.dr = IEBrowser()
     #     self._test_initDrivers(self.dr, self.dr.getBrowserType())
 
-    # def test_initRemoteWebDriver(self):
-    #     test_des_cap = testBrowsers[5]
-    #     self.dr = RemoteBrowser(test_des_cap)
-    #     self._test_initDrivers(self.dr, self.dr.getBrowserType())
+    def test_initRemoteWebDriver(self):
+        test_des_cap = testBrowsers[5]
+        self.dr = RemoteBrowser(test_des_cap)
+        self._test_initDrivers(self.dr, self.dr.getBrowserType())
 
     def _test_initDrivers(self, driver, browserName):
         driver.openUrl("https://www.google.com")
