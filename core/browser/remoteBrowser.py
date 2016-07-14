@@ -1,5 +1,5 @@
 from core.browser.browser import Browser
-from core.browser.sauceconnect import constructRemoteCommandExecutor
+
 
 class RemoteBrowser(Browser):
 

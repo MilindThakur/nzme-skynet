@@ -1,5 +1,7 @@
-from core.browser.web.webbrowser import Webbrowser
 from selenium.webdriver.remote.webdriver import WebDriver
+
+from core.browser.web.webbrowser import Webbrowser
+
 
 class RemoteBrowser_2(Webbrowser):
 

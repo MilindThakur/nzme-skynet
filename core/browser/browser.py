@@ -1,7 +1,7 @@
 from selenium import webdriver
+
 from core.browser.sauceconnect import constructRemoteCommandExecutor
 from core.browser.web.browserTypes import BrowserTypes
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 
 class Browser(object):

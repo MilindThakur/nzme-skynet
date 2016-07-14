@@ -1,5 +1,7 @@
-from core.browser.browser import *
 from selenium.webdriver.chrome.options import Options
+
+from core.browser.browser import *
+
 
 class ChromeBrowser(Browser):
 

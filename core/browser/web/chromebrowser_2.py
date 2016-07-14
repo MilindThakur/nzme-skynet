@@ -1,7 +1,9 @@
-from core.browser.web.webbrowser import Webbrowser
-from core.browser.web.browserTypes import BrowserTypes
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.webdriver import WebDriver
+
+from core.browser.web.browserTypes import BrowserTypes
+from core.browser.web.webbrowser import Webbrowser
+
 
 class ChromeBrowser_2(Webbrowser):
 
