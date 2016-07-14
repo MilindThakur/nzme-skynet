@@ -1,3 +1,78 @@
+chromeMacCap = [
+    {
+        'browserName': "chrome",
+        'platform': "OS X 10.11",
+        'version': "51.0"
+    },
+    {
+        'browserName': "chrome",
+        'platform': "OS X 10.10",
+        'version': "51.0"
+    }
+]
+
+chromeWinCap = [
+    {
+        'browserName': "chrome",
+        'platform': "Windows 10",
+        'version': "51.0"
+    },
+    {
+        'browserName': "chrome",
+        'platform': "Windows 8.1",
+        'version': "51.0"
+    },
+    {
+        'browserName': "chrome",
+        'platform': "Windows 7",
+        'version': "51.0"
+    }
+]
+
+firefoxMacCap = [
+    {
+        'browserName': "firefox",
+        'platform': "OS X 10.11",
+        'version': "47.0"
+    },
+    {
+        'browserName': "firefox",
+        'platform': "OS X 10.10",
+        'version': "44.0"
+    }
+]
+
+firefoxWinCap = [
+    {
+        'browserName': "firefox",
+        'platform': "Windows 10",
+        'version': "47.0"
+    },
+    {
+        'browserName': "firefox",
+        'platform': "Windows 8.1",
+        'version': "47.0"
+    },
+    {
+        'browserName': "firefox",
+        'platform': "Windows 7",
+        'version': "47.0"
+    },
+]
+
+safariMacCap = [
+    {
+        'browserName': "safari",
+        'platform': "OS X 10.11",
+        'version': "9.0"
+    },
+    {
+        'browserName': "safari",
+        'platform': "OS X 10.10",
+        'version': "8.0"
+    }
+]
+
 testBrowsers = [{
     'browserName': 'android',
     'platform': 'Linux',

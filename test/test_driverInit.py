@@ -5,22 +5,23 @@ from core.browser.web.phantomjsbrowser import PhantomJSBrowser
 from core.browser.web.safaribrowser import SafariBrowser
 from core.browser.web.iebrowser import IEBrowser
 from core.browser.remoteBrowser import RemoteBrowser
-from core.browser.defaultRemoteBrowserCapabilities import testBrowsers
+from core.browser.defaultRemoteBrowserCapabilities import *
+from core.browser.localbrowserbuilder import LocalBrowserBuilder
 
 class test_driverInit(unittest.TestCase):
 
-    def test_initChromeWebdriver(self):
-        self.dr = ChromeBrowser()
-        self._test_initDrivers(self.dr, self.dr.getBrowserType())
-
-    def test_initFirefoxWebDriver(self):
-        self.dr = FirefoxBrowser()
-        self._test_initDrivers(self.dr, self.dr.getBrowserType())
-
-    def test_initPhantomJSWebDriver(self):
-        self.dr = PhantomJSBrowser()
-        self._test_initDrivers(self.dr, self.dr.getBrowserType())
+    # def test_initChromeWebdriver(self):
+    #     self.dr = ChromeBrowser()
+    #     self._test_initDrivers(self.dr, self.dr.getBrowserType())
     #
+    # def test_initFirefoxWebDriver(self):
+    #     self.dr = FirefoxBrowser()
+    #     self._test_initDrivers(self.dr, self.dr.getBrowserType())
+    #
+    # def test_initPhantomJSWebDriver(self):
+    #     self.dr = PhantomJSBrowser()
+    #     self._test_initDrivers(self.dr, self.dr.getBrowserType())
+    # #
     # def test_initSafariWebDriver(self):
     #     self.dr = SafariBrowser()
     #     self._test_initDrivers(self.dr, self.dr.getBrowserType())
@@ -29,15 +30,26 @@ class test_driverInit(unittest.TestCase):
     #     self.dr = IEBrowser()
     #     self._test_initDrivers(self.dr, self.dr.getBrowserType())
 
-    def test_initRemoteWebDriver(self):
-        test_des_cap = testBrowsers[5]
-        self.dr = RemoteBrowser(test_des_cap)
-        self._test_initDrivers(self.dr, self.dr.getBrowserType())
+    # def test_initRemoteWebDriver(self):
+    #     test_des_cap = testBrowsers[2]
+    #     self.dr = RemoteBrowser(test_des_cap)
+    #     self._test_initDrivers(self.dr, self.dr.getBrowserType())
 
-    def _test_initDrivers(self, driver, browserName):
-        driver.openUrl("https://www.google.com")
-        assert driver.getTitle() == "Google"
-        assert driver.getBrowserType() == browserName
+    def test_initLocalChromeDriver(self):
+        lb = LocalBrowserBuilder("chrome", "https://www.google.com")
+        self.br = lb.build()
+        assert self.br.getBaseUrl() == "https://www.google.com"
+        self.br.setBaseUrl("http://www.nzherald.co.nz")
+        assert self.br.getBaseUrl() == "http://www.nzherald.co.nz"
+        # self._test_initDrivers(self.dr)
+
+    # def _test_initDrivers(self, driver, browserName):
+    #     driver.openUrl("https://www.google.com")
+    #     assert driver.getTitle() == "Google"
+    #     assert driver.getBrowserType() == browserName
+
+    # def _test_initDrivers(self, driver):
+
 
     def tearDown(self):
-        self.dr.quitWebdriver()
+        self.br.quitWebDriver()

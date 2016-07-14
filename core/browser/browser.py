@@ -1,7 +1,7 @@
 from selenium import webdriver
-
 from core.browser.sauceconnect import constructRemoteCommandExecutor
 from core.browser.web.browserTypes import BrowserTypes
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 
 class Browser(object):
@@ -21,6 +21,7 @@ class Browser(object):
             self._driver = webdriver.Remote(command_executor=constructRemoteCommandExecutor(),
                                             desired_capabilities=desired_cap)
         self._driver.maximize_window()
+        self._driver.delete_all_cookies()
 
     def getWebDriver(self):
         return self._driver
