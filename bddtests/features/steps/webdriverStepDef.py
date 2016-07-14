@@ -9,6 +9,7 @@ def I_initialise_browser(context, browser):
     """
     pass
 
+
 @when('I navigate to url "{url}"')
 def I_navigate_to_url(context, url):
     """
@@ -16,6 +17,7 @@ def I_navigate_to_url(context, url):
     :type url: str
     """
     pass
+
 
 @then("I can access the page")
 def I_can_access_the_page(context):

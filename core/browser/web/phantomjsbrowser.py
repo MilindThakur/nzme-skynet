@@ -1,7 +1,7 @@
 from core.browser.browser import *
 
-class PhantomJSBrowser(Browser):
 
+class PhantomJSBrowser(Browser):
     def __init__(self):
         super(PhantomJSBrowser, self).__init__("phantomJS")
 

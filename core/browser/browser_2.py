@@ -1,6 +1,4 @@
-
 class Browser_2(object):
-
     def __init__(self, baseUrl):
         self.baseUrl = baseUrl
 

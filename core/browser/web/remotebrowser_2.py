@@ -4,7 +4,6 @@ from core.browser.web.webbrowser import Webbrowser
 
 
 class RemoteBrowser_2(Webbrowser):
-
     def __init__(self, browserDel, remoteUrl):
         super(RemoteBrowser_2, self).__init__(browserDel.getBaseUrl(),
                                               browserDel.getWebDriverPath(),
@@ -23,7 +22,7 @@ class RemoteBrowser_2(Webbrowser):
         return self.delegate.getDesiredCapabilities()
 
     def createWebdriver(self, customCap=None):
-        if(customCap is not None):
+        if (customCap is not None):
             driver = WebDriver(command_executor=self.remoteUrl, desired_capabilities=customCap)
         else:
             driver = WebDriver(command_executor=self.remoteUrl, desired_capabilities=self.getDesiredCapabilities())

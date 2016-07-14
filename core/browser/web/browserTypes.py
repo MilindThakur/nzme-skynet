@@ -1,4 +1,3 @@
-
 class BrowserTypes(object):
     FIREFOX = "firefox"
     CHROME = "chrome"

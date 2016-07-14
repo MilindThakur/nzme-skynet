@@ -6,11 +6,10 @@ from core.browser.web.webbrowser import Webbrowser
 
 
 class ChromeBrowser_2(Webbrowser):
-
     def __init__(self, baseUrl, webDriverPath=None, browserBinayPath=None, browserVersion=None, platform=None,
                  windowWidth=None, windowHeight=None, desCap=None):
         super(ChromeBrowser_2, self).__init__(baseUrl, webDriverPath, browserBinayPath, browserVersion, platform,
-                 windowWidth, windowHeight)
+                                              windowWidth, windowHeight)
         self.desCap = desCap
 
     def getBrowserType(self):
@@ -32,9 +31,9 @@ class ChromeBrowser_2(Webbrowser):
 
     def createWebdriver(self):
         driver_path = self.getWebDriverPath()
-        if(self.desCap is not None and driver_path is not None):
+        if (self.desCap is not None and driver_path is not None):
             return WebDriver(executable_path=driver_path, desired_capabilities=self.desCap)
-        if(driver_path is not None):
+        if (driver_path is not None):
             return WebDriver(executable_path=driver_path, desired_capabilities=self.getDefaultDesiredCapabilities())
         else:
             return WebDriver(desired_capabilities=self.getDefaultDesiredCapabilities())

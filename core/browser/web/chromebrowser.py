@@ -4,7 +4,6 @@ from core.browser.browser import *
 
 
 class ChromeBrowser(Browser):
-
     def __init__(self):
         super(ChromeBrowser, self).__init__("chrome", self._defaultChromeOptions())
 

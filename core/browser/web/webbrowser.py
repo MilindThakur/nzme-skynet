@@ -2,7 +2,6 @@ from core.browser.browser_2 import Browser_2
 
 
 class Webbrowser(Browser_2):
-
     def __init__(self, baseUrl, webDriverPath=None, browserBinayPath=None, browserVersion=None, platform=None,
                  windowWidth=None, windowHeight=None):
         super(Webbrowser, self).__init__(baseUrl)
@@ -21,7 +20,7 @@ class Webbrowser(Browser_2):
 
     def initBrowser(self):
         self.driver = self.createWebdriver()
-        if(self.windowHeight is not None and self.windowWidth is not None):
+        if (self.windowHeight is not None and self.windowWidth is not None):
             self.driver.set_window_size(self.windowWidth, self.windowHeight)
         # TODO: create timeout default class
         self.driver.set_page_load_timeout(80)

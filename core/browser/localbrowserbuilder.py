@@ -1,11 +1,11 @@
 from core.browser.web.browserTypes import BrowserTypes
 from core.browser.web.chromebrowser_2 import ChromeBrowser_2
 
-class LocalBrowserBuilder(object):
 
+class LocalBrowserBuilder(object):
     def __init__(self, browserType, baseUrl, webDriverPath=None, browserBinayPath=None, browserVersion=None,
                  platform=None, windowWidth=None, windowHeight=None, desCap=None):
-        #if browserType is None:
+        # if browserType is None:
         #   raise StandardError
         self.browserType = browserType
         self.baseUrl = baseUrl

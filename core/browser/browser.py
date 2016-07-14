@@ -5,7 +5,6 @@ from core.browser.web.browserTypes import BrowserTypes
 
 
 class Browser(object):
-
     def __init__(self, browser, chromeOptions=None, desired_cap=None):
         if browser == BrowserTypes.CHROME:
             self._driver = webdriver.Chrome(chrome_options=chromeOptions)
