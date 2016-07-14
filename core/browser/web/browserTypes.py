@@ -1,3 +1,4 @@
+# coding=utf-8
 class BrowserTypes(object):
     FIREFOX = "firefox"
     CHROME = "chrome"

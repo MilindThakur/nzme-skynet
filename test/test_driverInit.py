@@ -1,3 +1,4 @@
+# coding=utf-8
 import unittest
 from core.browser.web.chromebrowser import ChromeBrowser
 from core.browser.web.firefoxbrowser import FirefoxBrowser
@@ -8,8 +9,8 @@ from core.browser.remoteBrowser import RemoteBrowser
 from core.browser.defaultRemoteBrowserCapabilities import *
 from core.browser.localbrowserbuilder import LocalBrowserBuilder
 
-class test_driverInit(unittest.TestCase):
 
+class test_driverInit(unittest.TestCase):
     # def test_initChromeWebdriver(self):
     #     self.dr = ChromeBrowser()
     #     self._test_initDrivers(self.dr, self.dr.getBrowserType())
@@ -38,9 +39,9 @@ class test_driverInit(unittest.TestCase):
     def test_initLocalChromeDriver(self):
         lb = LocalBrowserBuilder("chrome", "https://www.google.com")
         self.br = lb.build()
-        assert self.br.getBaseUrl() == "https://www.google.com"
-        self.br.setBaseUrl("http://www.nzherald.co.nz")
-        assert self.br.getBaseUrl() == "http://www.nzherald.co.nz"
+        assert self.br.get_base_url() == "https://www.google.com"
+        self.br.set_base_url("http://www.nzherald.co.nz")
+        assert self.br.get_base_url() == "http://www.nzherald.co.nz"
         # self._test_initDrivers(self.dr)
 
     # def _test_initDrivers(self, driver, browserName):
@@ -50,6 +51,5 @@ class test_driverInit(unittest.TestCase):
 
     # def _test_initDrivers(self, driver):
 
-
     def tearDown(self):
-        self.br.quitWebDriver()
+        self.br.quit_webdriver()

@@ -1,6 +1,7 @@
+# coding=utf-8
 from selenium import webdriver
 
-from core.browser.sauceconnect import constructRemoteCommandExecutor
+from core.browser.sauceconnect import construct_remote_commandexecutor
 from core.browser.web.browserTypes import BrowserTypes
 
 
@@ -17,40 +18,41 @@ class Browser(object):
         if browser == BrowserTypes.SAFARI:
             self._driver = webdriver.Safari()
         if browser == BrowserTypes.REMOTE:
-            self._driver = webdriver.Remote(command_executor=constructRemoteCommandExecutor(),
+            self._driver = webdriver.Remote(command_executor=construct_remote_commandexecutor(),
                                             desired_capabilities=desired_cap)
         self._driver.maximize_window()
         self._driver.delete_all_cookies()
 
-    def getWebDriver(self):
+    def get_webdriver(self):
         return self._driver
 
-    def quitWebdriver(self):
+    def quit_webdriver(self):
         return self._driver.quit()
 
-    def initializeWebBrowser(self):
+    def initialize_webbrowser(self):
         raise NotImplementedError
 
-    def getBrowserType(self):
+    def get_browser_type(self):
         return self._driver.name
 
-    def getTitle(self):
+    def get_title(self):
         return self._driver.title
 
-    def getCurrentUrl(self):
+    def get_current_url(self):
         return self._driver.current_url
 
-    def openUrl(self, url):
+    def openurl(self, url):
         return self._driver.get(url)
 
-    def getBrowserDesiredCapabilities(self):
+    def get_browser_desiredcapabilities(self):
         raise NotImplementedError
 
-    def isRemoteEnabled(self):
+    @staticmethod
+    def is_remote_enabled():
         return False
 
-    def clickBrowserBackButton(self):
+    def click_browser_back_button(self):
         self._driver.back()
 
-    def browserRefresh(self):
+    def browser_refresh(self):
         self._driver.refresh()

@@ -1,3 +1,4 @@
+# coding=utf-8
 from core.browser.browser import Browser
 
 

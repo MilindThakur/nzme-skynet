@@ -1,10 +1,14 @@
-from core.browser.browser_2 import Browser_2
+# coding=utf-8
+from core.browser.browser2 import Browser2
 
 
-class Webbrowser(Browser_2):
-    def __init__(self, baseUrl, webDriverPath=None, browserBinayPath=None, browserVersion=None, platform=None,
+class Webbrowser(Browser2):
+    def create_webdriver(self):
+        pass
+
+    def __init__(self, baseurl, webDriverPath=None, browserBinayPath=None, browserVersion=None, platform=None,
                  windowWidth=None, windowHeight=None):
-        super(Webbrowser, self).__init__(baseUrl)
+        super(Webbrowser, self).__init__(baseurl)
         self.webDriverPath = webDriverPath
         self.browserBinayPath = browserBinayPath
         self.browserVersion = browserVersion
@@ -12,47 +16,50 @@ class Webbrowser(Browser_2):
         self.windowWidth = windowWidth
         self.windowHeight = windowHeight
 
-    def getBrowserType(self):
+    def get_browser_type(self):
         raise NotImplementedError
 
-    def getDefaultDesiredCapabilities(self):
+    def get_default_desiredcapabilities(self):
         raise NotImplementedError
 
-    def initBrowser(self):
-        self.driver = self.createWebdriver()
-        if (self.windowHeight is not None and self.windowWidth is not None):
+    def init_browser(self):
+        self.driver = self.create_webdriver()
+        if self.windowHeight is not None and self.windowWidth is not None:
             self.driver.set_window_size(self.windowWidth, self.windowHeight)
         # TODO: create timeout default class
         self.driver.set_page_load_timeout(80)
         self.driver.implicitly_wait(5)
         # Any other special settings
 
-    def getWebDriverPath(self):
+    def get_actions(self):
+        pass
+
+    def get_webdriver_path(self):
         return self.webDriverPath
 
-    def getBrowserBinaryPath(self):
+    def get_browser_binary_path(self):
         return self.browserBinayPath
 
-    def getBrowserVersion(self):
+    def get_browser_version(self):
         return self.browserVersion
 
-    def getPlatform(self):
+    def get_platform(self):
         return self.platform
 
-    def getWindowWidth(self):
+    def get_window_width(self):
         return self.windowWidth
 
-    def getWindowHeight(self):
+    def get_window_height(self):
         return self.windowHeight
 
-    def refreshPage(self):
+    def refresh_page(self):
         self.driver.refresh()
 
-    def cleanSession(self):
+    def clean_session(self):
         self.driver.delete_all_cookies()
 
-    def getWebdriver(self):
+    def get_webdriver(self):
         return self.driver
 
-    def quitWebDriver(self):
+    def quit_webdriver(self):
         self.driver.quit()

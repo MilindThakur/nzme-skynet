@@ -1,8 +1,9 @@
-from behave import given, when, then
+# coding=utf-8
+from behave import *
 
 
 @given('I initialise webbrowser "{browser}"')
-def I_initialise_browser(context, browser):
+def i_initialise_browser(context, browser):
     """
     :type context: behave.runner.Context
     :type browserType: str
@@ -11,7 +12,7 @@ def I_initialise_browser(context, browser):
 
 
 @when('I navigate to url "{url}"')
-def I_navigate_to_url(context, url):
+def i_navigate_to_url(context, url):
     """
     :type context: behave.runner.Context
     :type url: str
@@ -20,7 +21,7 @@ def I_navigate_to_url(context, url):
 
 
 @then("I can access the page")
-def I_can_access_the_page(context):
+def i_can_access_the_page(context):
     """
     :type context: behave.runner.Context
     """
