@@ -31,6 +31,7 @@ class ChromeBrowser2(Webbrowser):
         return chrome_des_cap
 
     def create_webdriver(self):
+        # TODO: can add binary path to chrome, if required
         driver_path = self.get_webdriver_path()
         if self.desCap is not None and driver_path is not None:
             return WebDriver(executable_path=driver_path, desired_capabilities=self.desCap)
