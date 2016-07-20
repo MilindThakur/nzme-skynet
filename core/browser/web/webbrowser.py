@@ -29,6 +29,8 @@ class Webbrowser(Browser2):
         # TODO: create timeout default class
         self.driver.set_page_load_timeout(80)
         self.driver.implicitly_wait(5)
+        self.goto_url(self.baseUrl)
+
         # Any other special settings
 
     def get_actions(self):
@@ -63,3 +65,9 @@ class Webbrowser(Browser2):
 
     def quit_webdriver(self):
         self.driver.quit()
+
+    def goto_url(self, url):
+        self.driver.get(url)
+
+    def get_current_url(self):
+        return self.driver.current_url
