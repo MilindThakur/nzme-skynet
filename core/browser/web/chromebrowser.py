@@ -6,11 +6,11 @@ from core.browser.web.browserTypes import BrowserTypes
 from core.browser.web.webbrowser import Webbrowser
 
 
-class ChromeBrowser2(Webbrowser):
+class ChromeBrowser(Webbrowser):
     def __init__(self, baseurl, webDriverPath=None, browserBinayPath=None, browserVersion=None, platform=None,
                  windowWidth=None, windowHeight=None, desCap=None):
-        super(ChromeBrowser2, self).__init__(baseurl, webDriverPath, browserBinayPath, browserVersion, platform,
-                                             windowWidth, windowHeight)
+        super(ChromeBrowser, self).__init__(baseurl, webDriverPath, browserBinayPath, browserVersion, platform,
+                                            windowWidth, windowHeight)
         self.desCap = desCap
 
     def get_browser_type(self):

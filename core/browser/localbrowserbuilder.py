@@ -1,6 +1,6 @@
 # coding=utf-8
 from core.browser.web.browserTypes import BrowserTypes
-from core.browser.web.chromebrowser2 import ChromeBrowser2
+from core.browser.web.chromebrowser import ChromeBrowser
 
 
 class LocalBrowserBuilder(object):
@@ -20,8 +20,8 @@ class LocalBrowserBuilder(object):
 
     def build(self):
         if self.browserType == BrowserTypes.CHROME:
-            browser = ChromeBrowser2(self.baseUrl, self.webDriverPath, self.browserBinaryPath, self.browserVersion,
-                                     self.platform, self.windowWidth, self.windowHeight, self.desCap)
+            browser = ChromeBrowser(self.baseUrl, self.webDriverPath, self.browserBinaryPath, self.browserVersion,
+                                    self.platform, self.windowWidth, self.windowHeight, self.desCap)
         else:
             raise ValueError("only chrome, firefox, safari, ie , phantomJS supported")
         browser.init_browser()

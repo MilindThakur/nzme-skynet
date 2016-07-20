@@ -1,5 +1,5 @@
 # coding=utf-8
-class Browser2(object):
+class Browser(object):
     def __init__(self, baseurl):
         self.baseUrl = baseurl
 

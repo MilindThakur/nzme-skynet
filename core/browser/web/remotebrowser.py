@@ -4,15 +4,15 @@ from selenium.webdriver.remote.webdriver import WebDriver
 from core.browser.web.webbrowser import Webbrowser
 
 
-class RemoteBrowser2(Webbrowser):
+class RemoteBrowser(Webbrowser):
     def __init__(self, browserDel, remoteUrl):
-        super(RemoteBrowser2, self).__init__(browserDel.get_base_url(),
-                                             browserDel.get_webdriver_path(),
-                                             browserDel.get_browser_binary_path(),
-                                             browserDel.get_browser_version(),
-                                             browserDel.get_platform(),
-                                             browserDel.get_window_width(),
-                                             browserDel.get_window_height())
+        super(RemoteBrowser, self).__init__(browserDel.get_base_url(),
+                                            browserDel.get_webdriver_path(),
+                                            browserDel.get_browser_binary_path(),
+                                            browserDel.get_browser_version(),
+                                            browserDel.get_platform(),
+                                            browserDel.get_window_width(),
+                                            browserDel.get_window_height())
         self.delegate = browserDel
         self.remoteUrl = remoteUrl
 

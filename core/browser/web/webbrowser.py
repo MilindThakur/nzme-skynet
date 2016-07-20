@@ -1,8 +1,8 @@
 # coding=utf-8
-from core.browser.browser2 import Browser2
+from core.browser.browser import Browser
 
 
-class Webbrowser(Browser2):
+class Webbrowser(Browser):
     def create_webdriver(self):
         pass
 
