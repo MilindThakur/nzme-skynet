@@ -22,3 +22,6 @@ class LayoutTestCase(unittest.TestCase):
     def tearDown(self):
         if os.path.exists(self.SCREENSHOT_PATH):
             shutil.rmtree(self.SCREENSHOT_PATH)
+
+if __name__ == "__main__":
+    unittest.main()
