@@ -3,9 +3,6 @@ class Browser(object):
     def __init__(self, baseurl):
         self.baseUrl = baseurl
 
-    def create_webdriver(self):
-        raise NotImplementedError
-
     def get_browser_type(self):
         raise NotImplementedError
 
@@ -21,11 +18,8 @@ class Browser(object):
     def set_base_url(self, baseUrl):
         self.baseUrl = baseUrl
 
-    def get_webdriver(self):
-        raise NotImplementedError
-
     def get_default_desiredcapabilities(self):
         raise NotImplementedError
 
-    def quit_webdriver(self):
+    def quit(self):
         raise NotImplementedError
