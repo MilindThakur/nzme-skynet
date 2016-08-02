@@ -1,10 +1,11 @@
 # coding=utf-8
 from core.browser.web.browserTypes import BrowserTypes
 from core.browser.web.chromebrowser import ChromeBrowser
+from core.browser.web.phantomjsbrowser import PhantomJSBrowser
 
 
 class LocalBrowserBuilder(object):
-    def __init__(self, browserType, baseUrl, webDriverPath=None, browserBinayPath=None, browserVersion=None,
+    def __init__(self, browserType, baseUrl=None, webDriverPath=None, browserBinayPath=None, browserVersion=None,
                  platform=None, windowWidth=None, windowHeight=None, desCap=None):
         # if browserType is None:
         #   raise StandardError
@@ -19,10 +20,15 @@ class LocalBrowserBuilder(object):
         self.desCap = desCap
 
     def build(self):
-        if self.browserType == BrowserTypes.CHROME:
-            browser = ChromeBrowser(self.baseUrl, self.webDriverPath, self.browserBinaryPath, self.browserVersion,
-                                    self.platform, self.windowWidth, self.windowHeight, self.desCap)
-        else:
-            raise ValueError("only chrome, firefox, safari, ie , phantomJS supported")
+        browser = self._construct_browser(self.browserType)
         browser.init_browser()
         return browser
+
+    def _construct_browser(self, browserType):
+        if browserType == BrowserTypes.CHROME:
+            return ChromeBrowser(self.baseUrl, self.webDriverPath, self.browserBinaryPath, self.browserVersion,
+                                    self.platform, self.windowWidth, self.windowHeight, self.desCap)
+        if browserType == BrowserTypes.PHANTOM_JS:
+            return PhantomJSBrowser(self.baseUrl, self.windowWidth, self.windowHeight, self.desCap)
+        else:
+            raise ValueError("only chrome, firefox, safari, ie , phantomJS supported")
