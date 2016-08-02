@@ -17,7 +17,7 @@ class RemoteBrowser(Webbrowser):
         self.remoteUrl = remoteUrl
 
     def get_browser_type(self):
-        return self.delegate.get_browser_type()
+        return self.delegate.get_browser_type
 
     def get_desiredcapabilities(self):
         return self.delegate.get_desiredcapabilities()
