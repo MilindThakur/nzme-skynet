@@ -14,7 +14,7 @@
 * Download [Chrome browser](https://www.google.com/chrome/browser/desktop/index.html)
 * Download [Firefox v.46 browser](https://ftp.mozilla.org/pub/firefox/releases/46.0.1/). Firefox > v.47 requires [Marionette](https://developer.mozilla.org/en-US/docs/Mozilla/QA/Marionette) driver which is in beta phase (and not currently support in this library)
 * Install [PhantomJS](http://phantomjs.org/download.html) (headless browser)
-* To verify drivers are working [check these instructions](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/verify_webdriver.md)
+
 
 ### **Clone Skynet automation repo**
 ```bash
@@ -29,6 +29,8 @@ cd skynet
 ```bash
 pip install -r requirements.txt
 ```
+
+To verify drivers are working [check these instructions](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/verify_webdriver.md)
 
 ### **Verify skynet has installed successfully**
 The following commands will run all the unittests written for the library
