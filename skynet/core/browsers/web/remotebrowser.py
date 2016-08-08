@@ -1,7 +1,7 @@
 # coding=utf-8
 from selenium.webdriver.remote.webdriver import WebDriver
 
-from core.browser.web.webbrowser import Webbrowser
+from skynet.core.browsers import Webbrowser
 
 
 class RemoteBrowser(Webbrowser):
@@ -17,7 +17,7 @@ class RemoteBrowser(Webbrowser):
         self.remoteUrl = remoteUrl
 
     def get_browser_type(self):
-        return self.delegate.get_browser_type()
+        return self.delegate.get_browser_type
 
     def get_desiredcapabilities(self):
         return self.delegate.get_desiredcapabilities()

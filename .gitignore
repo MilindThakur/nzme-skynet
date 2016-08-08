@@ -2,4 +2,9 @@
 .idea/
 *.log
 *.pyc
-ghostdriver.log
+
+# Packages
+*.egg
+*.egg-info
+dist
+build
