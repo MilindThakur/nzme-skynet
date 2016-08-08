@@ -2,7 +2,7 @@
 from behave import *
 
 
-@given('I initialise webbrowser "{browser}"')
+@given('I initialise webbrowser "{browsers}"')
 def i_initialise_browser(context, browser):
     """
     :type context: behave.runner.Context

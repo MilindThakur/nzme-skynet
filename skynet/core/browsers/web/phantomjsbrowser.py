@@ -1,8 +1,8 @@
 # coding=utf-8
 from selenium.webdriver.phantomjs.webdriver import WebDriver
 
-from core.browser.web.browserTypes import BrowserTypes
-from core.browser.web.webbrowser import Webbrowser
+from skynet.core.browsers.web.browserTypes import BrowserTypes
+from skynet.core.browsers.web.webbrowser import Webbrowser
 
 
 class PhantomJSBrowser(Webbrowser):

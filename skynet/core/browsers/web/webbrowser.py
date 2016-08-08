@@ -1,5 +1,5 @@
 # coding=utf-8
-from core.browser.browser import Browser
+from skynet.core.browsers.browser import Browser
 
 
 class Webbrowser(Browser):

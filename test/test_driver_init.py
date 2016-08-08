@@ -1,7 +1,7 @@
 # coding=utf-8
 import unittest
 
-from core.browser.localbrowserbuilder import LocalBrowserBuilder
+from skynet.core.browsers.localbrowserbuilder import LocalBrowserBuilder
 
 
 class DriverInitTestCase(unittest.TestCase):
