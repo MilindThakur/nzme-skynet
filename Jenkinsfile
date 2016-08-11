@@ -25,13 +25,10 @@ node {
             """
             sh "./venv/bin/pip install -r requirements/test.txt"
 
-        stage 'Nodejs npm install'
-            sh 'node -v'
-            sh 'npm prune'
-            sh 'npm install'
-
         stage 'Install phantomJS node module'
-            sh 'npm install phantomjs'
+            sh 'node -v'
+            sh 'node prune'
+            sh 'npm install'
 
         stage 'Test'
             sh """
