@@ -27,8 +27,7 @@ node {
 
         stage 'Install phantomJS node module'
             sh 'node -v'
-            sh 'npm prune'
-            sh 'npm install'
+            sh 'npm install phantomjs'
 
         stage 'Test'
             sh """
