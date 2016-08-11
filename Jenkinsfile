@@ -18,7 +18,12 @@ node {
                     virtualenv --no-site-packages venv
                 fi
             """
-            sh "./venv/bin/pip install -r requirements.txt"
+            sh """
+            if [ -f "requirements/preinstall.txt" ]; then
+              ./venv/bin/pip install -r requirements/preinstall.txt
+            fi
+            """
+            sh "./venv/bin/pip install -r requirements/test.txt"
 
         stage 'Nodejs npm install'
             sh 'node -v'
