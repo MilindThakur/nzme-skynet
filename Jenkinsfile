@@ -12,7 +12,7 @@ node {
         sript = 'python setup.py --fullname',
         returnStdout: true
     ).trim()
-    PKG_PATH = "dist/${PKG_NAME}.tar.gz
+    PKG_PATH = "dist/${PKG_NAME}.tar.gz"
 
     try {
 
