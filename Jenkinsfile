@@ -27,7 +27,7 @@ node {
 
         stage 'Install phantomJS node module'
             sh 'node -v'
-            sh 'node prune'
+            sh 'npm prune'
             sh 'npm install'
 
         stage 'Test'
