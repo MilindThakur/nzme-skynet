@@ -32,7 +32,7 @@ node {
 
         stage 'Test'
             sh """
-                . venv/bin/active
+                . venv/bin/activate
                 cd test
                 py.test
             """
