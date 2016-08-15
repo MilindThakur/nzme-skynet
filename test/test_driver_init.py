@@ -5,7 +5,7 @@ from skynet.core.browsers.localbrowserbuilder import LocalBrowserBuilder
 
 
 class DriverInitTestCase(unittest.TestCase):
-    def test_local_chrome_init(self):
+    def test_local_phantomjs_init(self):
         lb = LocalBrowserBuilder("phantomJS", "https://www.google.co.nz")
         self.browser = lb.build()
         assert self.browser.get_base_url() == "https://www.google.co.nz"
