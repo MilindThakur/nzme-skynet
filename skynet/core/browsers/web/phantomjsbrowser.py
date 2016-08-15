@@ -17,7 +17,7 @@ class PhantomJSBrowser(Webbrowser):
         if self.desCap is not None:
             return WebDriver(desired_capabilities=self.desCap, service_args=['--ssl-protocol=any'])
         else:
-            return WebDriver(service_args=['--ssl-protocol=any'])
+            return WebDriver(service_args=['--ignore-ssl-errors=true', '--ssl-protocol=any'])
 
     def get_actions(self):
         raise NotImplementedError
