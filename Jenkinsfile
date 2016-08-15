@@ -41,11 +41,11 @@ node {
             PKG_VERSION = sh (
                 script : 'python setup.py --version',
                 returnStdout: true
-            ).trim()
+            )
             PKG_NAME = sh (
                 sript = 'python setup.py --fullname',
                 returnStdout: true
-            ).trim()
+            )
             PKG_PATH = "dist/${PKG_NAME}.tar.gz"
             sh """
                 fury push ${PKG_PATH}
