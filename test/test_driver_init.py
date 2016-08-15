@@ -6,13 +6,15 @@ from skynet.core.browsers.localbrowserbuilder import LocalBrowserBuilder
 
 class DriverInitTestCase(unittest.TestCase):
     def test_local_phantomjs_init(self):
-        lb = LocalBrowserBuilder("phantomJS", "https://www.google.co.nz/")
+        test_url1 = "http://www.bing.com/?cc=nz"
+        lb = LocalBrowserBuilder("phantomJS", test_url1)
         self.browser = lb.build()
-        assert self.browser.get_base_url() == "https://www.google.co.nz/"
-        assert self.browser.get_current_url() == "https://www.google.co.nz/"
-        self.browser.goto_absolute_url("http://www.bing.com/?cc=nz")
-        assert self.browser.get_base_url() == "http://www.bing.com/?cc=nz"
-        assert self.browser.get_current_url() == "http://www.bing.com/?cc=nz"
+        assert self.browser.get_base_url() == test_url1
+        assert self.browser.get_current_url() == test_url1
+        test_url2 = "https://www.google.co.nz/"
+        self.browser.goto_absolute_url(test_url2)
+        assert self.browser.get_base_url() == test_url2
+        assert self.browser.get_current_url() == test_url2
 
     def tearDown(self):
         self.browser.quit()
