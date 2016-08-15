@@ -25,10 +25,6 @@ node {
             """
             sh "./venv/bin/pip install -r requirements/test.txt"
 
-        stage 'Install phantomJS node module'
-            sh 'node -v'
-            sh 'npm install phantomjs'
-
         stage 'Test'
             sh """
                 . venv/bin/activate
