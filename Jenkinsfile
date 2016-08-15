@@ -42,7 +42,7 @@ node {
             result = readFile('commandResult').trim()
             PKG_PATH = "dist/${result}.tar.gz"
             sh """
-                fury push ${PKG_PATH}
+                curl -F package=@${PKG_PATH} https://${gemfury_secret}@push.fury.io/grabone/
             """
 
         stage 'Finish'
