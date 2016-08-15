@@ -38,10 +38,6 @@ node {
             """
 
         stage 'Upload artifact to gemfury'
-            PKG_VERSION = sh (
-                script : 'python setup.py --version',
-                returnStdout: true
-            )
             PKG_NAME = sh (
                 sript = 'python setup.py --fullname',
                 returnStdout: true
