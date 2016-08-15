@@ -38,11 +38,9 @@ node {
             """
 
         stage 'Upload artifact to gemfury'
-            PKG_NAME = sh (
-                script : 'python setup.py --fullname',
-                returnStdout: true
-            )
-            PKG_PATH = sh "echo dist/${PKG_NAME}.tar.gz"
+            sh "python setup.py --fullname > commandResult"
+            result = readFile('commandResult').trim()
+            PKG_PATH = "dist/${result}.tar.gz"
             sh """
                 fury push ${PKG_PATH}
             """
