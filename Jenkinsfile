@@ -42,7 +42,7 @@ node {
                 script : 'python setup.py --fullname',
                 returnStdout: true
             )
-            PKG_PATH = "dist/${PKG_NAME}.tar.gz"
+            PKG_PATH = sh "echo dist/${PKG_NAME}.tar.gz"
             sh """
                 fury push ${PKG_PATH}
             """
