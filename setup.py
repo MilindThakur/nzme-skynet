@@ -15,7 +15,7 @@ def readme(fname):
 
 
 setup(
-    name='Skynet',
+    name='nzme-skynet',
     version=core.__version__,
     author=core.__author__,
     author_email=core.__email__,
