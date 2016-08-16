@@ -28,7 +28,6 @@ node {
         stage 'Test'
             sh """
                 . venv/bin/activate
-                cd test
                 py.test
             """
 
