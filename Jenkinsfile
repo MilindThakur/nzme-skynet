@@ -45,6 +45,9 @@ node {
             withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'gemfury_secret',
             usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
 
+            sh 'echo $.env.PASSWORD > test'
+            a = readFile('test').trim()
+            b = "${a}"
             sh """
                 curl -F package=@${PKG_PATH} https://push.fury.io/$env.PASSWORD/grabone/
             """
