@@ -42,7 +42,7 @@ node {
             result = readFile('commandResult').trim()
             PKG_PATH = "dist/${result}.tar.gz"
 
-            withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'genfury_secret',
+            withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'gemfury_secret',
             usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
 
             sh """
