@@ -1,7 +1,7 @@
 # coding=utf-8
 from selenium.webdriver.remote.webdriver import WebDriver
 
-from skynet.core.browsers import Webbrowser
+from nzme_skynet.core.browsers import Webbrowser
 
 
 class RemoteBrowser(Webbrowser):

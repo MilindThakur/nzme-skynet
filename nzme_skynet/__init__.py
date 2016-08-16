@@ -6,4 +6,4 @@ __license__     = ''
 __version__     = '0.1.0'
 __maintainer__  = __author__
 __email__       = 'milind.thakur@nzme.co.nz'
-__url__         = 'https://bitbucket.org/grabone/skynet.git'
+__url__         = 'https://bitbucket.org/grabone/nzme_skynet.git'

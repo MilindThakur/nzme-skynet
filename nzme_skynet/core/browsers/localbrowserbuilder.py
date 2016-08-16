@@ -1,7 +1,7 @@
 # coding=utf-8
-from skynet.core.browsers.web.browserTypes import BrowserTypes
-from skynet.core.browsers.web.chromebrowser import ChromeBrowser
-from skynet.core.browsers.web.phantomjsbrowser import PhantomJSBrowser
+from nzme_skynet.core.browsers.web.browserTypes import BrowserTypes
+from nzme_skynet.core.browsers.web.chromebrowser import ChromeBrowser
+from nzme_skynet.core.browsers.web.phantomjsbrowser import PhantomJSBrowser
 
 
 class LocalBrowserBuilder(object):

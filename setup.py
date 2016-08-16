@@ -7,7 +7,7 @@ import os
 
 from setuptools import setup
 
-from skynet import core
+from nzme_skynet import core
 
 
 def readme(fname):
@@ -25,8 +25,8 @@ setup(
     license=core.__license__,
     long_description=readme('README.md'),
 
-    packages=['skynet.core'],
-    test_suite='skynet.test',
+    packages=['nzme_skynet.core'],
+    test_suite='nzme_skynet.test',
     install_requires=[
         'behave>=1.2.5',
         'pytest>=2.9.2',

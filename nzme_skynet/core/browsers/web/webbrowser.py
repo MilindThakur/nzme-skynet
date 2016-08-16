@@ -1,5 +1,5 @@
 # coding=utf-8
-from skynet.core.browsers.browser import Browser
+from nzme_skynet.core.browsers.browser import Browser
 
 
 class Webbrowser(Browser):

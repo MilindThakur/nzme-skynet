@@ -3,7 +3,7 @@ import os
 import shutil
 import unittest
 
-from skynet.core.layout.layoutscreenshot import LayoutScreenshot
+from nzme_skynet.core.layout.layoutscreenshot import LayoutScreenshot
 
 
 class LayoutTestCase(unittest.TestCase):
