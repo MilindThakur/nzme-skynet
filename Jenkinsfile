@@ -28,7 +28,7 @@ node {
         stage 'Test'
             sh """
                 . venv/bin/activate
-                py.test
+                py.test test
             """
 
         stage 'Create dist package'
