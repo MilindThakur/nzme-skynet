@@ -42,7 +42,7 @@ node {
             result = readFile('commandResult').trim()
             PKG_PATH = "dist/${result}.tar.gz"
 
-            withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: '<CREDENTIAL_ID>',
+            withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'genfury_secret',
             usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
 
             sh 'echo uname=$USERNAME pwd=$PASSWORD'
