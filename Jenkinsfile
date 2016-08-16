@@ -46,7 +46,7 @@ node {
             usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
 
             sh """
-                curl -F package=@${PKG_PATH} https://$env.PASSWORD@push.fury.io/grabone/
+                curl -F package=@${PKG_PATH} https://@push.fury.io/$env.PASSWORD/grabone/
             """
             sh 'echo uname=$USERNAME pwd=$PASSWORD'
             }
