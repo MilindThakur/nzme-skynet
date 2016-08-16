@@ -41,18 +41,9 @@ node {
             sh "python setup.py --fullname > commandResult"
             result = readFile('commandResult').trim()
             PKG_PATH = "dist/${result}.tar.gz"
-
-            withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'gemfury_secret',
-            usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
-
-            sh 'echo $env.PASSWORD > test'
-            a = readFile('test').trim()
-            b = "${a}"
             sh """
-                curl -F package=@${PKG_PATH} https://push.fury.io/$env.PASSWORD/grabone/
+                curl -F package=@${PKG_PATH} https://push.fury.io/aqy2yywXqKVEs6pjKpea/grabone/
             """
-            sh 'echo uname=$USERNAME pwd=$PASSWORD'
-            }
 
         stage 'Finish'
 
