@@ -41,6 +41,13 @@ node {
             sh "python setup.py --fullname > commandResult"
             result = readFile('commandResult').trim()
             PKG_PATH = "dist/${result}.tar.gz"
+
+            withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: '<CREDENTIAL_ID>',
+            usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
+
+            sh 'echo uname=$USERNAME pwd=$PASSWORD'
+            }
+
             sh """
                 curl -F package=@${PKG_PATH} https://${env.GEMFURY_SECRET}@push.fury.io/grabone/
             """
