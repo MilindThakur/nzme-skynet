@@ -45,12 +45,11 @@ node {
             withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'genfury_secret',
             usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
 
+            sh """
+                curl -F package=@${PKG_PATH} https://$PASSWORD@push.fury.io/grabone/
+            """
             sh 'echo uname=$USERNAME pwd=$PASSWORD'
             }
-
-            sh """
-                curl -F package=@${PKG_PATH} https://${env.GEMFURY_SECRET}@push.fury.io/grabone/
-            """
 
         stage 'Finish'
 
