@@ -42,7 +42,7 @@ node {
             result = readFile('commandResult').trim()
             PKG_PATH = "dist/${result}.tar.gz"
             sh """
-                curl -F package=@${PKG_PATH} https://push.fury.io/aqy2yywXqKVEs6pjKpea/grabone/
+                curl -v -F package=@${PKG_PATH} https://push.fury.io/aqy2yywXqKVEs6pjKpea/grabone/
             """
 
         stage 'Finish'
