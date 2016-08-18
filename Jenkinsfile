@@ -31,18 +31,25 @@ node {
                 py.test test
             """
 
-        stage 'Create dist package'
-            sh """
-                python setup.py sdist
-            """
+        stage 'Create and upload artifact to gemfury on master'
+            if (env.BRANCH_NAME.trim() == 'master') {
 
-        stage 'Upload artifact to gemfury'
-            sh "python setup.py --fullname > commandResult"
-            result = readFile('commandResult').trim()
-            PKG_PATH = "dist/${result}.tar.gz"
-            sh """
-                curl --noproxy push.fury.io -v -F package=@${PKG_PATH} https://push.fury.io/aqy2yywXqKVEs6pjKpea/grabone/
-            """
+                println 'Create dist package'
+                sh """
+                    python setup.py sdist
+                """
+
+                println 'Push package to gemfury'
+                sh "python setup.py --fullname > commandResult"
+                result = readFile('commandResult').trim()
+                PKG_PATH = "dist/${result}.tar.gz"
+                sh """
+                    curl --noproxy push.fury.io -v -F package=@${PKG_PATH} https://push.fury.io/aqy2yywXqKVEs6pjKpea/grabone/
+                """
+            }
+            else {
+                println 'Not pushing to gemfury because branch is: '+env.BRANCH_NAME.trim()+' and not master'
+            }
 
         stage 'Finish'
 
