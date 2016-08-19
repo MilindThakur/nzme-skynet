@@ -3,7 +3,7 @@ import json
 import os
 from datetime import datetime
 
-from skynet.core.browsers.localbrowserbuilder import LocalBrowserBuilder
+from nzme_skynet.core.browsers.localbrowserbuilder import LocalBrowserBuilder
 
 
 class LayoutScreenshot(object):
