@@ -1,7 +1,7 @@
 # coding=utf-8
 import json
 import os
-from skynet.core.browsers.localbrowserbuilder import LocalBrowserBuilder
+from nzme_skynet.core.browsers.localbrowserbuilder import LocalBrowserBuilder
 import requests
 from datetime import datetime
 

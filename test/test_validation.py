@@ -1,7 +1,7 @@
 # coding=utf-8
 import unittest
-from skynet.core.layout.validation import Validation
-from skynet.core.browsers.localbrowserbuilder import LocalBrowserBuilder
+from nzme_skynet.core.layout.validation import Validation
+
 
 
 
