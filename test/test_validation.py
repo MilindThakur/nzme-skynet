@@ -29,10 +29,14 @@ class ValidationTestCase(unittest.TestCase):
     def test_validation_nofile(self):
 
         urls_path = ""
-        im = Validation(urls_path)
-        a = im.validate()
-        print a
-
+        try:
+            im = Validation(urls_path)
+            a = im.validate()
+        except IOError, e:
+            if e.errno == 2:
+                print e
+            else:
+                raise
 
 
     def test_validation_resultspath(self):

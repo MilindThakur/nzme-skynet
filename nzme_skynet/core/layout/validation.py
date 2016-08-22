@@ -1,6 +1,7 @@
 # coding=utf-8
 import json
 import os
+import sys
 from nzme_skynet.core.browsers.localbrowserbuilder import LocalBrowserBuilder
 import requests
 from datetime import datetime
@@ -11,11 +12,8 @@ class Validation(object):
 
     def __init__(self, urls_path, results_path=None):
 
-        try:
-            with open(urls_path, 'r') as urlf:
-                self.urls_json = json.load(urlf)
-        except EnvironmentError:
-            print "No path defined"
+        with open(urls_path, 'r') as urlf:
+            self.urls_json = json.load(urlf)
 
         lb = LocalBrowserBuilder("phantomJS")
         browser = lb.build()
