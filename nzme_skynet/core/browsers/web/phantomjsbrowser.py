@@ -1,8 +1,8 @@
 # coding=utf-8
 from selenium.webdriver.phantomjs.webdriver import WebDriver
 
-from skynet.core.browsers.web.browserTypes import BrowserTypes
-from skynet.core.browsers.web.webbrowser import Webbrowser
+from nzme_skynet.core.browsers.web.browserTypes import BrowserTypes
+from nzme_skynet.core.browsers.web.webbrowser import Webbrowser
 
 
 class PhantomJSBrowser(Webbrowser):
@@ -14,10 +14,14 @@ class PhantomJSBrowser(Webbrowser):
         return BrowserTypes.PHANTOM_JS
 
     def create_webdriver(self):
+        service_args =  ["--ignore-ssl-errors=true",
+                         "--ssl-protocol=any",
+                         "--web-security=no"
+                        ]
         if self.desCap is not None:
-            return WebDriver(desired_capabilities=self.desCap)
+            return WebDriver(desired_capabilities=self.desCap, service_args=service_args)
         else:
-            return WebDriver()
+            return WebDriver(service_args=service_args)
 
     def get_actions(self):
         raise NotImplementedError

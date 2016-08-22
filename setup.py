@@ -4,29 +4,40 @@ Setup package to install Skynet - NZME Test Automation Library dependencies
 """
 
 import os
+import codecs
+import re
 
-from setuptools import setup
-
-from skynet import core
-
+from setuptools import setup, find_packages
 
 def readme(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
+def read(*parts):
+    filename = os.path.join(os.path.dirname(__file__), *parts)
+    with codecs.open(filename, encoding='utf-8') as fp:
+        return fp.read()
+
+def find_version(*file_paths):
+    version_file = read(*file_paths)
+    version_match = re.search(r"^__version__ = ['\"]([^'\"]*)['\"]", version_file, re.M)
+    if version_match:
+        return version_match.group(1)
+    raise RuntimeError("Unable to find version string.")
+
 
 setup(
-    name='Skynet',
-    version=core.__version__,
-    author=core.__author__,
-    author_email=core.__email__,
-    maintainer=core.__maintainer__,
-    url=core.__url__,
+    name='nzme-skynet',
+    version=find_version('nzme_skynet/__init__.py'),
+    author='Milind Thakur',
+    author_email='milind.thakur@nzme.co.nz',
+    maintainer='milind.thakur@nzme.co.nz',
+    url='https://bitbucket.org/grabone/Skynet.git',
     description="NZME Test Automation Library",
-    license=core.__license__,
+    license='',
     long_description=readme('README.md'),
 
-    packages=['skynet.core'],
-    test_suite='skynet.test',
+    packages=find_packages(exclude=["test"]),
+    test_suite='nzme_skynet.test',
     install_requires=[
         'behave>=1.2.5',
         'pytest>=2.9.2',
