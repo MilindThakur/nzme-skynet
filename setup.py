@@ -37,6 +37,7 @@ setup(
     long_description=readme('README.md'),
 
     packages=find_packages(exclude=["test"]),
+    include_package_data=True,
     test_suite='nzme_skynet.test',
     install_requires=[
         'behave>=1.2.5',
