@@ -11,8 +11,12 @@ class Validation(object):
 
     def __init__(self, urls_path, results_path=None):
 
-        with open(urls_path, 'r') as urlf:
-            self.urls_json = json.load(urlf)
+        try:
+            with open(urls_path, 'r') as urlf:
+                self.urls_json = json.load(urlf)
+        except EnvironmentError:
+            print "No path defined"
+
         lb = LocalBrowserBuilder("phantomJS")
         browser = lb.build()
         self.mydriver = browser.driver

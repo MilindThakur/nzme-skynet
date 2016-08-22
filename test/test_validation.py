@@ -1,4 +1,5 @@
 # coding=utf-8
+import os
 import unittest
 from nzme_skynet.core.layout.validation import Validation
 
@@ -6,6 +7,10 @@ from nzme_skynet.core.layout.validation import Validation
 
 
 class ValidationTestCase(unittest.TestCase):
+
+    SCREENSHOT_PATH = os.path.abspath('.') + "/%s" % "Validation"
+    CUR_DIR = os.path.dirname(__file__)
+    CUSTOM_DOWNLOAD_FOLDER = "./valresults"
 
 
 
@@ -15,29 +20,24 @@ class ValidationTestCase(unittest.TestCase):
 
 
     def test_validation_default(self):
-        urls_path = "./testdata/urls2.json"
+        urls_path = os.path.join(self.CUR_DIR, "testdata/urls2.json")
         im = Validation(urls_path)
         a = im.validate()
         print a
 
 
     def test_validation_nofile(self):
+
         urls_path = ""
         im = Validation(urls_path)
         a = im.validate()
         print a
 
-    def test_validation_filepath(self):
-        urls_path = "/home/donnam/Documents/urls2.json"
-        im = Validation(urls_path)
-        a = im.validate()
-        print a
 
 
     def test_validation_resultspath(self):
-        urls_path = "./testdata/urls2.json"
-        path = "/home/donnam/Docments"
-        im = Validation(urls_path, results_path=path)
+        urls_path = os.path.join(self.CUR_DIR, "testdata/urls2.json")
+        im = Validation(urls_path, results_path=self.CUSTOM_DOWNLOAD_FOLDER)
         a = im.validate()
         print a
 
