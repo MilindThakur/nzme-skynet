@@ -2,12 +2,11 @@
 import json
 import os
 from datetime import datetime
-
 import requests
 from nzme_skynet.core.browsers.localbrowserbuilder import LocalBrowserBuilder
 
 class Validation(object):
-    _DEFAULT_PATH = os.path.abspath('.') + "/PageValidationResults"
+    _DEFAULT_PATH = os.path.abspath('./..') + "/%s" % "PageValidationResults"
     _DEFAULT_FILENAME = "%s_%s.txt" % ("pagevalidation_results", datetime.now().strftime("%Y%m%d-%H%M%S"))
 
     def __init__(self, urls_path, custom_results_path=None):
@@ -16,10 +15,10 @@ class Validation(object):
         lb = LocalBrowserBuilder("phantomJS")
         browser = lb.build()
         self.mydriver = browser.driver
-        if not custom_results_path:
-            self.results_path = self._DEFAULT_PATH
+        if custom_results_path:
+            self._results_path = custom_results_path
         else:
-            self.results_path = custom_results_path
+            self._results_path = self._DEFAULT_PATH
 
     def validate(self):
         invalid_result = {}
@@ -29,7 +28,7 @@ class Validation(object):
             invalid_links = self._validate_links_on_url()
         if invalid_links + invalid_images:
             invalid_result[url["url"]] = invalid_links + invalid_images
-            self._create_folder_and_write_result_to_file(self.results_path, invalid_result)
+            self._create_folder_and_write_result_to_file(self._results_path, invalid_result)
 
     def _create_results_folder(self, folder_path):
         if not os.path.exists(folder_path):
@@ -60,7 +59,7 @@ class Validation(object):
 
     def _create_folder_and_write_result_to_file(self, folder, result):
         self._create_results_folder(folder)
-        result_file = (self.results_path + "/%s" % self._DEFAULT_FILENAME)
+        result_file = (self._results_path + "/%s" % self._DEFAULT_FILENAME)
         target = open(result_file, 'w')
         target.write(str(result))
         # for key, value in result.iteritems():
