@@ -1,85 +1,70 @@
 # coding=utf-8
 import json
 import os
-import sys
-from nzme_skynet.core.browsers.localbrowserbuilder import LocalBrowserBuilder
-import requests
 from datetime import datetime
 
-
+import requests
+from nzme_skynet.core.browsers.localbrowserbuilder import LocalBrowserBuilder
 
 class Validation(object):
+    _DEFAULT_PATH = os.path.abspath('.') + "/PageValidationResults"
+    _DEFAULT_FILENAME = "%s_%s.txt" % ("pagevalidation_results", datetime.now().strftime("%Y%m%d-%H%M%S"))
 
-    def __init__(self, urls_path, results_path=None):
-
+    def __init__(self, urls_path, custom_results_path=None):
         with open(urls_path, 'r') as urlf:
             self.urls_json = json.load(urlf)
-
         lb = LocalBrowserBuilder("phantomJS")
         browser = lb.build()
         self.mydriver = browser.driver
-        self.results_path = results_path
-
-        if not self.results_path:
-            self.path = os.path.abspath('.') + "/Validation"
+        if not custom_results_path:
+            self.results_path = self._DEFAULT_PATH
         else:
-            self.path = self.results_path
-        self.create_results_file()
+            self.results_path = custom_results_path
 
-    #create results file to output details of broken images or elements
-    def create_results_file(self):
-
-        filename = "%s_%s.txt" % ("val_results", datetime.now().strftime("%Y%m%d-%H%M%S"))
-        if not os.path.exists(self.path):
-            os.makedirs(self.path)
-        self.filepath = (self.path + "/%s" % filename)
-        self.target = open(self.filepath, "a")
-
-
-    #write to file and return filename if image and link results show items in dictionaries else return Pass
     def validate(self):
-
-        newdict = {}
-        newdict.update(self.check_image())
-        newdict.update(self.check_link())
-        if newdict.values() > 0:
-            self.target.write(str(newdict))
-            return str(self.filepath)
-        else:
-            return "Pass"
-
-
-    #check images are not broken and return dictionary list
-    def check_image(self):
-        self.uidict = {}
+        invalid_result = {}
         for url in self.urls_json["urls"]:
             self.mydriver.get(url["url"])
-            images = self.mydriver.find_elements_by_tag_name("img")
-            srclist = []
-            for image in images:
-                b = self.mydriver.execute_script("return arguments[0].complete && typeof arguments[0].naturalWidth != \"undefined\" && arguments[0].naturalWidth > 0", image)
-                if not b:
-                    srclist = image.get_attribute("src")
-                    self.uidict.setdefault(url["url"],[]).append(srclist)
-            return self.uidict
+            invalid_images = self._validate_images_on_url()
+            invalid_links = self._validate_links_on_url()
+        if invalid_links + invalid_images:
+            invalid_result[url["url"]] = invalid_links + invalid_images
+            self._create_folder_and_write_result_to_file(self.results_path, invalid_result)
 
+    def _create_results_folder(self, folder_path):
+        if not os.path.exists(folder_path):
+            os.makedirs(folder_path)
 
-    #check links are displayed and return expected status code
-    def check_link(self):
-        self.uidict = {}
-        for url in self.urls_json["urls"]:
-            self.mydriver.get(url["url"])
-            links = self.mydriver.find_elements_by_xpath("//a[@href]")
-            hreflist = []
-            for link in links:
-                if link.is_displayed() and ("http" in link.get_attribute("href")):
-                    if not self._is_link_broken(link.get_attribute("href")):
-                        hreflist.append(link.text)
-                        self.uidict.setdefault(url["url"], []).append(hreflist)
-            return self.uidict
+    def _validate_images_on_url(self):
+        images = self.mydriver.find_elements_by_tag_name("img")
+        broken_images_list = []
+        for image in images:
+            b = self.mydriver.execute_script("return arguments[0].complete && "
+                                             "typeof arguments[0].naturalWidth != \"undefined\" && "
+                                             "arguments[0].naturalWidth > 0", image)
+            if not b:
+                broken_images_list.append(image.get_attribute("src"))
+        return broken_images_list
 
+    def _validate_links_on_url(self):
+        links = self.mydriver.find_elements_by_xpath("//a[@href]")
+        broken_links_list = []
+        for link in links:
+            if link.is_displayed() and ("http" in link.get_attribute("href")):
+                if not self._is_link_broken(link.get_attribute("href")):
+                    broken_links_list.append(link.text)
+        return broken_links_list
 
-    #validate link is not broken by verifying response status code
-    def _is_link_broken(self, url):
-        #print url
-        return requests.get(url).status_code == 200
+    def _is_link_broken(self, link):
+        return requests.get(link).status_code == 200
+
+    def _create_folder_and_write_result_to_file(self, folder, result):
+        self._create_results_folder(folder)
+        result_file = (self.results_path + "/%s" % self._DEFAULT_FILENAME)
+        target = open(result_file, 'w')
+        target.write(str(result))
+        # for key, value in result.iteritems():
+        #     target.write(key + "\n")
+        #     for broken in value:
+        #         target.write(broken + "\n")
+        target.close()
