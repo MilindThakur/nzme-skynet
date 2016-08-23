@@ -1,8 +1,10 @@
 # coding=utf-8
+from nzme_skynet.core.actions.component import Component
 
-class Text(object):
+
+class Text(Component):
     def __init__(self, by_locator):
-        self.locator = by_locator
+        super(Text, self).__init__(by_locator)
 
     def get_text(self):
         pass
