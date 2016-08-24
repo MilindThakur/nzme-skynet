@@ -6,7 +6,8 @@ import requests
 from nzme_skynet.core.browsers.localbrowserbuilder import LocalBrowserBuilder
 
 class Validation(object):
-    _DEFAULT_PATH = os.path.abspath('./..') + "/%s" % "PageValidationResults"
+    _CUR_DIR = os.path.dirname(__file__)
+    _DEFAULT_PATH = os.path.abspath('.') + "/PageValidationResults"
     _DEFAULT_FILENAME = "%s_%s.txt" % ("pagevalidation_results", datetime.now().strftime("%Y%m%d-%H%M%S"))
 
     def __init__(self, urls_path, custom_results_path=None):
@@ -22,6 +23,7 @@ class Validation(object):
 
     def validate(self):
         invalid_result = {}
+        invalid_links = invalid_images = []
         for url in self.urls_json["urls"]:
             self.mydriver.get(url["url"])
             invalid_images = self._validate_images_on_url()
@@ -61,9 +63,10 @@ class Validation(object):
         self._create_results_folder(folder)
         result_file = (self._results_path + "/%s" % self._DEFAULT_FILENAME)
         target = open(result_file, 'w')
-        target.write(str(result))
-        # for key, value in result.iteritems():
-        #     target.write(key + "\n")
-        #     for broken in value:
-        #         target.write(broken + "\n")
+        #target.write(str(result))
+        for i in result.keys():
+            target.write(repr(i))
+            for n in result[i]:
+                target.write(' %s'%(repr(n)))
+            target.write('\n')
         target.close()

@@ -1,16 +1,14 @@
 # coding=utf-8
 import os
-import sys
 import shutil
 import unittest
 from nzme_skynet.core.layout.validation import Validation
 
 
-
 class ValidationTestCase(unittest.TestCase):
 
-    DEFAULT_RESULTS_FOLDER_PATH = os.path.abspath('./..') + "/%s" % "PageValidationResults"
     CUR_DIR = os.path.dirname(__file__)
+    DEFAULT_RESULTS_FOLDER_PATH = os.path.abspath('.') + "/PageValidationResults"
     CUSTOM_RESULTS_FOLDER_PATH = "./../ValidationResults"
 
     def setUp(self):
