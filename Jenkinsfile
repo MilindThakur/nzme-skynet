@@ -23,7 +23,7 @@ node {
               ./venv/bin/pip install -r requirements/preinstall.txt
             fi
             """
-            sh "./venv/bin/pip install -r requirements/ci.txt"
+            sh "./venv/bin/pip install -r requirements/ci.txt -c requirements/constraints.txt"
 
         stage 'Test'
             sh """

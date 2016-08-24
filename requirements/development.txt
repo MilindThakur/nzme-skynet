@@ -1,4 +1,4 @@
 -r ci.txt
 
 # To run local tests on chrome
-chromedriver_installer>=0.0.4
+chromedriver_installer
