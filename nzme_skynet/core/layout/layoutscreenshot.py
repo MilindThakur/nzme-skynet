@@ -10,12 +10,15 @@ class LayoutScreenshot(object):
     _SCREENSHOT_DIR_NAME = "screenshot"
     _SCREENSHOT_DIR_PATH = os.path.abspath('.') + "/%s" % _SCREENSHOT_DIR_NAME
 
-    def __init__(self, urls_path, device_list, folder=None):
+    def __init__(self, urls_path, device_list=None, folder=None):
         with open(urls_path, 'r') as url:
             self.urls_json = json.load(url)
         with open(os.path.dirname(__file__) + "/devices.json", 'r') as devices:
             self.devices_json = json.load(devices)
-        self._devices_list = device_list.split(',')
+        if device_list:
+            self._devices_list = device_list.split(',')
+        else:
+            self._devices_list = list(self.devices_json.keys())
         if folder:
             self._folder = folder
         else:
@@ -32,8 +35,6 @@ class LayoutScreenshot(object):
         for url in self.urls_json["urls"]:
             browser.goto_url(url["url"])
             for device in self._devices_list:
-                print device
-                print self.devices_json[device]
                 browser.set_window_size(self.devices_json[device]["w"], self.devices_json[device]["h"])
                 filename = "%s_%s_%s.png" % (url["name"].replace(" ", ""), device,
                                              datetime.now().strftime("%Y%m%d-%H%M%S"))
