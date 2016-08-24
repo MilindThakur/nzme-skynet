@@ -40,13 +40,12 @@ setup(
     include_package_data=True,
     test_suite='nzme_skynet.test',
     install_requires=[
-        'behave>=1.2.5',
-        'pytest>=2.9.2',
-        'pytest-xdist>=1.14',
-        'requests>=2.10.0',
-        'sauceclient>=0.2.1',
-        'selenium==2.53.6',
-        'chromedriver_installer>=0.0.4'
+        'behave',
+        'pytest',
+        'pytest-xdist',
+        'requests',
+        'sauceclient',
+        'selenium~=2.53.6'
     ],
     classifiers=[
         "Development Status :: ",
