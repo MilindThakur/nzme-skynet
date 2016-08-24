@@ -28,9 +28,7 @@ node {
         stage 'Test'
             sh """
                 . venv/bin/activate
-                #TODO remove me - hacking to only one test
                 #py.test test
-                py.test -q -s test/test_validation.py::ValidationTestCase::test_validate_broken_images_file
             """
 
         stage 'Create and upload artifact to gemfury on master'
