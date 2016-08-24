@@ -6,8 +6,8 @@ import requests
 from nzme_skynet.core.browsers.localbrowserbuilder import LocalBrowserBuilder
 
 class Validation(object):
-    _CUR_DIR = os.path.dirname(__file__)
-    _DEFAULT_PATH = os.path.abspath('.') + "/PageValidationResults"
+    _DEFAULT_PATH = "./PageValidationResults"
+    #_DEFAULT_PATH = os.path.abspath('.') + "/PageValidationResults"
     _DEFAULT_FILENAME = "%s_%s.txt" % ("pagevalidation_results", datetime.now().strftime("%Y%m%d-%H%M%S"))
 
     def __init__(self, urls_path, custom_results_path=None):
