@@ -1,9 +1,13 @@
 # coding=utf-8
 import json
 import os
-from datetime import datetime
 import requests
+
+from datetime import datetime
 from nzme_skynet.core.browsers.localbrowserbuilder import LocalBrowserBuilder
+from selenium import webdriver
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+
 
 
 # noinspection PyMethodMayBeStatic,PyMethodMayBeStatic
@@ -11,9 +15,13 @@ class Validation(object):
     _DEFAULT_PATH = os.path.abspath('.') + "/ValidationResults"
     _DEFAULT_FILENAME = "%s_%s.txt" % ("pagevalidation_results", datetime.now().strftime("%Y%m%d-%H%M%S"))
 
+
     def __init__(self, urls_path, custom_results_path=None):
         with open(urls_path, 'r') as urlf:
             self.urls_json = json.load(urlf)
+        capabilities = DesiredCapabilities.PHANTOMJS
+        capabilities['loggingPrefs'] = {'browser': 'ALL'}
+        driver = webdriver.PhantomJS(desired_capabilities=capabilities)
         lb = LocalBrowserBuilder("phantomJS")
         browser = lb.build()
         self.mydriver = browser.driver
@@ -26,12 +34,14 @@ class Validation(object):
         invalid_result = {}
         invalid_links = []
         invalid_images = []
+        invalid_js = []
         for url in self.urls_json["urls"]:
             self.mydriver.get(url["url"])
             invalid_images = self._validate_images_on_url()
             invalid_links = self._validate_links_on_url()
-        if invalid_links + invalid_images:
-            invalid_result[url["url"]] = invalid_links + invalid_images
+            invalid_js = self._validate_javascript_on_url()
+        if invalid_links + invalid_images + invalid_js:
+            invalid_result[url["url"]] = invalid_links + invalid_images + invalid_js
             self._create_folder_and_write_result_to_file(self._results_path, invalid_result)
 
     def _create_results_folder(self, folder_path):
@@ -57,6 +67,13 @@ class Validation(object):
                 if not self._is_link_broken(link.get_attribute("href")):
                     broken_links_list.append(link.text)
         return broken_links_list
+
+    def _validate_javascript_on_url(self):
+        broken_js_list = []
+        for entry in self.mydriver.get_log('browser'):
+            if entry:
+                broken_js_list.append(str(entry['level'] + ": " + entry['message']))
+        return broken_js_list
 
     def _is_link_broken(self, link):
         return requests.get(link).status_code == 200
