@@ -7,13 +7,19 @@ from nzme_skynet.core.layout.validation import Validation
 
 class ValidationTestCase(unittest.TestCase):
     CUR_DIR = os.path.dirname(__file__)
-    DEFAULT_RESULTS_FOLDER_PATH = os.path.abspath('./..') + "/%s" % "ValidationResults"
-    CUSTOM_RESULTS_FOLDER_PATH = os.path.abspath('./..') + "/%s" % "Results"
+    DEFAULT_RESULTS_FOLDER_PATH = os.path.abspath('./') + "/%s" % "ValidationResults"
+    CUSTOM_RESULTS_FOLDER_PATH = os.path.abspath('./') + "/%s" % "Results"
+
+    def setUp(self):
+        if os.path.exists(self.CUSTOM_RESULTS_FOLDER_PATH):
+            shutil.rmtree(self.CUSTOM_RESULTS_FOLDER_PATH)
+        if os.path.exists(self.DEFAULT_RESULTS_FOLDER_PATH):
+            shutil.rmtree(self.DEFAULT_RESULTS_FOLDER_PATH)
 
     def test_validate_broken_images(self):
         image = Validation(os.path.join(self.CUR_DIR, "testdata/brokenimages.json"))
         imagelist = image.validate_images_on_url()
-        self.assertNotEqual(imagelist, [], "Expected broken image list to be returned but empty")
+        self.assertNotEqual(len(imagelist), 0, "Expected broken image list to be returned but empty")
 
     def test_validate_good_images(self):
         image = Validation(os.path.join(self.CUR_DIR, "testdata/goodimages.json"))
@@ -23,7 +29,7 @@ class ValidationTestCase(unittest.TestCase):
     def test_validate_broken_javascript(self):
         js = Validation(os.path.join(self.CUR_DIR,"testdata/brokenjs.json"))
         jslist = js.validate_javascript_on_url()
-        self.assertNotEqual(jslist, [], "Expected js errors list to be returned but empty")
+        self.assertNotEqual(len(jslist), 0, "Expected js errors list to be returned but empty")
 
     def test_validate_good_javascript(self):
         js = Validation(os.path.join(self.CUR_DIR, "testdata/goodjs.json"))
