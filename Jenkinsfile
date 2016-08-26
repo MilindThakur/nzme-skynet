@@ -28,7 +28,7 @@ node {
         stage 'Test'
             sh """
                 . venv/bin/activate
-                #py.test test
+                py.test test
             """
 
         stage 'Create and upload artifact to gemfury on master'
