@@ -2,7 +2,19 @@
   "urls": [
     {
       "name": "Broken JS",
-      "url": "http://webdriverjsdemo.github.io/error/​"
+      "url": "https://www.nzherald.co.nz/business/news/headlines.cfm?c_id=3"
+    },
+    {
+      "name": "Broken JS",
+      "url": "http://www.nzherald.co.nz/business/news/headlines.cfm?c_id=3"
+    },
+    {
+      "name": "Broken JS",
+      "url": "http://www.nzherald.co.nz/olympics/news/article.cfm?c_id=502&objectid=11700690"
+    },
+    {
+      "name": "Broken JS",
+      "url": "http://www.bite.co.nz/hot-topics/whats-on/2936/4-Bites-New-ways-with-your-rice-cooker/"
     }
   ]
 }
