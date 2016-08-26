@@ -7,8 +7,8 @@ from nzme_skynet.core.layout.validation import Validation
 
 class ValidationTestCase(unittest.TestCase):
     CUR_DIR = os.path.dirname(__file__)
-    DEFAULT_RESULTS_FOLDER_PATH = os.path.abspath('./') + "/%s" % "ValidationResults"
-    CUSTOM_RESULTS_FOLDER_PATH = os.path.abspath('./') + "/%s" % "Results"
+    DEFAULT_RESULTS_FOLDER_PATH = os.path.abspath('.') + "/%s" % "ValidationResults"
+    CUSTOM_RESULTS_FOLDER_PATH = os.path.abspath('.') + "/%s" % "Results"
 
     def setUp(self):
         if os.path.exists(self.CUSTOM_RESULTS_FOLDER_PATH):

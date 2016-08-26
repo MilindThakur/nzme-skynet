@@ -8,7 +8,7 @@ from nzme_skynet.core.browsers.localbrowserbuilder import LocalBrowserBuilder
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 class Validation(object):
-    _DEFAULT_PATH = os.path.abspath('./') + "/ValidationResults"
+    _DEFAULT_PATH = os.path.abspath('.') + "/ValidationResults"
     _DEFAULT_FILENAME = "%s_%s.txt" % ("pagevalidation_results", datetime.now().strftime("%Y%m%d-%H%M%S"))
 
 
