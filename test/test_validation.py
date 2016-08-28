@@ -15,8 +15,7 @@ class ValidationTestCase(unittest.TestCase):
             shutil.rmtree(self.CUSTOM_RESULTS_FOLDER_PATH)
         if os.path.exists(self.DEFAULT_RESULTS_FOLDER_PATH):
             shutil.rmtree(self.DEFAULT_RESULTS_FOLDER_PATH)
-        print self.CUSTOM_RESULTS_FOLDER_PATH
-        print self.DEFAULT_RESULTS_FOLDER_PATH
+
 
     # def test_validate_broken_images(self):
     #     image = Validation(os.path.join(self.CUR_DIR, "testdata/brokenimages.json"))
@@ -46,6 +45,7 @@ class ValidationTestCase(unittest.TestCase):
     def test_validate_all(self):
         im = Validation(os.path.join(self.CUR_DIR,"testdata/brokenimages.json"))
         im.validateall()
+        print self.DEFAULT_RESULTS_FOLDER_PATH
         self.assertTrue(os.path.exists(self.DEFAULT_RESULTS_FOLDER_PATH), "Failed to create default results folder path")
         self.assertTrue(len(os.listdir(self.DEFAULT_RESULTS_FOLDER_PATH)) == 1, "Failed to create result files")
         self.assertGreater(os.stat(self.DEFAULT_RESULTS_FOLDER_PATH + "/" +
@@ -67,11 +67,6 @@ class ValidationTestCase(unittest.TestCase):
     #     self.assertFalse(os.path.exists(self.DEFAULT_RESULTS_FOLDER_PATH),
     #                      "Not expecting results folder path to be created")
 
-    def tearDown(self):
-        if os.path.exists(self.CUSTOM_RESULTS_FOLDER_PATH):
-            shutil.rmtree(self.CUSTOM_RESULTS_FOLDER_PATH)
-        if os.path.exists(self.DEFAULT_RESULTS_FOLDER_PATH):
-            shutil.rmtree(self.DEFAULT_RESULTS_FOLDER_PATH)
 
 if __name__ == "__main__":
     unittest.main()
