@@ -45,8 +45,8 @@ class ValidationTestCase(unittest.TestCase):
     def test_validate_all(self):
         im = Validation(os.path.join(self.CUR_DIR,"testdata/brokenimages.json"))
         im.validateall()
-        self.assertEqual(self.DEFAULT_RESULTS_FOLDER_PATH, os.path.abspath('.') + "/%s" % "ValidationResults", "Folder Path doesnt match")
-        self.assertTrue(os.path.exists(self.DEFAULT_RESULTS_FOLDER_PATH), "Failed to create default results folder path")
+        print os.path.abspath(os.path.abspath('.') + "/%s" % "ValidationResults")
+        self.assertEqual(os.path.exists(self.DEFAULT_RESULTS_FOLDER_PATH), True, "Failed to create default results folder path")
         self.assertTrue(len(os.listdir(self.DEFAULT_RESULTS_FOLDER_PATH)) == 1, "Failed to create result files")
         self.assertGreater(os.stat(self.DEFAULT_RESULTS_FOLDER_PATH + "/" +
                      os.listdir(self.DEFAULT_RESULTS_FOLDER_PATH)[0]).st_size, 0,
