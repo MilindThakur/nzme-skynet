@@ -15,6 +15,8 @@ class ValidationTestCase(unittest.TestCase):
             shutil.rmtree(self.CUSTOM_RESULTS_FOLDER_PATH)
         if os.path.exists(self.DEFAULT_RESULTS_FOLDER_PATH):
             shutil.rmtree(self.DEFAULT_RESULTS_FOLDER_PATH)
+        print self.CUSTOM_RESULTS_FOLDER_PATH
+        print self.DEFAULT_RESULTS_FOLDER_PATH
 
     # def test_validate_broken_images(self):
     #     image = Validation(os.path.join(self.CUR_DIR, "testdata/brokenimages.json"))
