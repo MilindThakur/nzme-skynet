@@ -27,20 +27,8 @@ class UrlValidationTestCase(unittest.TestCase):
         errors = v.validate_all(self.BROKEN_IMAGE_URL)
         self.assertEqual(len(errors), 2, "Expected 2 errors")
 
-    def test_all_validation_urls_list(self):
-        URL_LIST = [self.BROKEN_IMAGE_URL, self.BROKEN_LINK_URL, self.JAVASCRIPT_ERROR_URL]
-        result_dict = {}
-        for url in URL_LIST:
-            errors = v.validate_all(url)
-            if errors:
-                result_dict[url] = errors
-        self.assertEqual(len(result_dict), 3, "Expected 3 url errors")
-        self.assertTrue(result_dict.has_key(self.BROKEN_IMAGE_URL), "Expected broken image url")
-        self.assertTrue(result_dict.has_key(self.BROKEN_LINK_URL), "Expected broken link url")
-        self.assertTrue(result_dict.has_key(self.JAVASCRIPT_ERROR_URL), "Expected js error url")
-        self.assertEqual(len(result_dict[self.BROKEN_IMAGE_URL]), 2, "Expected 2 broken images")
-        self.assertEqual(len(result_dict[self.BROKEN_LINK_URL]), 3, "Expected 3 broken links")
-        self.assertEqual(len(result_dict[self.JAVASCRIPT_ERROR_URL]), 1, "Expected 1 js error")
-
     def tearDown(self):
         self.driver.quit()
+
+if __name__ == "__main__":
+    unittest.main()
