@@ -35,7 +35,11 @@ setup(
     description="NZME Test Automation Library",
     license='',
     long_description=readme('README.md'),
-
+    entry_points={
+        'console_scripts' : [
+               'nzme-screenshots = nzme_skynet.scripts.screenshots:main'
+        ]
+    },
     packages=find_packages(exclude=["test"]),
     include_package_data=True,
     test_suite='nzme_skynet.test',
