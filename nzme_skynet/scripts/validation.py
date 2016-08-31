@@ -20,15 +20,15 @@ def main():
     js_errors = []
     list_urls = args.urls.split(',')
     for url in list_urls:
+        print "URL : " + url
         if args.checkall:
             args.checklinks = args.checkjs = args.checkimages = True
         if args.checklinks:
             link_errors = validate_links(url)
+            print "Links Error: " + str(link_errors)
         if args.checkimages:
             image_errors = validate_images(url)
+            print "Image Error: " + str(image_errors)
         if args.checkjs:
             js_errors = validate_js_error(url)
-        print "URL : " + url
-        print "Image Error: " + str(image_errors)
-        print "Links Error: " + str(link_errors)
-        print "JS Error: " + str(js_errors)
+            print "JS Error: " + str(js_errors)
