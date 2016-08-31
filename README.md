@@ -93,6 +93,7 @@ Nexus_10, Macbook_Air_11, Macbook_Air_13, Macbook_Pro_15, Macbook_Pro_Retina, iM
 
 # Change Log
 ```bash
+0.1.9   Update README with screenshot utility
 0.1.8   Add screenshot script as console script to the repo
 0.1.7   Handle installing package through constraints
 0.1.6   Fix: when no device are specified
