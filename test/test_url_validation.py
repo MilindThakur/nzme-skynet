@@ -5,11 +5,16 @@ import nzme_skynet.core.layout.urlvalidation as v
 class UrlValidationTestCase(unittest.TestCase):
 
     BROKEN_IMAGE_URL = "https://the-internet.herokuapp.com/broken_images"
+    BROKEN_IMAGE = "htt://www.nzherald.co.nz"
     BROKEN_LINK_URL = "https://the-internet.herokuapp.com/status_codes"
     JAVASCRIPT_ERROR_URL = "http://webdriverjsdemo.github.io/error/"
 
     def setUp(self):
         self.driver = v.create_webdriver_instance()
+
+    def test_broken_url_validation(self):
+        broken_images = v._validate_images_on_url(self.BROKEN_IMAGE, driver=self.driver)
+        self.assertRaises(Exception, broken_images)
 
     def test_image_validation(self):
         broken_images = v._validate_images_on_url(self.BROKEN_IMAGE_URL, driver=self.driver)
