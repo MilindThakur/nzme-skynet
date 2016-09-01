@@ -32,6 +32,10 @@ class UrlValidationTestCase(unittest.TestCase):
         errors = v.validate_all(self.BROKEN_IMAGE_URL)
         self.assertEqual(len(errors), 2, "Expected 2 errors, found: " + str(len(errors)))
 
+    def test_all_brokenurl_validation(self):
+        errors = v.validate_all(self.BROKEN_IMAGE)
+        self.assertRaises(Exception, errors)
+
     def tearDown(self):
         self.driver.quit()
 

@@ -1,5 +1,7 @@
 # coding=utf-8
 import argparse
+import os
+from datetime import datetime
 
 from nzme_skynet.core.layout.urlvalidation import validate_images
 from nzme_skynet.core.layout.urlvalidation import validate_links
@@ -9,7 +11,6 @@ from nzme_skynet.core.layout.urlvalidation import validate_js_error
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("urls", help="url or comma separated list of urls")
-    parser.add_argument("-f", "--folder", help="folder path to save results to")
     parser.add_argument("--checkimages", action="store_true", help="validate images on url(s)")
     parser.add_argument("--checklinks", action="store_true", help="validate links on url(s)")
     parser.add_argument("--checkjs", action="store_true", help="validate js on url(s)")
@@ -32,3 +33,4 @@ def main():
         if args.checkjs:
             js_errors = validate_js_error(url)
             print "JS Error: " + str(js_errors)
+

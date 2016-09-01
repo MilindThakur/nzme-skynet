@@ -12,7 +12,6 @@ def create_webdriver_instance():
     browser = lb.build()
     return browser.driver
 
-
 def validate_url(url, driver):
     result = driver.current_url
     if url in result:
@@ -35,7 +34,6 @@ def _validate_images_on_url(url, driver, open_url=True):
         return broken_images_list
     else:
         return Exception("Invalid URL used - please try again")
-
 
 def _validate_links_on_url(url, driver, open_url=True):
     broken_links_list = []
@@ -69,16 +67,13 @@ def validate_images(url):
     driver = create_webdriver_instance()
     return _validate_images_on_url(url, driver)
 
-
 def validate_links(url):
     driver = create_webdriver_instance()
     return _validate_links_on_url(url, driver)
 
-
 def validate_js_error(url):
     driver = create_webdriver_instance()
     return _validate_js_error_on_url(url, driver)
-
 
 def validate_all(url):
     driver = create_webdriver_instance()
@@ -88,3 +83,12 @@ def validate_all(url):
     errors.append(_validate_links_on_url(url, driver, open_url=False))
     errors.append(_validate_js_error_on_url(url, driver, open_url=False))
     return list(itertools.chain.from_iterable(errors))
+
+# def validate_all(url):
+#     driver = create_webdriver_instance()
+#     errors = []
+#     driver.get(url)
+#     errors.append(_validate_images_on_url(url, driver, open_url=False))
+#     errors.append(_validate_links_on_url(url, driver, open_url=False))
+#     errors.append(_validate_js_error_on_url(url, driver, open_url=False))
+#     return list(itertools.chain.from_iterable(errors))
