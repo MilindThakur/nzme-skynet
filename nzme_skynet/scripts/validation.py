@@ -2,7 +2,7 @@
 import argparse
 from datetime import datetime
 import json
-
+from collections import defaultdict
 from nzme_skynet.core.layout.urlvalidation import validate_images
 from nzme_skynet.core.layout.urlvalidation import validate_links
 from nzme_skynet.core.layout.urlvalidation import validate_js_error
@@ -20,7 +20,7 @@ def main():
     image_errors = []
     link_errors = []
     js_errors = []
-    results = {}
+    results = defaultdict(dict)
     list_urls = args.urls.split(',')
     for url in list_urls:
         if not args.folder:
@@ -30,19 +30,19 @@ def main():
         if args.checklinks:
             link_errors = validate_links(url)
             if args.folder:
-                results.setdefault(url, []).append(link_errors)
+                results[url]['Link Errors:'] = link_errors
             else:
                 print "Links Error: " + str(link_errors)
         if args.checkimages:
             image_errors = validate_images(url)
             if args.folder:
-                results.setdefault(url, []).append(image_errors)
+                results[url]['Image Errors:'] = image_errors
             else:
                 print "Image Error: " + str(image_errors)
         if args.checkjs:
             js_errors = validate_js_error(url)
             if args.folder:
-                results.setdefault(url, []).append(js_errors)
+                results[url]['JS Errors:'] = js_errors
             else:
                 print "JS Error: " + str(js_errors)
 
