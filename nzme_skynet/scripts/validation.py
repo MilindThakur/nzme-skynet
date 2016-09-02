@@ -17,9 +17,6 @@ def main():
     parser.add_argument("--checkjs", action="store_true", help="validate js on url(s)")
     parser.add_argument("--checkall", action="store_true", help="validate all on url(s)")
     args = parser.parse_args()
-    image_errors = []
-    link_errors = []
-    js_errors = []
     results = defaultdict(dict)
     list_urls = args.urls.split(',')
     for url in list_urls:
@@ -28,24 +25,20 @@ def main():
         if args.checkall:
             args.checklinks = args.checkjs = args.checkimages = True
         if args.checklinks:
-            link_errors = validate_links(url)
             if args.folder:
-                results[url]['Link Errors:'] = str(link_errors)
+                results[url]['Link Errors:'] = str(validate_links(url))
             else:
-                print "Links Error: " + str(link_errors)
+                print "Links Error: " + str(validate_links(url))
         if args.checkimages:
-            image_errors = validate_images(url)
             if args.folder:
-                results[url]['Image Errors:'] = str(image_errors)
+                results[url]['Image Errors:'] = str(validate_images(url))
             else:
-                print "Image Error: " + str(image_errors)
+                print "Image Error: " + str(validate_images(url))
         if args.checkjs:
-            js_errors = validate_js_error(url)
             if args.folder:
-                results[url]['JS Errors:'] = str(js_errors)
+                results[url]['JS Errors:'] = str(validate_js_error(url))
             else:
-                print "JS Error: " + str(js_errors)
-
+                print "JS Error: " + str(validate_js_error(url))
     if args.folder:
         create_folder_and_write_result_to_file(args.folder, results)
 
