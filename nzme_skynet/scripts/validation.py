@@ -30,19 +30,19 @@ def main():
         if args.checklinks:
             link_errors = validate_links(url)
             if args.folder:
-                results[url]['Link Errors:'] = link_errors
+                results[url]['Link Errors:'] = str(link_errors)
             else:
                 print "Links Error: " + str(link_errors)
         if args.checkimages:
             image_errors = validate_images(url)
             if args.folder:
-                results[url]['Image Errors:'] = image_errors
+                results[url]['Image Errors:'] = str(image_errors)
             else:
                 print "Image Error: " + str(image_errors)
         if args.checkjs:
             js_errors = validate_js_error(url)
             if args.folder:
-                results[url]['JS Errors:'] = js_errors
+                results[url]['JS Errors:'] = str(js_errors)
             else:
                 print "JS Error: " + str(js_errors)
 
