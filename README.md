@@ -103,7 +103,7 @@ usage: nzme-pagevalidation [-h] [-f FOLDER] [--checkimages] [--checklinks]
                            urls
 
 positional arguments:
-  urls                  url or comma separated list of urls
+  urls                  "url or comma separated list of urls, encased in single or double quotes"
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -116,11 +116,12 @@ optional arguments:
 
 
 
-$ nzme-pagevalidation --checkimages --checklinks https://www.nzherald.co.nz,http://www.zmonline.com -f /home/Documents
+$ nzme-pagevalidation --checkimages --checklinks 'https://www.nzherald.co.nz','http://www.zmonline.com' -f /home/Documents
 ```
 
 # Change Log
 ```bash
+0.1.11  Added info on encasing urls in quotes for pagevalidation
 0.1.10  Update README with pagevalidation utility 
 0.1.9   Update README with screenshot utility
 0.1.8   Add screenshot script as console script to the repo
