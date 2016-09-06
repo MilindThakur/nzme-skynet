@@ -29,6 +29,7 @@ node {
             sh """
                 . venv/bin/activate
                 cd test/testserver
+                pkill -f SimpleHTTPServer
                 python -m SimpleHTTPServer &>/dev/null &
                 HTTP_SERVER_PID=\$!
                 cd ../../
@@ -61,7 +62,7 @@ node {
 
     }
     catch (caughtError) {
-
+        pkill -f SimpleHTTPServer
         err = caughtError
         currentBuild.result = "FAILURE"
 
