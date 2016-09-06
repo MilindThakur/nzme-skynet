@@ -28,11 +28,10 @@ node {
         stage 'Test'
             sh """
                 . venv/bin/activate
-                pushd .
                 cd test/testserver
                 python -m SimpleHTTPServer &>/dev/null &
                 HTTP_SERVER_PID=\$!
-                popd
+                cd ../../
                 sleep 2
                 py.test test
                 kill HTTP_SERVER_PID
