@@ -62,7 +62,9 @@ node {
 
     }
     catch (caughtError) {
-        pkill -f SimpleHTTPServer
+        sh """
+            pkill -f SimpleHTTPServer
+        """
         err = caughtError
         currentBuild.result = "FAILURE"
 
