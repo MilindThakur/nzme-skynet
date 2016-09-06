@@ -22,7 +22,7 @@ class UrlValidationTestCase(unittest.TestCase):
 
     def test_link_validation(self):
         broken_links = v._validate_links_on_url(self.TEST_URL, driver=self.driver)
-        self.assertEqual(len(broken_links), 1, "Expected 1 broken links, found: " + str(len(broken_links)))
+        self.assertEqual(len(broken_links), 1, "Expected 1 broken links, found: " + str(broken_links))
 
     def test_javascript_validation(self):
         js_errors = v._validate_js_error_on_url(self.TEST_URL, driver=self.driver)
@@ -30,7 +30,7 @@ class UrlValidationTestCase(unittest.TestCase):
 
     def test_all_validation(self):
         errors = v.validate_all(self.TEST_URL)
-        self.assertEqual(len(errors), 3, "Expected 3 errors, found: " + str(len(errors)))
+        self.assertEqual(len(errors), 3, "Expected 3 errors, found: " + str(errors))
 
     def tearDown(self):
         self.driver.quit()
