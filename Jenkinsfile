@@ -31,7 +31,7 @@ node {
                 pushd .
                 cd test/testserver
                 python -m SimpleHTTPServer &>/dev/null &
-                HTTP_SERVER_PID=${!}
+                HTTP_SERVER_PID=@${!}
                 popd
                 sleep 2
                 py.test test
