@@ -8,6 +8,7 @@ class UrlValidationTestCase(unittest.TestCase):
     BROKEN_IMAGE = "htt://www.nzherald.co.nz"
     BROKEN_LINK_URL = "https://the-internet.herokuapp.com/status_codes"
     JAVASCRIPT_ERROR_URL = "http://webdriverjsdemo.github.io/error/"
+    MULTIPLE_URLS = "https://the-internet.herokuapp.com/broken_images,https://the-internet.herokuapp.com/status_codes,http://webdriverjsdemo.github.io/error/"
 
     def setUp(self):
         self.driver = v.create_webdriver_instance()
@@ -31,6 +32,10 @@ class UrlValidationTestCase(unittest.TestCase):
     def test_all_validation(self):
         errors = v.validate_all(self.BROKEN_IMAGE_URL)
         self.assertEqual(len(errors), 2, "Expected 2 errors, found: " + str(len(errors)))
+
+    def test_multiple_urls_validation(self):
+        errors = v.validate_all(self.MULTIPLE_URLS)
+        self.assertEqual(len(errors), 6, "Expected 6 errors, found: " + str(len(errors)))
 
     def test_all_brokenurl_validation(self):
         errors = v.validate_all(self.BROKEN_IMAGE)
