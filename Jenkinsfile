@@ -30,9 +30,10 @@ node {
                 . venv/bin/activate
                 pushd .
                 cd test/testserver
-                python -m SimpleHTTPServer &
-                HTTP_SERVER_PID=$!
+                python -m SimpleHTTPServer &>/dev/null &
+                HTTP_SERVER_PID=${!}
                 popd
+                sleep 2
                 py.test test
                 kill HTTP_SERVER_PID
             """
