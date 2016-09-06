@@ -42,6 +42,7 @@ def _validate_links_on_url(url, driver, open_url=True):
     if validate_url(url, driver):
         links = driver.find_elements_by_xpath("//a[@href]")
         for link in links:
+            print link.get_attribute("href")
             if link.is_displayed() and ("http" in link.get_attribute("href")):
                 if not (requests.get(link.get_attribute("href")).status_code == 200):
                     broken_links_list.append(link.text)
