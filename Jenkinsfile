@@ -30,11 +30,9 @@ node {
                 . venv/bin/activate
                 cd test/testserver
                 python -m SimpleHTTPServer &>/dev/null &
-                HTTP_SERVER_PID=\$!
                 cd ../../
                 sleep 2
                 py.test test/test_url_validation.py
-                kill HTTP_SERVER_PID
             """
 
         stage 'Create and upload artifact to gemfury on master'
@@ -58,6 +56,9 @@ node {
             }
 
         stage 'Finish'
+            sh """
+                pkill -f SimpleHTTPServer
+            """
 
     }
     catch (caughtError) {
