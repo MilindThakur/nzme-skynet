@@ -23,11 +23,15 @@ node {
               ./venv/bin/pip install -r requirements/preinstall.txt
             fi
             """
-            sh "./venv/bin/pip install -r requirements/ci.txt"
+            sh "./venv/bin/pip install -r requirements/ci.txt -c requirements/constraints.txt"
 
         stage 'Test'
             sh """
                 . venv/bin/activate
+                cd test/testserver
+                python -m SimpleHTTPServer &>/dev/null &
+                cd ../../
+                sleep 2
                 py.test test
             """
 
@@ -52,10 +56,15 @@ node {
             }
 
         stage 'Finish'
+            sh """
+                pkill -f SimpleHTTPServer
+            """
 
     }
     catch (caughtError) {
-
+        sh """
+            pkill -f SimpleHTTPServer
+        """
         err = caughtError
         currentBuild.result = "FAILURE"
 
