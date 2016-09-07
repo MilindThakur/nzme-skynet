@@ -7,7 +7,7 @@ import nzme_skynet.core.layout.urlvalidation as v
 class UrlValidationTestCase(unittest.TestCase):
 
     BROKEN_URL = "htt://www.nzherald.co.nz"
-    TEST_URL = "http://localhost:8000/"
+    TEST_URL = "http://127.0.0.1:8000/"
 
     def setUp(self):
         self.driver = v.create_webdriver_instance()
