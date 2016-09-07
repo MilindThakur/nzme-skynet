@@ -91,8 +91,38 @@ iPhone_4, iPhone_5, iPhone_6, iPhone_6_Plus, Samsung_S3, Samsung_S4, Nexus_4, iP
 Nexus_10, Macbook_Air_11, Macbook_Air_13, Macbook_Pro_15, Macbook_Pro_Retina, iMac_27
 ```
 
+### **Page Validation utility**
+Checks validity of images, links and javascript on url(s) passed in.  If a folder path is specified
+then results are output to a json file in that folder, else results are printed to the console.
+
+```bash
+$ pip install nzme-skynet
+$ nzme-pagevalidation -h
+usage: nzme-pagevalidation [-h] [-f FOLDER] [--checkimages] [--checklinks]
+                           [--checkjs] [--checkall]
+                           urls
+
+positional arguments:
+  urls                  "url or comma separated list of urls, encased in single or double quotes"
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -f FOLDER, --folder FOLDER
+                        folder name to save results to
+  --checkimages         validate images on url(s)
+  --checklinks          validate links on url(s)
+  --checkjs             validate js on url(s)
+  --checkall            validate all on url(s)
+
+
+
+$ nzme-pagevalidation --checkimages --checklinks 'https://www.nzherald.co.nz','http://www.zmonline.com' -f /home/Documents
+```
+
 # Change Log
 ```bash
+0.1.11  Added info on encasing urls in quotes for pagevalidation
+0.1.10  Update README with pagevalidation utility 
 0.1.9   Update README with screenshot utility
 0.1.8   Add screenshot script as console script to the repo
 0.1.7   Handle installing package through constraints

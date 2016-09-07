@@ -37,7 +37,8 @@ setup(
     long_description=readme('README.md'),
     entry_points={
         'console_scripts' : [
-               'nzme-screenshots = nzme_skynet.scripts.screenshots:main'
+               'nzme-screenshots = nzme_skynet.scripts.screenshots:main',
+               'nzme-pagevalidation = nzme_skynet.scripts.validation:main'
         ]
     },
     packages=find_packages(exclude=["test"]),
