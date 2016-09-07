@@ -121,8 +121,7 @@ $ nzme-pagevalidation --checkimages --checklinks 'https://www.nzherald.co.nz','h
 
 # Change Log
 ```bash
-0.1.11  Added info on encasing urls in quotes for pagevalidation
-0.1.10  Update README with pagevalidation utility 
+0.1.10  Add pagevalidation utility 
 0.1.9   Update README with screenshot utility
 0.1.8   Add screenshot script as console script to the repo
 0.1.7   Handle installing package through constraints
