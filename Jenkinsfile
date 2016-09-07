@@ -32,7 +32,7 @@ node {
                 python -m SimpleHTTPServer &>/dev/null &
                 cd ../../
                 sleep 2
-                py.test test/test_url_validation.py
+                py.test test
             """
 
         stage 'Create and upload artifact to gemfury on master'
