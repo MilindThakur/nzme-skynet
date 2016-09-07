@@ -33,7 +33,7 @@ node {
                 HTTP_SERVER_PID=\$!
                 cd ../../
                 sleep 2
-                py.test test
+                py.test test/test_url_validation.py
                 kill HTTP_SERVER_PID
             """
 
