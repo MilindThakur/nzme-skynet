@@ -1,25 +1,25 @@
 # coding=utf-8
-from nzme_skynet.core.actions.component import Component
+from nzme_skynet.core.actions.controls.component import Component
 
 
 class Image(Component):
-    def __init__(self, by_locator):
-        super(Image, self).__init__(by_locator)
+    def __init__(self, driver, by_locator):
+        super(Image, self).__init__(driver, by_locator)
 
-    def getSrc(self):
+    def get_src(self):
         pass
 
-    def getFileName(self):
+    def get_filename(self):
         pass
 
-    def isImageLoaded(self):
+    def is_image_loaded(self):
         pass
 
-    def getTitle(self):
+    def get_title(self):
         pass
 
-    def getWidth(self):
+    def get_width(self):
         pass
 
-    def getHeight(self):
+    def get_height(self):
         pass

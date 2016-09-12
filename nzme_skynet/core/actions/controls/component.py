@@ -1,12 +1,22 @@
 # coding=utf-8
+from selenium.webdriver.common.by import By
+from selenium.webdriver.remote.webelement import WebElement
+
+import nzme_skynet.core.utils.timeouts as timeout
+
 
 class Component(object):
-    def __init__(self, by_locator, webElement=None, webElements=None):
-        self.locator = by_locator
-        self.webElement = webElement
-        self.webElements = webElements
+    def __init__(self, driver, locator):
+        self.driver = driver
+        if isinstance(locator, By):
+            self.locator = locator
+        if isinstance(locator, WebElement):
+            self.webelement = locator
 
-    def find_elelemnts(self, by):
+    def find_element(self, by=By.CSS_SELECTOR, time=timeout.DEFAULT_TIMEOUT):
+        pass
+
+    def find_elements(self):
         pass
 
     def _find_by_web_elements(self):
