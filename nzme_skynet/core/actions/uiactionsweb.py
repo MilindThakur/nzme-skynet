@@ -36,3 +36,7 @@ class UIActionsWeb(BaseUIActions):
 
     def textinput(self, by_locator):
         super(UIActionsWeb, self).textinput(by_locator)
+
+    class Factory(object):
+        @staticmethod
+        def create(driver): return UIActionsWeb(driver)
