@@ -5,4 +5,6 @@ class BrowserTypes(object):
     PHANTOM_JS = "phantomJS"
     IE = "IE"
     SAFARI = "safari"
+    ANDROID_BROWSER = "androidbrowser"
+    IOS_BROWSER = "iosbrowser"
     REMOTE = "remote"
