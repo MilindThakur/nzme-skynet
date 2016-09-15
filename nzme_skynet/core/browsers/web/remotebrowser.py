@@ -1,33 +1,26 @@
 # coding=utf-8
 from selenium.webdriver.remote.webdriver import WebDriver
 
-from nzme_skynet.core.browsers import Webbrowser
+from nzme_skynet.core.browsers.web.webbrowser import Webbrowser
 
 
 class RemoteBrowser(Webbrowser):
-    def __init__(self, browserDel, remoteUrl):
-        super(RemoteBrowser, self).__init__(browserDel.get_base_url(),
-                                            browserDel.get_webdriver_path(),
-                                            browserDel.get_browser_binary_path(),
-                                            browserDel.get_browser_version(),
-                                            browserDel.get_platform(),
-                                            browserDel.get_window_width(),
-                                            browserDel.get_window_height())
-        self.delegate = browserDel
-        self.remoteUrl = remoteUrl
+
+    def __init__(self,  base_url, des_cap,):
+        super(RemoteBrowser, self).__init__(base_url)
+        self.des_cap = des_cap
 
     def get_browser_type(self):
-        return self.delegate.get_browser_type
+        return self.des_cap['browser']
 
-    def get_desiredcapabilities(self):
-        return self.delegate.get_desiredcapabilities()
+    def get_remote_url(self):
+        pass
 
-    def create_webdriver(self, customCap=None):
-        if customCap is not None:
-            driver = WebDriver(command_executor=self.remoteUrl, desired_capabilities=customCap)
-        else:
-            driver = WebDriver(command_executor=self.remoteUrl, desired_capabilities=self.get_desiredcapabilities())
-        return driver
+    def create_webdriver(self):
+        return WebDriver(self.get_remote_url(), self.des_cap)
 
     def get_actions(self):
+        raise NotImplementedError
+
+    def get_default_desiredcapabilities(self):
         raise NotImplementedError

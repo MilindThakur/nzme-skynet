@@ -9,6 +9,12 @@ class MobileBrowser(Browser):
     Requires Appium to be running in either iPhone or Android
     simulator mode with settings matching desired capabilities.
     """
+    _appium_cmd_executor = "http://127.0.0.1:4723/wd/hub"
+
+    def __init__(self, des_cap, base_url):
+        super(MobileBrowser, self).__init__(base_url)
+        self.des_cap = des_cap
+        self.driver = None
 
     def quit(self):
         pass
@@ -18,13 +24,6 @@ class MobileBrowser(Browser):
 
     def get_default_desiredcapabilities(self):
         pass
-
-    _appium_cmd_executor = "http://127.0.0.1:4723/wd/hub"
-
-    def __init__(self, des_cap, base_url):
-        super(MobileBrowser, self).__init__(base_url)
-        self.des_cap = des_cap
-        self.driver = None
 
     def get_browser_type(self):
         return self.des_cap['device']
