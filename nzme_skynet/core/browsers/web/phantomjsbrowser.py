@@ -22,6 +22,3 @@ class PhantomJSBrowser(Webbrowser):
             return WebDriver(desired_capabilities=self.desCap, service_args=service_args)
         else:
             return WebDriver(service_args=service_args)
-
-    def get_actions(self):
-        raise NotImplementedError

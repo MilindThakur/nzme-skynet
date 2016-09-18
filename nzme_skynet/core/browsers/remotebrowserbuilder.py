@@ -2,8 +2,7 @@ from nzme_skynet.core.browsers.web.remotebrowser import RemoteBrowser
 
 
 class RemoteBrowserBuilder(object):
-    def __init__(self, browser_type, base_url, capabilities):
-        self.browser_type = browser_type
+    def __init__(self, base_url, capabilities):
         self.base_url = base_url
         self.capabilities = capabilities
 

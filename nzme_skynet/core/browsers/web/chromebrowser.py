@@ -39,6 +39,3 @@ class ChromeBrowser(Webbrowser):
             return WebDriver(executable_path=driver_path, desired_capabilities=self.get_default_desiredcapabilities())
         else:
             return WebDriver(desired_capabilities=self.get_default_desiredcapabilities())
-
-    def get_actions(self):
-        raise NotImplementedError

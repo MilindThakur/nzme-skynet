@@ -1,4 +1,5 @@
 # coding=utf-8
+from nzme_skynet.core.actions.uiactionsfactory import UIActionsFactory
 from nzme_skynet.core.browsers.browser import Browser
 
 
@@ -38,7 +39,7 @@ class Webbrowser(Browser):
         self.driver.set_window_size(width, height)
 
     def get_actions(self):
-       raise NotImplementedError
+        return UIActionsFactory.create_ui_action("UIActionsWeb", self.driver)
 
     def get_webdriver_path(self):
         return self.webDriverPath

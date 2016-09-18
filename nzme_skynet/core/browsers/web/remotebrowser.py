@@ -19,8 +19,5 @@ class RemoteBrowser(Webbrowser):
     def create_webdriver(self):
         return WebDriver(self.get_remote_url(), self.des_cap)
 
-    def get_actions(self):
-        raise NotImplementedError
-
     def get_default_desiredcapabilities(self):
         raise NotImplementedError
