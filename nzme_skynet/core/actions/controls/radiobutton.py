@@ -7,4 +7,4 @@ class RadioButton(Component):
         super(RadioButton, self).__init__(driver, by_locator)
 
     def get_status(self):
-        pass
+        return self.get_attribute("value")

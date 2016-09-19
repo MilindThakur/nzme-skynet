@@ -95,3 +95,9 @@ class Webbrowser(Browser):
         height = self.driver.execute_script(h_js)
         self.driver.set_window_size(width+100, height+100)
         self.take_screenshot_current_window(filename)
+
+    def switch_to_frame(self, webelement):
+        self.driver.switch_to_frame(webelement)
+
+    def switch_to_default_frame(self):
+        self.driver.switch_to_default_content()

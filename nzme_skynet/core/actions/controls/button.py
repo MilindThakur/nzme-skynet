@@ -7,4 +7,4 @@ class Button(Component):
         super(Button, self).__init__(driver, by_locator)
 
     def get_status(self):
-        pass
+        self.get_attribute("value")

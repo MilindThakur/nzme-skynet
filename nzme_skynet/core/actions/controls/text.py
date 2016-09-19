@@ -7,10 +7,10 @@ class Text(Component):
         super(Text, self).__init__(driver, by_locator)
 
     def get_text(self):
-        pass
+        self.get_text()
 
     def text_contains(self, text):
-        pass
+        return self.get_text().contains(text)
 
     def text_matches(self, regex):
-        pass
+        return self.get_text().matches(regex)

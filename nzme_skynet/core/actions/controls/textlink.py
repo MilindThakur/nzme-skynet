@@ -7,4 +7,4 @@ class TextLink(Component):
         super(TextLink, self).__init__(driver, by_locator)
 
     def get_href(self):
-        pass
+        self.get_attribute("href")

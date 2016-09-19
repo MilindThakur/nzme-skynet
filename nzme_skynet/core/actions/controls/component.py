@@ -1,113 +1,113 @@
 # coding=utf-8
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions
 
-import nzme_skynet.core.utils.timeouts as timeout
 from nzme_skynet.core.actions.enums.timeouts import DefaultTimeouts
 
 class Component(object):
-    def __init__(self, driver, locator):
+    def __init__(self, driver, by_locator):
         self.driver = driver
-        if isinstance(locator, By):
-            self.locator = locator
-        if isinstance(locator, WebElement):
-            self.webelement = locator
+        if isinstance(by_locator, By):
+            self.locator = by_locator
+        if isinstance(by_locator, WebElement):
+            self.webelement = by_locator
 
-    def find_element(self, by=By.CSS_SELECTOR, time=DefaultTimeouts.SHORT_TIMEOUT):
+    def find_element(self, by=By.CSS_SELECTOR):
         return self.driver.find_element(by=by, value=self.locator)
 
-    def find_elements(self):
-        pass
+    def get_webelement(self):
+        return self.find_element()
 
-    def _find_by_web_elements(self):
-        pass
+    def find_elements(self, by=By.CSS_SELECTOR):
+        return self.driver.find_elements(by=by, value=self.locator)
 
     def is_currently_displayed(self):
-        pass
+        return self.will_be_displayed(DefaultTimeouts.SHORT_TIMEOUT)
 
-    def will_be_displayed(self):
-        pass
-
-    def will_be_displayed_in_time(self, time):
-        pass
-
-    def will_be_invisible(self):
-        pass
-
-    def will_be_invisible_in_time(self, time):
-        pass
-
-    def is_ready_to_interact(self):
-        pass
-
-    def will_be_ready_to_interact(self):
-        pass
-
-    def will_be_ready_to_interact_in_time(self, time):
-        pass
+    def will_be_displayed(self, time=DefaultTimeouts.LARGE_TIMEOUT):
+        try:
+            WebDriverWait(self.driver, time).until(expected_conditions.visibility_of_element_located(self.locator))
+            return True
+        except Exception:
+            return False
 
     def is_not_displayed(self):
-        pass
+        return self.will_not_be_displayed(DefaultTimeouts.DEFAULT_TIMEOUT)
 
-    def will_be_not_disaplyed(self):
-        pass
+    def will_not_be_displayed(self, time=DefaultTimeouts.LARGE_TIMEOUT):
+        try:
+            WebDriverWait(self.driver, time).until(expected_conditions.invisibility_of_element_located(self.locator))
+            return True
+        except Exception:
+            return False
 
-    def will_be_not_displayed_in_time(self, time):
-        pass
+    def is_ready_to_interact(self):
+        return self.will_be_ready_to_interact(DefaultTimeouts.DEFAULT_TIMEOUT)
+
+    def will_be_ready_to_interact(self, time=DefaultTimeouts.LARGE_TIMEOUT):
+        try:
+            WebDriverWait(self.driver, time).until(expected_conditions.element_to_be_clickable(self.locator))
+            return True
+        except Exception:
+            return False
 
     def exists(self):
-        pass
+        try:
+            self.find_element()
+            return True
+        except Exception:
+            return False
 
     def is_selected(self):
-        pass
+        return self.find_element().is_selected()
 
     def is_disabled(self):
-        pass
+        return not self.find_element().is_enabled()
 
     def is_enabled(self):
-        pass
+        return self.find_element().is_enabled()
 
     def get_locator(self):
-        pass
+        return self.locator
 
     def get_attribute(self, attr):
-        pass
+        return self.find_element().get_attribute(attr)
 
     def get_text(self):
-        pass
+        return self.find_element().text
 
     def get_location(self):
-        pass
+        return self.find_element().location
 
     def click(self):
-        pass
+        self.find_element().click()
 
-    def hover_over(self):
-        pass
+    # TODO
+    # def hover_over(self):
+    #     raise NotImplementedError
 
     def send_keys(self, value):
-        pass
+        self.find_element().send_keys(value)
 
     def set_value(self, value):
-        pass
+        self.send_keys(value)
 
-    def get_size(self, webElements):
-        pass
-
-    def get_element(self, index):
-        pass
+    # TODO
+    # def get_size(self, webElements):
+    #     raise NotImplementedError
 
     def clear(self):
-        pass
+        self.find_element().clear()
 
-    def scroll_to_element(self):
-        pass
+    def scroll_to_element(self, offset=200):
+        loc = self.get_location()
+        self.driver.execute_script("window.scrollBy(0," + str(loc['y'] - offset) + ");")
 
-    def execute_script(self, script):
-        pass
-
-    def highlight(self):
-        pass
+    # TODO
+    # def highlight(self):
+    #     raise NotImplementedError
 
     def scroll_and_click(self):
         self.scroll_to_element()

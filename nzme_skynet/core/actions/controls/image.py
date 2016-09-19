@@ -7,19 +7,21 @@ class Image(Component):
         super(Image, self).__init__(driver, by_locator)
 
     def get_src(self):
-        pass
+        return self.get_attribute("src")
 
     def get_filename(self):
-        pass
+        raise NotImplementedError
 
     def is_image_loaded(self):
-        pass
+        return self.driver.execute_script("return arguments[0].complete && "
+                                          "typeof arguments[0].naturalWidth != \"undefined\" && "
+                                          "arguments[0].naturalWidth > 0", self.get_webelement())
 
     def get_title(self):
-        pass
+        return self.get_attribute("title")
 
     def get_width(self):
-        pass
+        return self.get_attribute("width")
 
     def get_height(self):
-        pass
+        return self.get_attribute("height")
