@@ -6,5 +6,5 @@ class RadioButton(Component):
     def __init__(self, driver, by_locator):
         super(RadioButton, self).__init__(driver, by_locator)
 
-    def get_value(self):
+    def get_status(self):
         pass

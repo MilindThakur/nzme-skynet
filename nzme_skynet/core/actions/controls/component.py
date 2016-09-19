@@ -3,7 +3,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
 
 import nzme_skynet.core.utils.timeouts as timeout
-
+from nzme_skynet.core.actions.enums.timeouts import DefaultTimeouts
 
 class Component(object):
     def __init__(self, driver, locator):
@@ -13,8 +13,8 @@ class Component(object):
         if isinstance(locator, WebElement):
             self.webelement = locator
 
-    def find_element(self, by=By.CSS_SELECTOR, time=timeout.DEFAULT_TIMEOUT):
-        pass
+    def find_element(self, by=By.CSS_SELECTOR, time=DefaultTimeouts.SHORT_TIMEOUT):
+        return self.driver.find_element(by=by, value=self.locator)
 
     def find_elements(self):
         pass

@@ -1,3 +1,4 @@
+# coding=utf-8
 from nzme_skynet.core.browsers.localbrowserbuilder import LocalBrowserBuilder
 
 
