@@ -14,8 +14,8 @@ class Webbrowser(Browser):
         self.browserBinayPath = browserBinayPath
         self.browserVersion = browserVersion
         self.platform = platform
-        self.windowWidth = windowWidth
-        self.windowHeight = windowHeight
+        self.init_window_width = windowWidth
+        self.init_window_height = windowHeight
         self.driver = None
 
     def get_browser_type(self):
@@ -26,8 +26,8 @@ class Webbrowser(Browser):
 
     def init_browser(self):
         self.driver = self.create_webdriver()
-        if self.windowHeight is not None and self.windowWidth is not None:
-            self.driver.set_window_size(self.windowWidth, self.windowHeight)
+        if self.init_window_height is not None and self.init_window_width is not None:
+            self.driver.set_window_size(self.init_window_width, self.init_window_height)
         # TODO: create timeout default class
         self.driver.set_page_load_timeout(80)
         self.driver.implicitly_wait(5)
@@ -53,11 +53,8 @@ class Webbrowser(Browser):
     def get_platform(self):
         return self.platform
 
-    def get_window_width(self):
-        return self.windowWidth
-
-    def get_window_height(self):
-        return self.windowHeight
+    def get_current_window_size(self):
+        return self.driver.get_window_size()
 
     def refresh_page(self):
         self.driver.refresh()
