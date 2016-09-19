@@ -1,4 +1,8 @@
 # coding=utf-8
+from selenium.webdriver.support import expected_conditions
+from selenium.webdriver.support.wait import WebDriverWait
+
+from nzme_skynet.core.actions.enums.timeouts import DefaultTimeouts
 from nzme_skynet.core.actions.uiactionsfactory import UIActionsFactory
 from nzme_skynet.core.browsers.browser import Browser
 
@@ -101,3 +105,27 @@ class Webbrowser(Browser):
 
     def switch_to_default_frame(self):
         self.driver.switch_to_default_content()
+
+    def get_cookie(self, cookie):
+        return self.driver.get_cookie(cookie)
+
+    def get_all_cookies(self):
+        return self.driver.get_cookies()
+
+    def add_cookie(self, cookie):
+        self.driver.add_cookie(cookie)
+
+    def delete_local_storage(self):
+        self.driver.execute_script('window.localStorage.clear();')
+
+    def switch_to_alert(self, time=DefaultTimeouts.SHORT_TIMEOUT):
+        if WebDriverWait(self.driver, time).until(expected_conditions.alert_is_present()):
+            return self.driver.switch_to_alert()
+
+    def switch_and_accept_alert(self, time=DefaultTimeouts.SHORT_TIMEOUT):
+        alert = self.switch_to_alert(time)
+        return alert.accept
+
+    def swicth_and_dismiss_alert(self, time=DefaultTimeouts.SHORT_TIMEOUT):
+        alert = self.switch_to_alert(time)
+        return alert.dismiss

@@ -1,4 +1,5 @@
 # coding=utf-8
+from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.ui import WebDriverWait
@@ -84,9 +85,10 @@ class Component(object):
     def click(self):
         self.find_element().click()
 
-    # TODO
-    # def hover_over(self):
-    #     raise NotImplementedError
+    def hover_over(self):
+        elem = self.find_element()
+        hover = ActionChains(self.driver).move_to_element(elem)
+        hover.perform()
 
     def send_keys(self, value):
         self.find_element().send_keys(value)
