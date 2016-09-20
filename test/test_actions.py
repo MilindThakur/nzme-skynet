@@ -26,8 +26,9 @@ class ActionsTestCase(unittest.TestCase):
         txt_input.set_value("something")
         self.assertEqual(txt_input.get_value(), "something")
 
-    # def test_action_button(self):
-    #     raise NotImplementedError
+    def test_action_button(self):
+        submit_btn = self.app.get_actions().button(By.NAME, "submit")
+        self.assertEqual(submit_btn.get_text(), "Submit")
 
     def test_action_checkbox(self):
         agree_chk = self.app.get_actions().checkbox(By.NAME, "agree")
