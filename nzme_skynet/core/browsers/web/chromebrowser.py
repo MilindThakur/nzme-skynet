@@ -11,7 +11,7 @@ class ChromeBrowser(Webbrowser):
                  windowWidth=None, windowHeight=None, desCap=None):
         super(ChromeBrowser, self).__init__(baseurl, webDriverPath, browserBinayPath, browserVersion, platform,
                                             windowWidth, windowHeight)
-        self.desCap = desCap
+        self.des_cap = desCap
 
     def get_browser_type(self):
         return BrowserTypes.CHROME
@@ -30,11 +30,11 @@ class ChromeBrowser(Webbrowser):
             chrome_des_cap["platform"] = platform
         return chrome_des_cap
 
-    def create_webdriver(self):
+    def _create_webdriver(self):
         # TODO: can add binary path to chrome, if required
         driver_path = self.get_webdriver_path()
-        if self.desCap is not None and driver_path is not None:
-            return WebDriver(executable_path=driver_path, desired_capabilities=self.desCap)
+        if self.des_cap is not None and driver_path is not None:
+            return WebDriver(executable_path=driver_path, desired_capabilities=self.des_cap)
         if driver_path is not None:
             return WebDriver(executable_path=driver_path, desired_capabilities=self.get_default_desiredcapabilities())
         else:

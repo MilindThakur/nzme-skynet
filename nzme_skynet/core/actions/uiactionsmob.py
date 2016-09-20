@@ -35,7 +35,3 @@ class UIActionsMob(BaseUIActions):
 
     def textinput(self, by_locator):
         super(UIActionsMob, self).textinput(by_locator)
-
-    class Factory(object):
-        @staticmethod
-        def create(driver): return UIActionsMob(driver)

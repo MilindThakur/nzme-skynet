@@ -16,10 +16,11 @@ class DriverInitTestCase(unittest.TestCase):
 
     def test_browser_type(self):
         self.assertEqual(self.app.get_browser_type(), BrowserTypes.CHROME)
-        self.assertEqual(self.app.get_base_url(), self.TEST_URL)
+        self.assertEqual(self.app.base_url, self.TEST_URL)
 
     def test_action_input(self):
         input = self.app.get_actions().textinput("css_selector")
+        image = self.app.get_actions().image("locator")
         self.assertEqual(input.get_value(), "Sample Text")
         input.set_value("something")
         self.assertEqual(input.get_value(), "something")

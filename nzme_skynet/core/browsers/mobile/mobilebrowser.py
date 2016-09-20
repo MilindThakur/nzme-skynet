@@ -1,7 +1,7 @@
 # coding=utf-8
 from selenium.webdriver.remote.webdriver import WebDriver
 
-from nzme_skynet.core.actions.uiactionsfactory import UIActionsFactory
+from nzme_skynet.core.actions.uiactionsmob import UIActionsMob
 from nzme_skynet.core.browsers.browser import Browser
 
 
@@ -11,6 +11,7 @@ class MobileBrowser(Browser):
     simulator mode with settings matching desired capabilities.
     """
     _appium_cmd_executor = "http://0.0.0.1:4723/wd/hub"
+    action_class = UIActionsMob
 
     def __init__(self, des_cap, base_url):
         super(MobileBrowser, self).__init__(base_url)
@@ -21,7 +22,7 @@ class MobileBrowser(Browser):
         pass
 
     def get_actions(self):
-        return UIActionsFactory.create_ui_action("UIActionsMob", self.driver)
+        return UIActionsFactory.create_ui_action(UIActionsMob.__class__.__name__, self.driver)
 
     def get_default_desiredcapabilities(self):
         pass

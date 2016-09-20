@@ -46,7 +46,3 @@ class UIActionsWeb(BaseUIActions):
         # The old jQuery scroll_script required by=By.CSS_SELECTOR
         # scroll_script = "jQuery('%s')[0].scrollIntoView()" % selector
         self.driver.execute_script(scroll_script)
-
-    class Factory(object):
-        @staticmethod
-        def create(driver): return UIActionsWeb(driver)

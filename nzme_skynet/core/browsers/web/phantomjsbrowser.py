@@ -13,7 +13,10 @@ class PhantomJSBrowser(Webbrowser):
     def get_browser_type(self):
         return BrowserTypes.PHANTOM_JS
 
-    def create_webdriver(self):
+    def get_default_desiredcapabilities(self):
+        raise NotImplementedError
+
+    def _create_webdriver(self):
         service_args =  ["--ignore-ssl-errors=true",
                          "--ssl-protocol=any",
                          "--web-security=no"

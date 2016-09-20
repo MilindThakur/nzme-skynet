@@ -16,7 +16,7 @@ class RemoteBrowser(Webbrowser):
     def get_remote_url(self):
         pass
 
-    def create_webdriver(self):
+    def _create_webdriver(self):
         return WebDriver(self.get_remote_url(), self.des_cap)
 
     def get_default_desiredcapabilities(self):
