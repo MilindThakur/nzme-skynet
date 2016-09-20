@@ -1,28 +1,25 @@
 # coding=utf-8
 from selenium.webdriver import ActionChains
-from selenium.webdriver.common.by import By
-from selenium.webdriver.remote.webelement import WebElement
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions
+from selenium.webdriver.support.ui import WebDriverWait
 
 from nzme_skynet.core.actions.enums.timeouts import DefaultTimeouts
 
-class Component(object):
-    def __init__(self, driver, by_locator):
-        self.driver = driver
-        if isinstance(by_locator, By):
-            self.locator = by_locator
-        if isinstance(by_locator, WebElement):
-            self.webelement = by_locator
 
-    def find_element(self, by=By.CSS_SELECTOR):
-        return self.driver.find_element(by=by, value=self.locator)
+class Component(object):
+    def __init__(self, driver, locator, by):
+        self.driver = driver
+        self.locator = locator
+        self.by = by
+
+    def find_element(self):
+        return self.driver.find_element(by=self.by, value=self.locator)
 
     def get_webelement(self):
         return self.find_element()
 
-    def find_elements(self, by=By.CSS_SELECTOR):
-        return self.driver.find_elements(by=by, value=self.locator)
+    def find_elements(self):
+        return self.driver.find_elements(by=self.by, value=self.locator)
 
     def is_currently_displayed(self):
         return self.will_be_displayed(DefaultTimeouts.SHORT_TIMEOUT)

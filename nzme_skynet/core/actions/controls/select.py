@@ -1,12 +1,13 @@
 # coding=utf-8
+from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
 
 from nzme_skynet.core.actions.controls.component import Component
 
 
 class SelectElem(Component):
-    def __init__(self, driver, by_locator):
-        super(SelectElem, self).__init__(driver, by_locator)
+    def __init__(self, driver, locator, by=By.CSS_SELECTOR):
+        super(SelectElem, self).__init__(driver, locator, by)
         self.select = self._select_init()
 
     def _select_init(self):

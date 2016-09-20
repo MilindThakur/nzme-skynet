@@ -1,10 +1,11 @@
 # coding=utf-8
 from nzme_skynet.core.actions.controls.component import Component
 
+from selenium.webdriver.common.by import By
 
 class Text(Component):
-    def __init__(self, driver, by_locator):
-        super(Text, self).__init__(driver, by_locator)
+    def __init__(self, driver, locator, by=By.CSS_SELECTOR):
+        super(Text, self).__init__(driver, locator, by)
 
     def get_text(self):
         self.get_text()

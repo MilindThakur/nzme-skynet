@@ -1,6 +1,8 @@
 # coding=utf-8
 import unittest
 
+from selenium.webdriver.common.by import By
+
 from nzme_skynet.core.app import appbuilder
 from nzme_skynet.core.browsers.web.browserTypes import BrowserTypes
 
@@ -19,11 +21,10 @@ class DriverInitTestCase(unittest.TestCase):
         self.assertEqual(self.app.base_url, self.TEST_URL)
 
     def test_action_input(self):
-        input = self.app.get_actions().textinput("css_selector")
-        image = self.app.get_actions().image("locator")
-        self.assertEqual(input.get_value(), "Sample Text")
-        input.set_value("something")
-        self.assertEqual(input.get_value(), "something")
+        txt_input = self.app.get_actions().textinput(By.NAME, "firstname")
+        self.assertEqual(txt_input.get_value(), "")
+        txt_input.set_value("something")
+        self.assertEqual(txt_input.get_value(), "something")
 
     @classmethod
     def tearDownClass(cls):

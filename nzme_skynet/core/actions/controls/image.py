@@ -1,10 +1,11 @@
 # coding=utf-8
+from selenium.webdriver.common.by import By
+
 from nzme_skynet.core.actions.controls.component import Component
 
-
 class Image(Component):
-    def __init__(self, driver, by_locator):
-        super(Image, self).__init__(driver, by_locator)
+    def __init__(self, driver, locator, by=By.CSS_SELECTOR):
+        super(Image, self).__init__(driver, locator, by)
 
     def get_src(self):
         return self.get_attribute("src")
