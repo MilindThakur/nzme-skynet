@@ -8,8 +8,7 @@ from nzme_skynet.core.app import appbuilder
 from nzme_skynet.core.browsers.web.browserTypes import BrowserTypes
 
 
-class DriverInitTestCase(unittest.TestCase):
-
+class ActionsTestCase(unittest.TestCase):
     TEST_URL = "http://127.0.0.1:8000/"
 
     @classmethod
@@ -45,21 +44,27 @@ class DriverInitTestCase(unittest.TestCase):
         broken_image = self.app.get_actions().image(By.XPATH, "//img[@alt='broken image']")
         self.assertTrue(good_image.is_image_loaded())
         self.assertFalse(broken_image.is_image_loaded())
-        self.assertEqual(good_image.get_src(), self.TEST_URL+"img/avatar-blank.jpg")
+        self.assertEqual(good_image.get_src(), self.TEST_URL + "img/avatar-blank.jpg")
         self.assertEqual(good_image.get_width(), '160')
         self.assertEqual(good_image.get_height(), '160')
 
     def test_action_radiobutton(self):
-        male_radiobtn = self.app.get_actions().radiobutton(By.CSS_SELECTOR, "body > form > p.male > label > input[type='radio']")
-        female_radiobtn = self.app.get_actions().radiobutton(By.CSS_SELECTOR, "body > form > p.female > label > input[type='radio']")
+        male_radiobtn = self.app.get_actions().radiobutton(By.CSS_SELECTOR,
+                                                           "body > form > p.male > label > input[type='radio']")
+        female_radiobtn = self.app.get_actions().radiobutton(By.CSS_SELECTOR,
+                                                             "body > form > p.female > label > input[type='radio']")
         self.assertTrue(male_radiobtn.is_selected())
         self.assertFalse(female_radiobtn.is_selected())
         female_radiobtn.click()
         self.assertFalse(male_radiobtn.is_selected())
         self.assertTrue(female_radiobtn.is_selected())
 
-    # def test_action_select(self):
-    #     raise NotImplementedError
+    def test_action_select(self):
+        dropdown = self.app.get_actions().selectlist(By.CLASS_NAME, "numbers")
+        self.assertEqual(dropdown.get_options_count(), 3)
+        self.assertEqual(dropdown.get_selected_text(), "One")
+        dropdown.select_by_index(2)
+        self.assertEqual(dropdown.get_selected_text(), "Three")
 
     # def test_action_table(self):
     #     raise NotImplementedError
@@ -67,10 +72,10 @@ class DriverInitTestCase(unittest.TestCase):
     # def test_action_textlink(self):
     #     raise NotImplementedError
 
-
     @classmethod
     def tearDownClass(cls):
         cls.app.quit()
 
 if __name__ == "__main__":
     unittest.main()
+
