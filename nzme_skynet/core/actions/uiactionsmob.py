@@ -32,3 +32,6 @@ class UIActionsMob(BaseUIActions):
 
     def textinput(self, by, locator):
         return super(UIActionsMob, self).textinput(by, locator)
+
+    def text(self, by, locator):
+        return super(UIActionsMob, self).text(by, locator)

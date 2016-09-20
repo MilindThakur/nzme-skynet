@@ -73,6 +73,10 @@ class ActionsTestCase(unittest.TestCase):
         valid_link = self.app.get_actions().textlink(By.PARTIAL_LINK_TEXT, "Valid link")
         self.assertEqual(valid_link.get_href(), self.TEST_URL + "img/avatar-blank.jpg")
 
+    def test_action_text(self):
+        intro_txt = self.app.get_actions().text(By.ID, "introduction")
+        self.assertEqual(intro_txt.get_text(), "Introductory text")
+
     @classmethod
     def tearDownClass(cls):
         cls.app.quit()

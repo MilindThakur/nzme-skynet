@@ -8,7 +8,7 @@ from nzme_skynet.core.actions.controls.select import SelectElem
 from nzme_skynet.core.actions.controls.table import Table
 from nzme_skynet.core.actions.controls.textinput import TextInput
 from nzme_skynet.core.actions.controls.textlink import TextLink
-
+from nzme_skynet.core.actions.controls.text import Text
 
 class BaseUIActions(object):
     def __init__(self, driver):
@@ -40,3 +40,6 @@ class BaseUIActions(object):
 
     def textinput(self, by, locator):
         return TextInput(self.driver, locator, by)
+
+    def text(self, by, locator):
+        return Text(self.driver, locator, by)

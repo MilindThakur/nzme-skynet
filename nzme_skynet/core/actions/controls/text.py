@@ -8,7 +8,7 @@ class Text(Component):
         super(Text, self).__init__(driver, locator, by)
 
     def get_text(self):
-        self.get_text()
+        return super(Text, self).get_text()
 
     def text_contains(self, text):
         return self.get_text().contains(text)

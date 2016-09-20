@@ -34,6 +34,9 @@ class UIActionsWeb(BaseUIActions):
     def textinput(self, by, locator):
         return super(UIActionsWeb, self).textinput(by, locator)
 
+    def text(self, by, locator):
+        return super(UIActionsWeb, self).text(by, locator)
+
     def scroll_to_element(self, element):
         element_location = element.location['y']
         element_location -= 130
