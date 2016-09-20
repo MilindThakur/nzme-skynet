@@ -21,9 +21,6 @@ class MobileBrowser(Browser):
     def quit(self):
         pass
 
-    def get_actions(self):
-        return UIActionsFactory.create_ui_action(UIActionsMob.__class__.__name__, self.driver)
-
     def get_default_desiredcapabilities(self):
         pass
 
@@ -35,8 +32,8 @@ class MobileBrowser(Browser):
         self.driver = self._create_webdriver()
         self.driver.implicitly_wait(5)
         self.driver.maximize_window()
-        if self.baseUrl is not None:
-            self.goto_url(self.baseUrl)
+        if self.baseurl is not None:
+            self.goto_url(self.baseurl)
 
     def _create_webdriver(self):
         return WebDriver(self._appium_cmd_executor, self.des_cap)

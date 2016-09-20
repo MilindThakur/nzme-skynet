@@ -70,7 +70,7 @@ class Component(object):
     def get_locator(self):
         return self.locator
 
-    def get_attribute(self, attr):
+    def get_attr(self, attr):
         return self.find_element().get_attribute(attr)
 
     def get_text(self):

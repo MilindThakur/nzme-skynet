@@ -14,32 +14,29 @@ class BaseUIActions(object):
     def __init__(self, driver):
         self.driver = driver
 
-    def button(self, by_locator):
-        return Button(self.driver, by_locator)
+    def button(self, by, locator):
+        return Button(self.driver, locator, by)
 
-    def checkbox(self, by_locator):
-        return Checkbox(self.driver, by_locator)
+    def checkbox(self, by, locator):
+        return Checkbox(self.driver, locator, by)
 
-    def element(self, by_locator):
-        return Elem(self.driver, by_locator)
+    def element(self, by, locator):
+        return Elem(self.driver, locator, by)
 
-    def webelement(self, webelement):
-        return Elem(self.driver, webelement)
+    def image(self, by, locator):
+        return Image(self.driver, locator, by)
 
-    def image(self, by_locator):
-        return Image(self.driver, by_locator)
+    def textlink(self, by, locator):
+        return TextLink(self.driver, locator, by)
 
-    def textlink(self, by_locator):
-        return TextLink(self.driver, by_locator)
+    def radiobutton(self, by, locator):
+        return RadioButton(self.driver, locator, by)
 
-    def radiobutton(self, by_locator):
-        return RadioButton(self.driver, by_locator)
+    def selectlist(self, by, locator):
+        return SelectElem(self.driver, locator, by)
 
-    def selectlist(self, by_locator):
-        return SelectElem(self.driver, by_locator)
+    def table(self, by, locator):
+        return Table(self.driver, locator, by)
 
-    def table(self, by_locator):
-        return Table(self.driver, by_locator)
-
-    def textinput(self, by_locator):
-        return TextInput(self.driver, by_locator)
+    def textinput(self, by, locator):
+        return TextInput(self.driver, locator, by)

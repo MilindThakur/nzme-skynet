@@ -9,15 +9,15 @@ class Browser(object):
     action_class = None
 
     def __init__(self, baseurl, driver=None, action=None):
-        self.baseUrl = baseurl
+        self.baseurl = baseurl
         self.driver = driver
         self.action = action
 
     def init_browser(self):
         raise NotImplementedError
 
-    def set_base_url(self, baseUrl):
-        self.baseUrl = baseUrl
+    def set_base_url(self, baseurl):
+        self.baseurl = baseurl
 
     def get_actions(self):
         if not self.action:
@@ -41,15 +41,15 @@ class Browser(object):
         self.driver.quit()
 
     def goto_url(self, url):
-        self.baseUrl = url
+        self.baseurl = url
         self.driver.get(url)
 
     def goto_absolute_url(self, url):
-        self.baseUrl = url
+        self.baseurl = url
         self.goto_url(url)
 
     def goto_relative_url(self, url):
-        self.goto_url(self.baseUrl+url)
+        self.goto_url(self.baseurl + url)
 
     def get_current_url(self):
         return self.driver.current_url

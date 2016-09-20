@@ -8,7 +8,7 @@ class Image(Component):
         super(Image, self).__init__(driver, locator, by)
 
     def get_src(self):
-        return self.get_attribute("src")
+        return self.get_attr("src")
 
     def get_filename(self):
         raise NotImplementedError
@@ -19,10 +19,10 @@ class Image(Component):
                                           "arguments[0].naturalWidth > 0", self.get_webelement())
 
     def get_title(self):
-        return self.get_attribute("title")
+        return self.get_attr("title")
 
     def get_width(self):
-        return self.get_attribute("width")
+        return self.get_attr("width")
 
     def get_height(self):
-        return self.get_attribute("height")
+        return self.get_attr("height")

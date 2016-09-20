@@ -8,7 +8,7 @@ class TextInput(Component):
         super(TextInput, self).__init__(driver, locator, by)
 
     def get_value(self):
-        return self.get_attribute("value")
+        return self.get_attr("value")
 
     def clear(self):
         super(TextInput, self).clear()
