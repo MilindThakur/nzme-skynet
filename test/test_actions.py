@@ -78,6 +78,10 @@ class ActionsTestCase(unittest.TestCase):
         intro_txt = self.app.get_actions().text(By.ID, "introduction")
         self.assertEqual(intro_txt.get_text(), "Introductory text")
 
+    def test_action_element(self):
+        elem = self.app.get_actions().element(By.CLASS_NAME, "textInput")
+        self.assertEqual(elem.get_attr("value"), "Sample Text")
+
     @classmethod
     def tearDownClass(cls):
         cls.app.quit()
