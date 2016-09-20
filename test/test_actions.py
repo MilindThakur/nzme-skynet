@@ -69,8 +69,9 @@ class ActionsTestCase(unittest.TestCase):
     # def test_action_table(self):
     #     raise NotImplementedError
 
-    # def test_action_textlink(self):
-    #     raise NotImplementedError
+    def test_action_textlink(self):
+        valid_link = self.app.get_actions().textlink(By.PARTIAL_LINK_TEXT, "Valid link")
+        self.assertEqual(valid_link.get_href(), self.TEST_URL + "img/avatar-blank.jpg")
 
     @classmethod
     def tearDownClass(cls):
