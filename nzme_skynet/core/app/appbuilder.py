@@ -3,8 +3,8 @@ from nzme_skynet.core.browsers.localbrowserbuilder import LocalBrowserBuilder
 
 
 # Browser
-def build_desktop_browser(browser_type):
-    builder = LocalBrowserBuilder(browser_type)
+def build_desktop_browser(browser_type, base_url=None):
+    builder = LocalBrowserBuilder(browser_type, base_url)
     return builder.build()
 
 
