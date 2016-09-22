@@ -7,3 +7,4 @@ requests
 sauceclient
 # Need testing between minor version upgrades
 selenium~=2.53.6
+faker

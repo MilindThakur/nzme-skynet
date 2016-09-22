@@ -10,5 +10,8 @@ class TextInput(Component):
     def get_value(self):
         return self.get_attr("value")
 
+    def set_value(self, value):
+        self.send_keys(value)
+
     def clear(self):
         super(TextInput, self).clear()

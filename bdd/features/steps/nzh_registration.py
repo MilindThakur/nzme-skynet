@@ -1,22 +1,28 @@
 from behave import *
 
-use_step_matcher("re")
+from bdd.pages.homepage.homepage import HomePage
+from nzme_skynet.core.utils.randomuser import RandomUser
 
+use_step_matcher("re")
 
 @given("I open the registration form")
 def i_open_the_registration_from(context):
     """
     :type context: behave.runner.Context
     """
-    pass
+    homepage = HomePage(context.app)
+    homepage.register_txtlnk.is_visible()
+    homepage.open_register_form()
 
-
-@when("I fill the registration form with fields")
-def i_fill_the_registration_form_with_fields(context):
+@when("I fill the registration form")
+def i_fill_the_registration_form(context):
     """
     :type context: behave.runner.Context
     """
-    pass
+    homepage = HomePage(context.app)
+    context.user = RandomUser()
+    context.user.create_user()
+    homepage.get_registration_form().fill_form(context.user)
 
 
 @step("I click the register button")
@@ -24,7 +30,7 @@ def i_click_the_register_button(context):
     """
     :type context: behave.runner.Context
     """
-    pass
+    context.homepage.get_registration_form().submit_register_form()
 
 
 @then("I should be registered successfully")
@@ -32,12 +38,13 @@ def i_should_be_registered_successfully(context):
     """
     :type context: behave.runner.Context
     """
-    pass
+    assert context.homepage.get_registration_form().last_page_form.will_be_displayed() is True
+    context.homepage.get_registration_form().form_cancel_button.click()
 
 
-@given("I can register on NZH website successfully")
-def i_can_register_on_NZH_website_successfully(context):
+@step("I should see the username on the homepage")
+def i_should_see_the_username_on_the_homepage(context):
     """
-    :type context: behave.runner.Context
+    :type context: behave.runner.Contextx
     """
-    pass
+    assert context.homepage.profile_lnk.will_be_ready_to_interact() is True

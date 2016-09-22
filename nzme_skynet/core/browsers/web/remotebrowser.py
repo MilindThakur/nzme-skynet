@@ -2,7 +2,7 @@
 from selenium.webdriver.remote.webdriver import WebDriver
 
 from nzme_skynet.core.browsers.web.webbrowser import Webbrowser
-
+from selenium.webdriver.chrome.webdriver import WebDriver
 
 class RemoteBrowser(Webbrowser):
 
