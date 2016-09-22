@@ -12,7 +12,7 @@ def before_all(context):
     :param context: behave.runner.Context
     """
     context.local_browser_type = context.config.userdata.get("browserlocal", "chrome")
-    context.base_url = context.config.userdata.get("baseurl", "http://live-nzherald.uatlbcf.apnnz.co.nz/")
+    context.base_url = context.config.userdata.get("baseurl", "http://sit-nzherald.devlbcf.apnnz.co.nz/")
     context.reuse = context.config.userdata.get("reusebrowser", False)
 
 

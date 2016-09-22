@@ -1,6 +1,6 @@
 # coding=utf-8
 from selenium.webdriver import ActionChains
-from selenium.webdriver.support import expected_conditions
+from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.ui import WebDriverWait
 
 from nzme_skynet.core.actions.enums.timeouts import DefaultTimeouts
@@ -22,31 +22,31 @@ class Component(object):
         return self.driver.find_elements(by=self.by, value=self.locator)
 
     def is_currently_displayed(self):
-        return self.will_be_displayed(DefaultTimeouts.SHORT_TIMEOUT)
+        return self.will_be_displayed(time=DefaultTimeouts.SHORT_TIMEOUT)
 
     def will_be_displayed(self, time=DefaultTimeouts.LARGE_TIMEOUT):
         try:
-            WebDriverWait(self.driver, time).until(expected_conditions.visibility_of_element_located(self.locator))
-            return True
+            WebDriverWait(self.driver, time).until(ec.presence_of_element_located((self.by, self.locator)))
         except Exception:
             return False
+        return True
 
     def is_not_displayed(self):
-        return self.will_not_be_displayed(DefaultTimeouts.DEFAULT_TIMEOUT)
+        return self.will_not_be_displayed(time=DefaultTimeouts.DEFAULT_TIMEOUT)
 
     def will_not_be_displayed(self, time=DefaultTimeouts.LARGE_TIMEOUT):
         try:
-            WebDriverWait(self.driver, time).until(expected_conditions.invisibility_of_element_located(self.locator))
+            WebDriverWait(self.driver, time).until(ec.invisibility_of_element_located((self.by, self.locator)))
             return True
         except Exception:
             return False
 
     def is_ready_to_interact(self):
-        return self.will_be_ready_to_interact(DefaultTimeouts.DEFAULT_TIMEOUT)
+        return self.will_be_ready_to_interact(time=DefaultTimeouts.DEFAULT_TIMEOUT)
 
     def will_be_ready_to_interact(self, time=DefaultTimeouts.LARGE_TIMEOUT):
         try:
-            WebDriverWait(self.driver, time).until(expected_conditions.element_to_be_clickable(self.locator))
+            WebDriverWait(self.driver, time).until(ec.element_to_be_clickable((self.by, self.locator)))
             return True
         except Exception:
             return False
