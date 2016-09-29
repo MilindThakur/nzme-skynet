@@ -4,6 +4,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 import time
 
 from nzme_skynet.core.actions.enums.timeouts import DefaultTimeouts
+from nzme_skynet.core.utils import js_wait
 
 
 class Browser(object):
@@ -128,3 +129,9 @@ class Browser(object):
                 time.sleep(0.1)
         raise Exception(
             "Page elements never fully loaded after %s seconds!" % timeout)
+
+    def wait_for_javascript_return(self, script, return_value):
+        return WebDriverWait(self.driver, 10).until(self._wait_for_js(script, return_value))
+
+    def _wait_for_js(self, script, return_value):
+        return js_wait.for_return(script, return_value)
