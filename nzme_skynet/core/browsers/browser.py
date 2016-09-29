@@ -1,6 +1,7 @@
 # coding=utf-8
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
+import time
 
 from nzme_skynet.core.actions.enums.timeouts import DefaultTimeouts
 
@@ -100,3 +101,30 @@ class Browser(object):
     def switch_and_dismiss_alert(self, time=DefaultTimeouts.SHORT_TIMEOUT):
         alert = self.switch_to_alert(time)
         return alert.dismiss
+
+    def wait_for_ready_state_complete(self, timeout=DefaultTimeouts.VLARGE_TIMEOUT):
+        """
+        The DOM (Document Object Model) has a property called "readyState".
+        When the value of this becomes "complete", page resources are considered
+        fully loaded (although AJAX and other loads might still be happening).
+        This method will wait until document.readyState == "complete".
+
+        TODO: Could use WebdriverWait instead.
+        :param timeout: time in secs
+        :type timeout: int
+        :return: state if page has loaded
+        :rtype: boolean
+        """
+        start_ms = time.time() * 1000.0
+        stop_ms = start_ms + (timeout * 1000.0)
+        for x in range(int(timeout * 10)):
+            ready_state = self.driver.execute_script("return document.readyState")
+            if ready_state == u'complete':
+                return True
+            else:
+                now_ms = time.time() * 1000.0
+                if now_ms >= stop_ms:
+                    break
+                time.sleep(0.1)
+        raise Exception(
+            "Page elements never fully loaded after %s seconds!" % timeout)
