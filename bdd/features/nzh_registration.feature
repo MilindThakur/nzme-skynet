@@ -7,8 +7,9 @@ Feature: NZH User Registration
 
   @uat @mobile @post-prod
   Scenario: The user can register on NZH
-    Given I open the registration form
-    When I fill the registration form
-    And I click the register button
+#    Given I open the registration form
+#    When I fill the registration form
+#    And I click the register button
+    When I fill register form and submit
     Then I should be registered successfully
     And I should see the username on the homepage
