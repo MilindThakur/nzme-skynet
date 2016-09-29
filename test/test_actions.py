@@ -13,11 +13,11 @@ class ActionsTestCase(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.app = appbuilder.build_desktop_browser("chrome")
+        cls.app = appbuilder.build_desktop_browser("phantomJS")
         cls.app.goto_url(cls.TEST_URL)
 
     def test_browser_type(self):
-        self.assertEqual(self.app.get_browser_type(), BrowserTypes.CHROME)
+        self.assertEqual(self.app.get_browser_type(), BrowserTypes.PHANTOM_JS)
         self.assertEqual(self.app.baseurl, self.TEST_URL)
 
     def test_action_textinput(self):
