@@ -15,11 +15,8 @@ class Component(object):
     def find_element(self):
         return self.driver.find_element(by=self.by, value=self.locator)
 
-    def get_webelement(self):
-        return self.find_element()
-
-    def find_elements(self):
-        return self.driver.find_elements(by=self.by, value=self.locator)
+    def find_sub_elements(self, by, locator):
+        return self.driver.find_element(by=self.by, value=self.locator).find_elements(by=by, value=locator)
 
     def is_currently_displayed(self):
         return self.will_be_displayed(time=DefaultTimeouts.SHORT_TIMEOUT)
@@ -51,6 +48,17 @@ class Component(object):
         except Exception:
             return False
 
+    def currently_has_text(self, text):
+        return self.will_have_text(text, time=DefaultTimeouts.SHORT_TIMEOUT)
+
+    def will_have_text(self, text, time=DefaultTimeouts.LARGE_TIMEOUT):
+        try:
+            WebDriverWait(self.driver, time).until(ec.text_to_be_present_in_element((self.by, self.locator), text))
+            return True
+        except Exception:
+            return False
+
+
     def exists(self):
         try:
             self.find_element()
@@ -78,6 +86,9 @@ class Component(object):
 
     def get_location(self):
         return self.find_element().location
+
+    def get_css_property(self, cssproperty):
+        return self.driver.value_of_css_property(cssproperty)
 
     def click(self):
         self.find_element().click()
