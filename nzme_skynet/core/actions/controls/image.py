@@ -16,7 +16,7 @@ class Image(Component):
     def is_image_loaded(self):
         return self.driver.execute_script("return arguments[0].complete && "
                                           "typeof arguments[0].naturalWidth != \"undefined\" && "
-                                          "arguments[0].naturalWidth > 0", self.get_webelement())
+                                          "arguments[0].naturalWidth > 0", self.find_element())
 
     def get_title(self):
         return self.get_attr("title")
