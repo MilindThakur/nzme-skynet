@@ -1,4 +1,5 @@
 # coding=utf-8
+from nzme_skynet.core.browsers.mobile.mobilebrowser import MobileBrowser
 from nzme_skynet.core.browsers.web.browserTypes import BrowserTypes
 from nzme_skynet.core.browsers.web.chromebrowser import ChromeBrowser
 from nzme_skynet.core.browsers.web.phantomjsbrowser import PhantomJSBrowser
@@ -27,8 +28,10 @@ class LocalBrowserBuilder(object):
     def _construct_browser(self, browserType):
         if browserType == BrowserTypes.CHROME:
             return ChromeBrowser(self.baseUrl, self.webDriverPath, self.browserBinaryPath, self.browserVersion,
-                                    self.platform, self.windowWidth, self.windowHeight, self.desCap)
+                                 self.platform, self.windowWidth, self.windowHeight, self.desCap)
         if browserType == BrowserTypes.PHANTOM_JS:
             return PhantomJSBrowser(self.baseUrl, self.windowWidth, self.windowHeight, self.desCap)
+        if (browserType == BrowserTypes.ANDROID_BROWSER) or (browserType == BrowserTypes.IOS_BROWSER):
+            return MobileBrowser(self.desCap, self.baseUrl)
         else:
-            raise ValueError("only chrome, firefox, safari, ie , phantomJS supported")
+            raise ValueError("only chrome, firefox, native android and native iphone browsers supported")

@@ -85,12 +85,3 @@ def validate_all(urls):
         errors.append(_validate_links_on_url(url, driver, open_url=False))
         errors.append(_validate_js_error_on_url(url, driver, open_url=False))
     return list(itertools.chain.from_iterable(errors))
-
-# def validate_all(url):
-#     driver = create_webdriver_instance()
-#     errors = []
-#     driver.get(url)
-#     errors.append(_validate_images_on_url(url, driver, open_url=False))
-#     errors.append(_validate_links_on_url(url, driver, open_url=False))
-#     errors.append(_validate_js_error_on_url(url, driver, open_url=False))
-#     return list(itertools.chain.from_iterable(errors))
