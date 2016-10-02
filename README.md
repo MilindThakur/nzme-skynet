@@ -121,6 +121,7 @@ $ nzme-pagevalidation --checkimages --checklinks 'https://www.nzherald.co.nz','h
 
 # Change Log
 ```bash
+0.2.0   Add bdd and browser (chrome) test capability
 0.1.10  Add pagevalidation utility 
 0.1.9   Update README with screenshot utility
 0.1.8   Add screenshot script as console script to the repo
