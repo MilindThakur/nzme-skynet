@@ -81,6 +81,13 @@ class Component(object):
     def get_attr(self, attr):
         return self.find_element().get_attribute(attr)
 
+    def has_attr(self, attr):
+        try:
+            self.find_element().get_attribute(attr)
+            return True
+        except Exception:
+            return False
+
     def get_text(self):
         return self.find_element().text
 
