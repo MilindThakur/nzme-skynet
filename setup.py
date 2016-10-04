@@ -50,7 +50,9 @@ setup(
         'pytest-xdist',
         'requests',
         'sauceclient',
-        'selenium~=2.53.6'
+        'selenium~=2.53.6',
+        'faker',
+        'pytest-allure-adaptor'
     ],
     classifiers=[
         "Development Status :: ",
