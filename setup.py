@@ -36,7 +36,7 @@ setup(
     license='',
     long_description=readme('README.md'),
     entry_points={
-        'console_scripts' : [
+        'console_scripts': [
                'nzme-screenshots = nzme_skynet.scripts.screenshots:main',
                'nzme-pagevalidation = nzme_skynet.scripts.validation:main'
         ]
