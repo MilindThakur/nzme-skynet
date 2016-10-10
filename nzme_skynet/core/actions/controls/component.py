@@ -18,10 +18,20 @@ class Component(object):
     def find_sub_elements(self, by, locator):
         return self.driver.find_element(by=self.by, value=self.locator).find_elements(by=by, value=locator)
 
-    def is_currently_displayed(self):
-        return self.will_be_displayed(time=DefaultTimeouts.SHORT_TIMEOUT)
+    def is_currently_visible(self):
+        return self.will_be_visible(time=DefaultTimeouts.DEFAULT_TIMEOUT)
 
-    def will_be_displayed(self, time=DefaultTimeouts.LARGE_TIMEOUT):
+    def will_be_visible(self, time=DefaultTimeouts.LARGE_TIMEOUT):
+        try:
+            WebDriverWait(self.driver, time).until(ec.visibility_of_element_located((self.by, self.locator)))
+        except Exception:
+            return False
+        return True
+
+    def is_currently_present(self):
+        return self.will_be_present(time=DefaultTimeouts.DEFAULT_TIMEOUT)
+
+    def will_be_present(self, time=DefaultTimeouts.LARGE_TIMEOUT):
         try:
             WebDriverWait(self.driver, time).until(ec.presence_of_element_located((self.by, self.locator)))
         except Exception:
@@ -49,7 +59,7 @@ class Component(object):
             return False
 
     def currently_has_text(self, text):
-        return self.will_have_text(text, time=DefaultTimeouts.SHORT_TIMEOUT)
+        return self.will_have_text(text, time=DefaultTimeouts.DEFAULT_TIMEOUT)
 
     def will_have_text(self, text, time=DefaultTimeouts.LARGE_TIMEOUT):
         try:
