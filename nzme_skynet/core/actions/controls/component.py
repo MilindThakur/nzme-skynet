@@ -18,8 +18,8 @@ class Component(object):
     def find_sub_elements(self, by, locator):
         return self.driver.find_element(by=self.by, value=self.locator).find_elements(by=by, value=locator)
 
-    def is_currently_visible(self):
-        return self.will_be_visible(time=DefaultTimeouts.DEFAULT_TIMEOUT)
+    def is_currently_visible(self, time=DefaultTimeouts.SHORT_TIMEOUT):
+        return self.will_be_visible(time=time)
 
     def will_be_visible(self, time=DefaultTimeouts.LARGE_TIMEOUT):
         try:
@@ -28,8 +28,8 @@ class Component(object):
             return False
         return True
 
-    def is_currently_present(self):
-        return self.will_be_present(time=DefaultTimeouts.DEFAULT_TIMEOUT)
+    def is_currently_present(self, time=DefaultTimeouts.SHORT_TIMEOUT):
+        return self.will_be_present(time=time)
 
     def will_be_present(self, time=DefaultTimeouts.LARGE_TIMEOUT):
         try:
@@ -38,8 +38,8 @@ class Component(object):
             return False
         return True
 
-    def is_not_displayed(self):
-        return self.will_not_be_displayed(time=DefaultTimeouts.DEFAULT_TIMEOUT)
+    def is_not_displayed(self, time=DefaultTimeouts.SHORT_TIMEOUT):
+        return self.will_not_be_displayed(time=time)
 
     def will_not_be_displayed(self, time=DefaultTimeouts.LARGE_TIMEOUT):
         try:
@@ -48,8 +48,8 @@ class Component(object):
         except Exception:
             return False
 
-    def is_ready_to_interact(self):
-        return self.will_be_ready_to_interact(time=DefaultTimeouts.DEFAULT_TIMEOUT)
+    def is_ready_to_interact(self, time=DefaultTimeouts.SHORT_TIMEOUT):
+        return self.will_be_ready_to_interact(time=time)
 
     def will_be_ready_to_interact(self, time=DefaultTimeouts.LARGE_TIMEOUT):
         try:
@@ -58,8 +58,8 @@ class Component(object):
         except Exception:
             return False
 
-    def currently_has_text(self, text):
-        return self.will_have_text(text, time=DefaultTimeouts.DEFAULT_TIMEOUT)
+    def currently_has_text(self, text, time=DefaultTimeouts.SHORT_TIMEOUT):
+        return self.will_have_text(text, time=time)
 
     def will_have_text(self, text, time=DefaultTimeouts.LARGE_TIMEOUT):
         try:
