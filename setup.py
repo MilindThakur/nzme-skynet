@@ -46,13 +46,13 @@ setup(
     test_suite='nzme_skynet.test',
     install_requires=[
         'behave',
-        'pytest',
+        'pytest==2.9.0',
         'pytest-xdist',
         'requests',
         'sauceclient',
         'selenium~=2.53.6',
         'faker',
-        'pytest-allure-adaptor'
+        'pytest-allure-adaptor==1.7.5'
     ],
     classifiers=[
         "Development Status :: ",

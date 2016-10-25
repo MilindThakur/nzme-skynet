@@ -121,6 +121,11 @@ $ nzme-pagevalidation --checkimages --checklinks 'https://www.nzherald.co.nz','h
 
 # Change Log
 ```bash
+0.2.5   Fix pytest-allure version dependency
+0.2.4   Set default timeout to 1sec for short explicit waits
+0.2.3   Add explicit wait for elem to be present (In DOM), visible (has height & width), interactable
+0.2.2   Add handling lazy loaded images
+0.2.1   Add faker and alluer dep to setup.py
 0.2.0   Add bdd and browser (chrome) test capability
 0.1.10  Add pagevalidation utility 
 0.1.9   Update README with screenshot utility
