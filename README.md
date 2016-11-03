@@ -121,6 +121,7 @@ $ nzme-pagevalidation --checkimages --checklinks 'https://www.nzherald.co.nz','h
 
 # Change Log
 ```bash
+0.2.6   Handle elemets stated internally in click method 
 0.2.5   Fix pytest-allure version dependency
 0.2.4   Set default timeout to 1sec for short explicit waits
 0.2.3   Add explicit wait for elem to be present (In DOM), visible (has height & width), interactable
