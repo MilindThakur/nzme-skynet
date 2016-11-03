@@ -68,7 +68,6 @@ class Component(object):
         except Exception:
             return False
 
-
     def exists(self):
         try:
             self.find_element()
@@ -108,6 +107,7 @@ class Component(object):
         return self.driver.value_of_css_property(cssproperty)
 
     def click(self):
+        self.is_ready_to_interact()
         self.find_element().click()
 
     def hover_over(self):
