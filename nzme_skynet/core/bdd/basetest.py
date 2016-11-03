@@ -105,8 +105,10 @@ def before_scenario(context, scenario):
     # Build the app instance
     if context.app is None:
         try:
-            if not Config.CLOUD:
+            if not Config.CLOUD and not Config.API:
                 context.app = appbuilder.build_desktop_browser(Config.BROWSER, Config.URL)
+            if Config.API:
+                context.baseuri = Config.BASEURI
         except Exception:
             logger.error('Failed to start browser instance: {}'.format(Config.BROWSER))
             raise
