@@ -50,6 +50,6 @@ class ApiConnection(object):
 
     def _request(self, uri, method, params=None, json=None, content_type="application/json"):
         h = self._create_connection_url()
-        r = requests.request(method=method, url=h + uri, params=params, body=json,
+        r = requests.request(method=method, url=h + uri, params=params, json=json,
                              headers=self._build_header(content_type))
         return r
