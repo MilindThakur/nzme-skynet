@@ -121,6 +121,7 @@ $ nzme-pagevalidation --checkimages --checklinks 'https://www.nzherald.co.nz','h
 
 # Change Log
 ```bash
+0.2.8   Fix API post, handle API tests in bdd
 0.2.7   Add api wrappers to framework
 0.2.6   Handle elemets stated internally in click method 
 0.2.5   Fix pytest-allure version dependency

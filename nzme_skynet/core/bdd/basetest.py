@@ -43,12 +43,15 @@ def before_all(context):
         logger.error('Failed to init allure at: {}'.format(allure_report_path))
         raise
 
+
+# noinspection PyUnusedLocal
 def after_all(context):
     """
     Executed at the end of the test run
     :param context: behave.runner.Context
     """
     pass
+
 
 def before_feature(context, feature):
     """
@@ -68,6 +71,7 @@ def before_feature(context, feature):
         logger.error('Failed to init allure suite with name {}'.format(feature.name))
         raise
 
+
 def after_feature(context, feature):
     """
     Executed at the end of each feature
@@ -82,6 +86,7 @@ def after_feature(context, feature):
     except Exception:
         logger.error('Failed to stop allure suite with name {}'.format(feature.name))
         raise
+
 
 def before_scenario(context, scenario):
     """
@@ -114,6 +119,7 @@ def before_scenario(context, scenario):
             raise
     logger.info('Start of Scenario: {}'.format(scenario.name))
 
+
 def after_scenario(context, scenario):
     """
     Close app instance if not reused
@@ -122,31 +128,33 @@ def after_scenario(context, scenario):
     """
     logger = logging.getLogger(__name__)
 
-    if scenario.status.lower == 'failed':
-        _screenshot = '{}/{}_fail.png'.format(Config.LOG, scenario.name.replace(' ', '_'))
+    if context.app is not None:
 
-        # Take screen shot on a failure
-        try:
-            context.app.take_screenshot_current_window(_screenshot)
-        except Exception:
-            logger.error('Failed to take screenshot to: {}'.format(Config.LOG))
-            raise
+        if scenario.status.lower == 'failed':
+            _screenshot = '{}/{}_fail.png'.format(Config.LOG, scenario.name.replace(' ', '_'))
 
-        # Attach screen shot to allure reporting
-        try:
-            with open(_screenshot, 'rb') as _file:
-                context.allure.attach('{} fail'.format(scenario.name), _file.read(), AttachmentType.PNG)
-        except Exception:
-            logger.error('Failed to attach screenshot to report: {}'.format(_screenshot))
-            raise
+            # Take screen shot on a failure
+            try:
+                context.app.take_screenshot_current_window(_screenshot)
+            except Exception:
+                logger.error('Failed to take screenshot to: {}'.format(Config.LOG))
+                raise
 
-    if not Config.REUSE:
-        try:
-            context.app.quit()
-        except Exception:
-            logger.error('Failed to stop browser instance {}'.format(Config.BROWSER))
-            raise
-        context.app = None
+            # Attach screen shot to allure reporting
+            try:
+                with open(_screenshot, 'rb') as _file:
+                    context.allure.attach('{} fail'.format(scenario.name), _file.read(), AttachmentType.PNG)
+            except Exception:
+                logger.error('Failed to attach screenshot to report: {}'.format(_screenshot))
+                raise
+
+        if not Config.REUSE:
+            try:
+                context.app.quit()
+            except Exception:
+                logger.error('Failed to stop browser instance {}'.format(Config.BROWSER))
+                raise
+            context.app = None
 
     # Add stack trace to allure reporting on failure
     try:
@@ -179,6 +187,7 @@ def before_step(context, step):
         logger.error('Failed to init allure step with name: {}'.format(step.name))
         raise
 
+
 def after_step(context, step):
     """
     After step hook
@@ -190,27 +199,28 @@ def after_step(context, step):
 
     # TODO: Create screenshot filename
     _screenshot = '{}/{}/{}__{}__.png'.format(Config.LOG,
-                                             context.test_name.replace(' ', '_'),
-                                             context.picture_num,
-                                             step_name)
+                                              context.test_name.replace(' ', '_'),
+                                              context.picture_num,
+                                              step_name)
 
     # Take screen shot
     # if step.status.lower == 'failed' or step.status.lower == 'skipped':
-    try:
-        if context.app is not None:
+    if context.app is not None:
+        try:
             context.app.take_screenshot_current_window(_screenshot)
             context.picture_num += 1
-    except Exception:
-        logger.error('Failed to take screenshot to: {}'.format(Config.LOG))
-        logger.error('Screenshot name: {}'.format(step_name))
-        raise
+        except Exception:
+            logger.error('Failed to take screenshot to: {}'.format(Config.LOG))
+            logger.error('Screenshot name: {}'.format(step_name))
+            raise
 
-    # Add screen shot for the step to allure reporting
-    try:
-        with open(_screenshot, 'rb') as _file:
-            context.allure.attach('{}_{}'.format(context.test_name, step.name), _file.read(), AttachmentType.PNG)
-    except Exception:
-        logger.error('Failed to attach to report screenshot: {}'.format(_screenshot))
+        # Add screen shot for the step to allure reporting
+        # noinspection PyBroadException
+        try:
+            with open(_screenshot, 'rb') as _file:
+                context.allure.attach('{}_{}'.format(context.test_name, step.name), _file.read(), AttachmentType.PNG)
+        except Exception:
+            logger.error('Failed to attach to report screenshot: {}'.format(_screenshot))
 
     # Stop allure reporting for the step
     try:
