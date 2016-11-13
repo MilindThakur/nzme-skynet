@@ -10,6 +10,7 @@ class RestError(Exception):
         return repr(self.message)
 
 
+# noinspection PyMethodMayBeStatic
 class ApiConnection(object):
     def __init__(self, host_url, http=True):
         self.use_http = http
@@ -34,24 +35,21 @@ class ApiConnection(object):
 
     def post(self, uri, json=None):
         if json is not None:
-            return self._request(uri, "POST", body=json)
+            return self._request(uri, "POST", json=json)
         else:
             return self._request(uri, "POST")
 
     def put(self, uri, json):
-        return self._request(uri, "PUT", body=json)
+        return self._request(uri, "PUT", json=json)
 
     def patch(self, uri, json):
-        return self._request(uri, "PATCH", body=json)
+        return self._request(uri, "PATCH", json=json)
 
     def delete(self, uri):
         return self._request(uri, "DELETE")
 
-    def _request(self, uri, method, params=None, body=None, content_type="application/json"):
+    def _request(self, uri, method, params=None, json=None, content_type="application/json"):
         h = self._create_connection_url()
-        r = requests.request(method=method, url=h + uri, params=params, body=body,
+        r = requests.request(method=method, url=h + uri, params=params, body=json,
                              headers=self._build_header(content_type))
-        if r.status_code == requests.codes.NO_CONTENT:
-            return {}
-        r_json_body = r.json()
-        return r_json_body
+        return r
