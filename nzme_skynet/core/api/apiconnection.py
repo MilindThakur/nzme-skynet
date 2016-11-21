@@ -10,7 +10,6 @@ class RestError(Exception):
         return repr(self.message)
 
 
-# noinspection PyMethodMayBeStatic
 class ApiConnection(object):
     def __init__(self, host_url, http=True):
         self.use_http = http
@@ -28,28 +27,25 @@ class ApiConnection(object):
             header["Content-type"] = content_type
         return header
 
-    def get(self, uri, params=None):
+    def get(self, uri, params=None, content_type="application/json"):
         if params is None:
             params = {}
-        return self._request(uri, "GET", params=params)
+        return self._request(uri, "GET", params=params, content_type=content_type)
 
-    def post(self, uri, json=None):
-        if json is not None:
-            return self._request(uri, "POST", json=json)
-        else:
-            return self._request(uri, "POST")
+    def post(self, uri, json=None, data=None, content_type="application/json"):
+        return self._request(uri, "POST", json=json, data=data, content_type=content_type)
 
-    def put(self, uri, json):
-        return self._request(uri, "PUT", json=json)
+    def put(self, uri, json, content_type="application/json"):
+        return self._request(uri, "PUT", json=json, content_type=content_type)
 
-    def patch(self, uri, json):
-        return self._request(uri, "PATCH", json=json)
+    def patch(self, uri, json, content_type="application/json"):
+        return self._request(uri, "PATCH", json=json, content_type=content_type)
 
     def delete(self, uri):
         return self._request(uri, "DELETE")
 
-    def _request(self, uri, method, params=None, json=None, content_type="application/json"):
+    def _request(self, uri, method, params=None, json=None, data=None, content_type=None):
         h = self._create_connection_url()
-        r = requests.request(method=method, url=h + uri, params=params, json=json,
+        r = requests.request(method=method, url=h + uri, params=params, json=json, data=data,
                              headers=self._build_header(content_type))
         return r
