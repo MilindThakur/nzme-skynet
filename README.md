@@ -121,6 +121,7 @@ $ nzme-pagevalidation --checkimages --checklinks 'https://www.nzherald.co.nz','h
 
 # Change Log
 ```bash
+0.2.10  Add default content-type as json to API requests
 0.2.9   Fix API post argumen to json
 0.2.8   Fix API post, handle API tests in bdd
 0.2.7   Add api wrappers to framework
