@@ -121,6 +121,7 @@ $ nzme-pagevalidation --checkimages --checklinks 'https://www.nzherald.co.nz','h
 
 # Change Log
 ```bash
+0.2.12  Update selenium to 3.0.1
 0.2.11  Remove API flag from testconfig. Run api tests using @api
 0.2.10  Add default content-type as json to API requests
 0.2.9   Fix API post argumen to json
