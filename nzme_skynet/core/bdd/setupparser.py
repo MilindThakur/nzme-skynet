@@ -10,6 +10,5 @@ class Config(object):
     URL = config.get('SETUP', 'baseurl')
     REUSE = config.getboolean('SETUP', 'reuse')
     CLOUD = config.getboolean('SETUP', 'cloud')
-    API = config.getboolean('SETUP', 'api')
     BASEURI = config.get('API', 'baseuri')
     LOG = os.path.abspath('logs')

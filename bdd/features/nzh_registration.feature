@@ -5,7 +5,7 @@ Feature: NZH User Registration
   I want to register on the website
   So that I can get personalised
 
-  @uat @mobile @post-prod
+  @uat @post-prod
   Scenario: The user can register on NZH
 #    Given I open the registration form
 #    When I fill the registration form
