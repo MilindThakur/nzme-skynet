@@ -9,6 +9,6 @@ class Config(object):
     BROWSER = config.get('SETUP', 'browser')
     URL = config.get('SETUP', 'baseurl')
     REUSE = config.getboolean('SETUP', 'reuse')
-    CLOUD = config.getboolean('SETUP', 'cloud')
+    CLOUD = config.get('SETUP', 'cloud')
     BASEURI = config.get('API', 'baseuri')
     LOG = os.path.abspath('logs')
