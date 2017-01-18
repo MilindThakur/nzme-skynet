@@ -1,7 +1,18 @@
 # coding=utf-8
 from nzme_skynet.core.browsers.localbrowserbuilder import LocalBrowserBuilder
 from nzme_skynet.core.browsers.remotebrowserbuilder import RemoteBrowserBuilder
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
+
+CAPABILITIES = {"firefox": DesiredCapabilities.FIREFOX,
+                "chrome": DesiredCapabilities.CHROME,
+                "safari": DesiredCapabilities.SAFARI,
+                "ie": DesiredCapabilities.INTERNETEXPLORER,
+                "opera": DesiredCapabilities.OPERA,
+                "phantomjs": DesiredCapabilities.PHANTOMJS,
+                "iphone": DesiredCapabilities.IPHONE,
+                "ipad":DesiredCapabilities.IPAD,
+                "android": DesiredCapabilities.ANDROID}
 
 # Browser
 def build_desktop_browser(browser_type, base_url=None):
@@ -9,10 +20,8 @@ def build_desktop_browser(browser_type, base_url=None):
     return builder.build()
 
 def build_docker_browser(browser_type, base_url=None):
-    desired_capabilities = {
-        'browserName': browser_type,
-        'javascriptEnabled': True
-    }
+    desired_capabilities = CAPABILITIES[browser_type].copy()
+    desired_capabilities['javascriptEnabled'] = True
     builder = RemoteBrowserBuilder(desired_capabilities=desired_capabilities,
                                    base_url=base_url)
     return builder.build()

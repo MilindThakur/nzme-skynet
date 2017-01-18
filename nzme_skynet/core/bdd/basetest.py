@@ -112,7 +112,7 @@ def before_scenario(context, scenario):
         try:
             if 'api' in scenario.tags:
                 context.baseuri = Config.BASEURI
-            elif 'docker' in Config.CLOUD:
+            elif Config.CLOUD:
                 context.app = appbuilder.build_docker_browser(Config.BROWSER, Config.URL)
             else:
                 context.app = appbuilder.build_desktop_browser(Config.BROWSER, Config.URL)
