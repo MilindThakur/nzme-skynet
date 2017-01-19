@@ -117,7 +117,7 @@ def before_scenario(context, scenario):
             else:
                 context.app = appbuilder.build_desktop_browser(Config.BROWSER, Config.URL)
         except Exception:
-            logger.error('Failed to start browser instance: {}'.format(Config.BROWSER))
+            logger.error('Failed to start browser')
             raise
     logger.info('Start of Scenario: {}'.format(scenario.name))
 

@@ -52,7 +52,8 @@ setup(
         'sauceclient',
         'selenium~=3.0.1',
         'faker',
-        'pytest-allure-adaptor==1.7.5'
+        'pytest-allure-adaptor==1.7.5',
+        'docker'
     ],
     classifiers=[
         "Development Status :: ",

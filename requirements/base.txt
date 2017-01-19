@@ -7,3 +7,4 @@ requests
 selenium~=3.0.1
 faker
 pytest-allure-adaptor==1.7.5
+docker

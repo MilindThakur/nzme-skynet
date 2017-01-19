@@ -2,6 +2,8 @@
 from nzme_skynet.core.browsers.localbrowserbuilder import LocalBrowserBuilder
 from nzme_skynet.core.browsers.remotebrowserbuilder import RemoteBrowserBuilder
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+import docker
+from nzme_skynet.core.utils.exceptions import NoDockerContainerException
 
 
 CAPABILITIES = {"firefox": DesiredCapabilities.FIREFOX,
@@ -14,12 +16,19 @@ CAPABILITIES = {"firefox": DesiredCapabilities.FIREFOX,
                 "ipad":DesiredCapabilities.IPAD,
                 "android": DesiredCapabilities.ANDROID}
 
+DOCKER_SELENIUM_IMGAE_NAME = 'zalenium'
+
+docker_client = docker.from_env()
+
 # Browser
 def build_desktop_browser(browser_type, base_url=None):
     builder = LocalBrowserBuilder(browser_type, base_url)
     return builder.build()
 
 def build_docker_browser(browser_type, base_url=None):
+    if not [DOCKER_SELENIUM_IMGAE_NAME in i.name for i in docker_client.containers.list()]:
+        raise NoDockerContainerException("No selenium docker container found, please run docker-compose to start "
+                                         "test container")
     desired_capabilities = CAPABILITIES[browser_type].copy()
     desired_capabilities['javascriptEnabled'] = True
     builder = RemoteBrowserBuilder(desired_capabilities=desired_capabilities,
