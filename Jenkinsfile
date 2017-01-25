@@ -17,6 +17,6 @@ node {
 
     stage('Building and Deploying'){
         def build = new Build()
-        build.deploy()
+        build.deploy('new_jenkins_file')
     }
 }
