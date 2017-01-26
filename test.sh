@@ -1,3 +1,4 @@
+#!/bin/sh
 cd test/testserver
 python -m SimpleHTTPServer &>/dev/null &
 cd ../../
