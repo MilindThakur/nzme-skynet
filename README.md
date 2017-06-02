@@ -121,6 +121,7 @@ $ nzme-pagevalidation --checkimages --checklinks 'https://www.nzherald.co.nz','h
 
 # Change Log
 ```bash
+0.2.14  Update dependencies
 0.2.13  Make API Wrapper generic
 0.2.12  Update selenium to 3.0.1
 0.2.11  Remove API flag from testconfig. Run api tests using @api
