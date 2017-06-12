@@ -1,2 +1,2 @@
-pip>=7.1.2
-setuptools>=19.2
+pip>=9.0.0
+setuptools>=28
