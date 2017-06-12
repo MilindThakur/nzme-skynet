@@ -50,7 +50,7 @@ setup(
         'pytest-xdist',
         'requests',
         'sauceclient',
-        'selenium~=3.4.3',
+        'selenium~=3.3.1',
         'faker',
         'pytest-allure-adaptor==1.7.5'
     ],
