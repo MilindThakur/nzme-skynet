@@ -16,3 +16,4 @@ class Config(object):
     ENV_IS_LOCAL = config.getboolean('ENVIRONMENT', 'local')
 
     SEL_GRID_URL = config.get('CLOUD', 'selenium_grid_hub')
+    LOG = os.path.abspath('logs')

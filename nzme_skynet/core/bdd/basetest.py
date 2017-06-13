@@ -46,6 +46,7 @@ def before_all(context):
         raise
 
 
+# noinspection PyUnusedLocal
 def after_all(context):
     """
     Executed at the end of the test run
