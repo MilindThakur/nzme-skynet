@@ -24,12 +24,14 @@ def before_all(context):
     Executed one in the beginning of entire test run
     :param context: behave.runner.Context
     """
-    # Setup the context variables from the config file
+    # These context variables can be overridden from command line
     if context.config.userdata:
-        Config.BROWSER = context.config.userdata.get("browser", Config.BROWSER)
-        Config.URL = context.config.userdata.get("url", Config.URL)
-        Config.REUSE = context.config.userdata.get("reuse", Config.REUSE)
-        Config.CLOUD = context.config.userdata.get("cloud", Config.CLOUD)
+        Config.BROWSER_NAME = context.config.userdata.get("type", Config.BROWSER_NAME)
+        Config.BROWSER_OS = context.config.userdata.get("os", Config.BROWSER_OS)
+        Config.BROWSER_VERSION = context.config.userdata.get("version", Config.BROWSER_VERSION)
+
+        Config.ENV_IS_LOCAL = context.config.userdata.get("local", Config.ENV_IS_LOCAL)
+        Config.ENV_BASE_URL = context.config.userdata.get("baseurl", Config.ENV_BASE_URL)
 
     Logger.configure_logging()
     logger = logging.getLogger(__name__)
@@ -44,7 +46,6 @@ def before_all(context):
         raise
 
 
-# noinspection PyUnusedLocal
 def after_all(context):
     """
     Executed at the end of the test run
@@ -62,6 +63,7 @@ def before_feature(context, feature):
     logger = logging.getLogger(__name__)
     context.app = None
     context.picture_num = 0
+    context.test_group = feature.name
 
     # Start the feature in allure reporting
     try:
@@ -107,18 +109,35 @@ def before_scenario(context, scenario):
 
     context.test_name = scenario.name
 
-    # Build the app instance
-    if context.app is None:
+    # cleanup app state for new test
+    if context.app is not None:
         try:
-            if 'api' in scenario.tags:
-                context.baseuri = Config.BASEURI
-            elif Config.CLOUD:
-                context.app = appbuilder.build_docker_browser(Config.BROWSER, Config.URL)
-            else:
-                context.app = appbuilder.build_desktop_browser(Config.BROWSER, Config.URL)
+            context.app.quit()
         except Exception:
-            logger.error('Failed to start browser')
+            logger.error('Failed to stop browser instance')
             raise
+        context.app = None
+
+    # Build capabilities
+    cap = {
+        "browserName": Config.BROWSER_NAME,
+        "platform": Config.BROWSER_OS,
+        "version": Config.BROWSER_VERSION
+    }
+
+    # Build the app instance
+    if 'api' not in scenario.tags:
+        try:
+            if Config.ENV_IS_LOCAL:
+                context.app = appbuilder.build_desktop_browser(Config.BROWSER_NAME, Config.ENV_BASE_URL)
+            else:
+                cap['group'] = context.test_group
+                cap['name'] = context.test_name
+                context.app = appbuilder.build_docker_browser(Config.SEL_GRID_URL, cap)
+        except Exception:
+            logger.error('Failed to start test env')
+            raise
+
     logger.info('Start of Scenario: {}'.format(scenario.name))
 
 
@@ -149,14 +168,6 @@ def after_scenario(context, scenario):
             except Exception:
                 logger.error('Failed to attach screenshot to report: {}'.format(_screenshot))
                 raise
-
-        if not Config.REUSE:
-            try:
-                context.app.quit()
-            except Exception:
-                logger.error('Failed to stop browser instance {}'.format(Config.BROWSER))
-                raise
-            context.app = None
 
     # Add stack trace to allure reporting on failure
     try:
