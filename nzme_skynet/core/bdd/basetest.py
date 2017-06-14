@@ -134,10 +134,10 @@ def before_scenario(context, scenario):
             else:
                 cap['group'] = context.test_group
                 cap['name'] = context.test_name
-                context.app = appbuilder.build_docker_browser(Config.SEL_GRID_URL, cap)
+                context.app = appbuilder.build_docker_browser(Config.SEL_GRID_URL, cap, Config.ENV_BASE_URL)
         except Exception:
             logger.error('Failed to start test env')
-            raise
+            raise Exception("Failed to start test env")
 
     logger.info('Start of Scenario: {}'.format(scenario.name))
 

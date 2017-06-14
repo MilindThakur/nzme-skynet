@@ -1,15 +1,16 @@
 # coding=utf-8
 from selenium.webdriver.remote.webdriver import WebDriver
-
+import logging
+from selenium.common.exceptions import WebDriverException
 from nzme_skynet.core.browsers.web.webbrowser import Webbrowser
 
 
 class RemoteBrowser(Webbrowser):
-
     def __init__(self, command_executor, des_cap, base_url):
         super(RemoteBrowser, self).__init__(base_url)
         self.command_executor = command_executor
         self.des_cap = des_cap
+        self.logger = logging.getLogger(__name__)
 
     def get_browser_type(self):
         return self.des_cap['browserName']
@@ -18,7 +19,13 @@ class RemoteBrowser(Webbrowser):
         pass
 
     def _create_webdriver(self):
-        return WebDriver(command_executor=self.command_executor, desired_capabilities=self.des_cap)
+        self.logger.debug("Instantiating a browser of type {0} with version {1} on os {2}".
+                          format(self.get_browser_type(), self.get_platform_version(), self.get_platform_name()))
+        try:
+            return WebDriver(command_executor=self.command_executor, desired_capabilities=self.des_cap)
+        except WebDriverException:
+            self.logger.exception("Failed to instantiate browser {0}".format(self.get_browser_type()))
+            raise
 
     def get_platform_name(self):
         try:
