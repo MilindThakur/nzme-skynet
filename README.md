@@ -48,15 +48,15 @@ To run individual tests
 py.text -q <test_name.py>
 ```
 
-### **Install on-demand test infrastructure**
+## **Install on-demand test infrastructure**
 We use a docker based on-demand Selenium Grid Infrastructure called [Zalenium](https://github.com/zalando/zalenium)
-#### **Prerequisites**
+### **Prerequisites**
 * Docker and docker-compose is installed
 * Grab the [docker-selenium](https://github.com/elgalu/docker-selenium) image
  ```bash
 docker pull elgalu/selenium
 ```
-#### **Run it**
+### **Run it**
 * To start the hub
 ```bash
 ./docker_compose.sh start
@@ -68,7 +68,7 @@ docker pull elgalu/selenium
 ```bash
 ./docker_compose.sh stop
 ```
-#### **Docker configuration**
+### **Docker configuration**
 The test infrastructure configurations are managed in the _**docker-compose.yaml_** file. To test any browser on any cloud provider
  * Add appropriate cloud provider environment variables (username, access-key)
  * Set the flag _--sauceLabsEnabled_ (or other provider) to true
