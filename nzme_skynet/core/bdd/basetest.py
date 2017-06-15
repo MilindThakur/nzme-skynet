@@ -182,6 +182,14 @@ def after_scenario(context, scenario):
         logger.error('Failed to stop allure test with name: {}'.format(scenario.name))
         raise
 
+    if context.app:
+        try:
+            context.app.quit()
+        except Exception:
+            logger.error('Failed to stop browser instance {}'.format(Config.BROWSER_NAME))
+            raise
+        context.app = None
+
     logger.info('End of test: {}. Status {} !!!\n\n\n'.format(scenario.name, scenario.status.upper()))
 
 
