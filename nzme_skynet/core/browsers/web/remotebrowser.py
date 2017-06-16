@@ -23,8 +23,9 @@ class RemoteBrowser(Webbrowser):
                           format(self.get_browser_type(), self.get_platform_version(), self.get_platform_name()))
         try:
             return WebDriver(command_executor=self.command_executor, desired_capabilities=self.des_cap)
-        except WebDriverException:
-            self.logger.exception("Failed to instantiate browser {0}".format(self.get_browser_type()))
+        except Exception:
+            self.logger.exception("Failed to instantiate browser {0} in grid, "
+                                  "please check if the grid is running".format(self.get_browser_type()))
             raise
 
     def get_platform_name(self):

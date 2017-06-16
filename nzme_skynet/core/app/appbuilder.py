@@ -21,11 +21,7 @@ logger = logging.getLogger(__name__)
 def build_desktop_browser(browser_type, base_url=None):
     logger.debug("Creating local browser instance")
     builder = LocalBrowserBuilder(browser_type, base_url)
-    try:
-        return builder.build()
-    except Exception:
-        logger.error("Failed to launch a browser instance locally")
-        raise Exception("Failed to launch a browser instance locally")
+    return builder.build()
 
 
 # Docker
@@ -34,11 +30,7 @@ def build_docker_browser(sel_grid_url, desired_cap, base_url=None):
     desired_cap['javascriptEnabled'] = True
     builder = RemoteBrowserBuilder(sel_grid_url, desired_capabilities=desired_cap,
                                    base_url=base_url)
-    try:
-        return builder.build()
-    except Exception:
-        logger.error("Failed to launch a browser instance using Docker")
-        raise Exception("Failed to launch a browser instance using Docker")
+    return builder.build()
 
 
 def build_real_mobile_browser():

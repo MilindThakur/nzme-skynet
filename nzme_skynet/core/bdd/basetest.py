@@ -123,7 +123,7 @@ def before_scenario(context, scenario):
     cap = {
         "browserName": Config.BROWSER_NAME,
         "platform": Config.BROWSER_OS,
-        "version": Config.BROWSER_VERSION
+        "version": '' if 'latest' in Config.BROWSER_VERSION else Config.BROWSER_VERSION
     }
 
     # Build the app instance
@@ -135,9 +135,9 @@ def before_scenario(context, scenario):
                 cap['group'] = context.test_group
                 cap['name'] = context.test_name
                 context.app = appbuilder.build_docker_browser(Config.SEL_GRID_URL, cap, Config.ENV_BASE_URL)
-        except Exception:
-            logger.error('Failed to start test env')
-            raise Exception("Failed to start test env")
+        except Exception, e:
+            logger.exception(e)
+            raise Exception("Failed to launch a browser")
 
     logger.info('Start of Scenario: {}'.format(scenario.name))
 

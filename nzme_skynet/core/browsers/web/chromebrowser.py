@@ -21,6 +21,9 @@ class ChromeBrowser(Webbrowser):
         chrome_options.binary_location = self.get_browser_binary_path()
         chrome_options.add_argument("--start-maximized")
         chrome_options.add_argument("--test-type")
+        chrome_options.add_argument("--disable-notifications")
+        chrome_options.add_argument("-process-per-site")
+        chrome_options.add_argument("--dns-prefetch-disable")
         chrome_des_cap = chrome_options.to_capabilities()
         b_version = self.get_browser_version()
         if b_version is not None:
@@ -33,9 +36,12 @@ class ChromeBrowser(Webbrowser):
     def _create_webdriver(self):
         # TODO: can add binary path to chrome, if required
         driver_path = self.get_webdriver_path()
-        if self.des_cap is not None and driver_path is not None:
-            return WebDriver(executable_path=driver_path, desired_capabilities=self.des_cap)
-        if driver_path is not None:
-            return WebDriver(executable_path=driver_path, desired_capabilities=self.get_default_desiredcapabilities())
-        else:
-            return WebDriver(desired_capabilities=self.get_default_desiredcapabilities())
+        try:
+            if self.des_cap is not None and driver_path is not None:
+                return WebDriver(executable_path=driver_path, desired_capabilities=self.des_cap)
+            if driver_path is not None:
+                return WebDriver(executable_path=driver_path, desired_capabilities=self.get_default_desiredcapabilities())
+            else:
+                return WebDriver(desired_capabilities=self.get_default_desiredcapabilities())
+        except Exception:
+            raise
