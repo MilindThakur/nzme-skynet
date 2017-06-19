@@ -24,6 +24,9 @@ def before_all(context):
     Executed one in the beginning of entire test run
     :param context: behave.runner.Context
     """
+    Logger.configure_logging()
+    logger = logging.getLogger(__name__)
+
     # These context variables can be overridden from command line
     if context.config.userdata:
         Config.BROWSER_NAME = context.config.userdata.get("type", Config.BROWSER_NAME)
@@ -32,9 +35,6 @@ def before_all(context):
 
         Config.ENV_IS_LOCAL = context.config.userdata.get("local", Config.ENV_IS_LOCAL)
         Config.ENV_BASE_URL = context.config.userdata.get("baseurl", Config.ENV_BASE_URL)
-
-    Logger.configure_logging()
-    logger = logging.getLogger(__name__)
 
     allure_report_path = '{}/allure_report'.format(Config.LOG)
 
