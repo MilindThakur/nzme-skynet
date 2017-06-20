@@ -12,7 +12,7 @@
 ### **Install pip, web browsers**
 * [Follow these instructions](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/requirements_installation.md) to install pip, git, virtualenv/virtualenvwrapper
 * Download [Chrome browser](https://www.google.com/chrome/browser/desktop/index.html) and [Chrome Driver](https://sites.google.com/a/chromium.org/chromedriver/)
-* Download [Firefox v.46 browser](https://ftp.mozilla.org/pub/firefox/releases/46.0.1/). Firefox > v.47 requires [Marionette](https://developer.mozilla.org/en-US/docs/Mozilla/QA/Marionette) driver which is in beta phase (and not currently support in this library)
+* Download Firefox. Firefox > v.47 requires [Marionette](https://developer.mozilla.org/en-US/docs/Mozilla/QA/Marionette) driver
 * Install [PhantomJS](http://phantomjs.org/download.html) (headless browser)
 
 ### **Clone Skynet automation repo**
