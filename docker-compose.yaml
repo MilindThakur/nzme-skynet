@@ -19,7 +19,7 @@ services:
       - 4444:4444
       - 5555:5555
     command: >
-      start --chromeContainers 1
+      start --chromeContainers 0
             --firefoxContainers 0
             --maxDockerSeleniumContainers 10
             --screenWidth 1930 --screenHeight 1090
