@@ -29,9 +29,9 @@ def before_all(context):
 
     # These context variables can be overridden from command line
     if context.config.userdata:
-        Config.BROWSER_NAME = context.config.userdata.get("type", Config.BROWSER_NAME)
-        Config.BROWSER_OS = context.config.userdata.get("os", Config.BROWSER_OS)
-        Config.BROWSER_VERSION = context.config.userdata.get("version", Config.BROWSER_VERSION)
+        Config.BROWSER_OPTIONS['type'] = context.config.userdata.get("type", Config.BROWSER_OPTIONS['type'])
+        Config.BROWSER_OPTIONS['os'] = context.config.userdata.get("os", Config.BROWSER_OPTIONS['os'])
+        Config.BROWSER_OPTIONS['version'] = context.config.userdata.get("version", Config.BROWSER_OPTIONS['version'])
 
         Config.ENV_IS_LOCAL = context.config.userdata.get("local", Config.ENV_IS_LOCAL)
         Config.ENV_BASE_URL = context.config.userdata.get("baseurl", Config.ENV_BASE_URL)
@@ -121,16 +121,16 @@ def before_scenario(context, scenario):
 
     # Build capabilities
     cap = {
-        "browserName": Config.BROWSER_NAME,
-        "platform": Config.BROWSER_OS,
-        "version": '' if 'latest' in Config.BROWSER_VERSION else Config.BROWSER_VERSION
+        "browserName": Config.BROWSER_OPTIONS['type'],
+        "platform": Config.BROWSER_OPTIONS['os'],
+        "version": '' if 'latest' in Config.BROWSER_OPTIONS['version'] else Config.BROWSER_OPTIONS['version']
     }
 
     # Build the app instance
     if 'api' not in scenario.tags:
         try:
             if Config.ENV_IS_LOCAL:
-                context.app = appbuilder.build_desktop_browser(Config.BROWSER_NAME, Config.ENV_BASE_URL)
+                context.app = appbuilder.build_desktop_browser(Config.BROWSER_OPTIONS, Config.ENV_BASE_URL)
             else:
                 cap['group'] = context.test_group
                 cap['name'] = context.test_name
@@ -186,7 +186,7 @@ def after_scenario(context, scenario):
         try:
             context.app.quit()
         except Exception:
-            logger.error('Failed to stop browser instance {}'.format(Config.BROWSER_NAME))
+            logger.error('Failed to stop browser instance {}'.format(Config.BROWSER_OPTIONS['type']))
             raise
         context.app = None
 

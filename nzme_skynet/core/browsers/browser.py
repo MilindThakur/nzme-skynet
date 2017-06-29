@@ -1,19 +1,23 @@
 # coding=utf-8
+import logging
+
+from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
 
 from nzme_skynet.core.actions.enums.timeouts import DefaultTimeouts
 from nzme_skynet.core.utils import js_wait
-from nzme_skynet.core.utils.exceptions import TimeoutException
 
 
 class Browser(object):
     action_class = None
 
-    def __init__(self, baseurl, driver=None, action=None):
+    # def __init__(self, baseurl, driver=None, action=None):
+    def __init__(self, baseurl):
         self.baseurl = baseurl
-        self.driver = driver
-        self.action = action
+        self.driver = None
+        self.action = None
+        self.logger = logging.getLogger(__name__)
 
     def init_browser(self):
         raise NotImplementedError
@@ -44,7 +48,11 @@ class Browser(object):
 
     def goto_url(self, url):
         self.baseurl = url
-        self.driver.get(url)
+        try:
+            self.driver.get(url)
+        except TimeoutException:
+            self.logger.warning("Browser load timed out after 10 secs, stopping browser load using JS")
+            self.driver.execute_script("window.stop();")
 
     def goto_absolute_url(self, url):
         self.baseurl = url
@@ -55,6 +63,9 @@ class Browser(object):
 
     def get_current_url(self):
         return self.driver.current_url
+
+    def get_current_desired_capabilities(self):
+        return self.driver.desired_capabilities
 
     def take_screenshot_current_window(self, filename):
         self.driver.get_screenshot_as_file(filename)

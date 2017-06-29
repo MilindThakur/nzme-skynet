@@ -1,20 +1,28 @@
 # coding=utf-8
 import ConfigParser
-import os
 import logging
+import os
+
+
+def get_browser_options(config):
+    browser_local_options = {'type': config.get('BROWSER', 'type'),
+                             'version': config.get('BROWSER', 'version'),
+                             'os': config.get('BROWSER', 'os'),
+                             'windowwidth': config.get('BROWSER', 'windowwidth'),
+                             'windowheight': config.get('BROWSER', 'windowheight'),
+                             }
+    return browser_local_options
 
 
 class Config(object):
-    config = ConfigParser.SafeConfigParser()
+    config = ConfigParser.SafeConfigParser(allow_no_value=True)
     config.read('testsetup.ini')
     logger = logging.getLogger(__name__)
 
-    BROWSER_NAME = config.get('BROWSER', 'type')
-    if not BROWSER_NAME:
-        logger.error("Please specify the browser name: chrome, firefox etc")
-        raise Exception("Please specify the browser name: chrome, firefox etc")
-    BROWSER_OS = config.get('BROWSER', 'os')
-    BROWSER_VERSION = config.get('BROWSER', 'version')
+    BROWSER_OPTIONS = get_browser_options(config)
+    if not BROWSER_OPTIONS['type']:
+        logger.warning("Setting Chrome as the default browser")
+        BROWSER_OPTIONS['type'] = 'chrome'
 
     ENV_BASE_URL = config.get('ENVIRONMENT', 'baseurl')
     ENV_IS_LOCAL = config.getboolean('ENVIRONMENT', 'local')

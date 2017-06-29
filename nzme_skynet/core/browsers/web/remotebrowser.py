@@ -1,7 +1,8 @@
 # coding=utf-8
-from selenium.webdriver.remote.webdriver import WebDriver
 import logging
-from selenium.common.exceptions import WebDriverException
+
+from selenium.webdriver.remote.webdriver import WebDriver
+
 from nzme_skynet.core.browsers.web.webbrowser import Webbrowser
 
 
@@ -20,7 +21,7 @@ class RemoteBrowser(Webbrowser):
 
     def _create_webdriver(self):
         self.logger.debug("Instantiating a browser of type {0} with version {1} on os {2}".
-                          format(self.get_browser_type(), self.get_platform_version(), self.get_platform_name()))
+                          format(self.des_cap['browserName'], self.des_cap['version'], self.des_cap['platform']))
         try:
             return WebDriver(command_executor=self.command_executor, desired_capabilities=self.des_cap)
         except Exception:
