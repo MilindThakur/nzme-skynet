@@ -6,3 +6,4 @@ class DefaultTimeouts(object):
     DEFAULT_TIMEOUT = 5
     LARGE_TIMEOUT   = 10
     VLARGE_TIMEOUT  = 30
+    PAGE_LOAD_TIMEOUT = 15

@@ -2,6 +2,7 @@
 
 from nzme_skynet.core.actions.uiactionsweb import UIActionsWeb
 from nzme_skynet.core.browsers.browser import Browser
+from nzme_skynet.core.actions.enums.timeouts import DefaultTimeouts
 
 
 class Webbrowser(Browser):
@@ -32,7 +33,7 @@ class Webbrowser(Browser):
         if self.init_window_height is not None and self.init_window_width is not None:
             self.driver.set_window_size(self.init_window_width, self.init_window_height)
         # TODO: create timeout default class
-        self.driver.set_page_load_timeout(80)
+        self.driver.set_page_load_timeout(DefaultTimeouts.PAGE_LOAD_TIMEOUT)
         self.driver.implicitly_wait(5)
         if self.baseurl is not None:
             self.goto_url(self.baseurl)
