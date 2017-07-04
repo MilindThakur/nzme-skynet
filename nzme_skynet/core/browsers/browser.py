@@ -1,10 +1,13 @@
 # coding=utf-8
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
+from selenium.common.exceptions import TimeoutException
 import time
+import logging
 
 from nzme_skynet.core.actions.enums.timeouts import DefaultTimeouts
 from nzme_skynet.core.utils import js_wait
+
 
 
 class Browser(object):
@@ -14,6 +17,7 @@ class Browser(object):
         self.baseurl = baseurl
         self.driver = driver
         self.action = action
+        self.logger = logging.getLogger(__name__)
 
     def init_browser(self):
         raise NotImplementedError
@@ -44,7 +48,12 @@ class Browser(object):
 
     def goto_url(self, url):
         self.baseurl = url
-        self.driver.get(url)
+        try:
+            self.driver.get(url)
+        except TimeoutException:
+            self.logger.warning("Browser load timed out after {0} secs, stopping browser load using JS"
+                                .format(str(DefaultTimeouts.PAGE_LOAD_TIMEOUT)))
+            self.driver.execute_script("window.stop();")
 
     def goto_absolute_url(self, url):
         self.baseurl = url
