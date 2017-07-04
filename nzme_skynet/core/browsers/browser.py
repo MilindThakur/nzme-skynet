@@ -1,12 +1,13 @@
 # coding=utf-8
 import logging
 
-from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
+from selenium.common.exceptions import TimeoutException
 
 from nzme_skynet.core.actions.enums.timeouts import DefaultTimeouts
 from nzme_skynet.core.utils import js_wait
+
 
 
 class Browser(object):
@@ -51,7 +52,8 @@ class Browser(object):
         try:
             self.driver.get(url)
         except TimeoutException:
-            self.logger.warning("Browser load timed out after 10 secs, stopping browser load using JS")
+            self.logger.warning("Browser load timed out after {0} secs, stopping browser load using JS"
+                                .format(str(DefaultTimeouts.PAGE_LOAD_TIMEOUT)))
             self.driver.execute_script("window.stop();")
 
     def goto_absolute_url(self, url):

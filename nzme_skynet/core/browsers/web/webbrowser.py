@@ -34,8 +34,8 @@ class Webbrowser(Browser):
             self.logger.debug("No default window size found, setting to maximise")
             self.driver.maximize_window()
         # TODO: create timeout default class
-        self.driver.set_page_load_timeout(DefaultTimeouts.LARGE_TIMEOUT)
-        self.driver.implicitly_wait(DefaultTimeouts.SHORT_TIMEOUT)
+        self.driver.set_page_load_timeout(DefaultTimeouts.PAGE_LOAD_TIMEOUT)
+        self.driver.implicitly_wait(5)
         if self.baseurl is not None:
             self.goto_url(self.baseurl)
         # Any other special settings
