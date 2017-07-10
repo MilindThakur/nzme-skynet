@@ -13,7 +13,13 @@ class ActionsTestCase(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.app = appbuilder.build_desktop_browser("phantomJS")
+        cap = {
+            "type": "phantomjs",
+            "platform": 'LINUX',
+            "version": '',
+            "javascriptEnabled": True
+        }
+        cls.app = appbuilder.build_desktop_browser(cap)
         cls.app.goto_url(cls.TEST_URL)
 
     def test_browser_type(self):
@@ -66,9 +72,6 @@ class ActionsTestCase(unittest.TestCase):
         self.assertEqual(dropdown.get_selected_text(), "One")
         dropdown.select_by_index(2)
         self.assertEqual(dropdown.get_selected_text(), "Three")
-
-    # def test_action_table(self):
-    #     raise NotImplementedError
 
     def test_action_textlink(self):
         valid_link = self.app.get_actions().textlink(By.PARTIAL_LINK_TEXT, "Valid link")
