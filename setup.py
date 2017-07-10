@@ -49,7 +49,7 @@ setup(
     test_suite='nzme_skynet.test',
     install_requires=[
         'behave',
-        'pytest==2.9.0',
+        'pytest',
         'pytest-xdist',
         'requests',
         'selenium==3.3.1',
