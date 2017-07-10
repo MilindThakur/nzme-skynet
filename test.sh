@@ -4,6 +4,6 @@ cd test/testserver
 python -m SimpleHTTPServer &>/dev/null &
 cd ../../
 sleep 2
-pytest test
+py.test -v test
 pkill -f SimpleHTTPServer
 ./docker_compose.sh stop

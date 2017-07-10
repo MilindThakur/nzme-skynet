@@ -1,5 +1,6 @@
 # coding=utf-8
 import unittest
+import signal
 
 import nzme_skynet.core.layout.urlvalidation as v
 
@@ -33,6 +34,8 @@ class UrlValidationTestCase(unittest.TestCase):
         self.assertEqual(len(errors), 3, "Expected 3 errors, found: " + str(errors))
 
     def tearDown(self):
+        # https://github.com/seleniumhq/selenium/issues/767
+        self.driver.service.process.send_signal(signal.SIGTERM)
         self.driver.quit()
 
 if __name__ == "__main__":
