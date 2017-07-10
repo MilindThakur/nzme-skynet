@@ -9,10 +9,6 @@ Ref: https://github.com/oleg-toporkov/python-bdd-selenium.git
 import logging
 import re
 
-from allure.common import AllureImpl
-from allure.constants import AttachmentType, Label
-from allure.structure import TestLabel
-
 from log import Logger
 from nzme_skynet.core.app import appbuilder
 from setupparser import Config
@@ -25,7 +21,6 @@ def before_all(context):
     :param context: behave.runner.Context
     """
     Logger.configure_logging()
-    logger = logging.getLogger(__name__)
 
     # These context variables can be overridden from command line
     if context.config.userdata:
@@ -36,17 +31,7 @@ def before_all(context):
         Config.ENV_IS_LOCAL = context.config.userdata.get("local", Config.ENV_IS_LOCAL)
         Config.ENV_BASE_URL = context.config.userdata.get("baseurl", Config.ENV_BASE_URL)
 
-    allure_report_path = '{}/allure_report'.format(Config.LOG)
 
-    # Init allure
-    try:
-        context.allure = AllureImpl(allure_report_path)
-    except Exception:
-        logger.error('Failed to init allure at: {}'.format(allure_report_path))
-        raise
-
-
-# noinspection PyUnusedLocal
 def after_all(context):
     """
     Executed at the end of the test run
@@ -61,18 +46,9 @@ def before_feature(context, feature):
     :param context: behave.runner.Context
     :param feature: behave.model.Feature
     """
-    logger = logging.getLogger(__name__)
     context.app = None
     context.picture_num = 0
     context.test_group = feature.name
-
-    # Start the feature in allure reporting
-    try:
-        context.allure.start_suite(feature.name, feature.description,
-                                   labels=[TestLabel(name=Label.FEATURE, value=feature.name)])
-    except Exception:
-        logger.error('Failed to init allure suite with name {}'.format(feature.name))
-        raise
 
 
 def after_feature(context, feature):
@@ -81,14 +57,7 @@ def after_feature(context, feature):
     :param context: behave.runner.Context
     :param feature: behave.model.Feature
     """
-    logger = logging.getLogger(__name__)
-
-    # Stop the feature in allure reporting
-    try:
-        context.allure.stop_suite()
-    except Exception:
-        logger.error('Failed to stop allure suite with name {}'.format(feature.name))
-        raise
+    pass
 
 
 def before_scenario(context, scenario):
@@ -99,14 +68,6 @@ def before_scenario(context, scenario):
     """
     logger = logging.getLogger(__name__)
     Logger.create_test_folder(scenario.name)
-
-    # Start the scenario in allure reporting
-    try:
-        context.allure.start_case(scenario.name,
-                                  labels=[TestLabel(name=Label.FEATURE, value=scenario.feature.name)])
-    except Exception:
-        logger.error('Failed to start init allure test with name {}'.format(scenario.name))
-        raise
 
     context.test_name = scenario.name
 
@@ -162,26 +123,6 @@ def after_scenario(context, scenario):
                 logger.error('Failed to take screenshot to: {}'.format(Config.LOG))
                 raise
 
-            # Attach screen shot to allure reporting
-            try:
-                with open(_screenshot, 'rb') as _file:
-                    context.allure.attach('{} fail'.format(scenario.name), _file.read(), AttachmentType.PNG)
-            except Exception:
-                logger.error('Failed to attach screenshot to report: {}'.format(_screenshot))
-                raise
-
-    # Add stack trace to allure reporting on failure
-    try:
-        _status = scenario.status
-        if _status == 'skipped':
-            _status = 'canceled'
-        context.allure.stop_case(_status,
-                                 getattr(context, 'last_error_message', None),
-                                 getattr(context, 'last_traceback', None))
-    except Exception:
-        logger.error('Failed to stop allure test with name: {}'.format(scenario.name))
-        raise
-
     if context.app:
         try:
             context.app.quit()
@@ -200,14 +141,7 @@ def before_step(context, step):
     :param step: behave.model.Step
 
     """
-    logger = logging.getLogger(__name__)
-
-    # Start allure reporting for the step
-    try:
-        context.allure.start_step(step.name)
-    except Exception:
-        logger.error('Failed to init allure step with name: {}'.format(step.name))
-        raise
+    pass
 
 
 def after_step(context, step):
@@ -235,21 +169,6 @@ def after_step(context, step):
             logger.error('Failed to take screenshot to: {}'.format(Config.LOG))
             logger.error('Screenshot name: {}'.format(step_name))
             raise
-
-        # Add screen shot for the step to allure reporting
-        # noinspection PyBroadException
-        try:
-            with open(_screenshot, 'rb') as _file:
-                context.allure.attach('{}_{}'.format(context.test_name, step.name), _file.read(), AttachmentType.PNG)
-        except Exception:
-            logger.error('Failed to attach to report screenshot: {}'.format(_screenshot))
-
-    # Stop allure reporting for the step
-    try:
-        context.allure.stop_step()
-    except Exception:
-        logger.error('Failed to stop allure step with name: {}'.format(step.name))
-        raise
 
     # Add stacktrace to allure reporting on failure
     if step.status.lower == 'failed':
