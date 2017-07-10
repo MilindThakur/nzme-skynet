@@ -53,9 +53,7 @@ setup(
         'pytest-xdist',
         'requests',
         'selenium==3.3.1',
-        'faker',
-        'pytest-allure-adaptor==1.7.5',
-        'docker'
+        'faker'
     ],
     classifiers=[
         "Development Status :: ",
