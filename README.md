@@ -157,7 +157,7 @@ $ nzme-pagevalidation --checkimages --checklinks 'https://www.nzherald.co.nz','h
 
 # Change Log
 ```bash
-0.2.16  Add support for Selenium Grid
+0.2.16  Add support for Selenium Grid - BREAKING CHANGE
 0.2.15  Fix selenium driver taking too long to load
 0.2.14  Update dependencies
 0.2.13  Make API Wrapper generic
