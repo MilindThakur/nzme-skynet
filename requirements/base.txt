@@ -1,11 +1,8 @@
 -r preinstall.txt
 
 behave
-pytest==2.9.0
+pytest
 pytest-xdist
 requests
-sauceclient
-# Need testing between minor version upgrades
-selenium~=3.3.1
+selenium==3.3.1
 faker
-pytest-allure-adaptor==1.7.5

@@ -6,9 +6,14 @@ from nzme_skynet.core.browsers.localbrowserbuilder import LocalBrowserBuilder
 
 
 def create_webdriver_instance():
-    capabilities = DesiredCapabilities.PHANTOMJS
-    capabilities['loggingPrefs'] = {'browser': 'ALL'}
-    lb = LocalBrowserBuilder("phantomJS", desCap=capabilities)
+    _CAP = {
+        "type": "phantomjs",
+        "platform": 'LINUX',
+        "version": '',
+        "javascriptEnabled": True,
+        "loggingPrefs": {'browser': 'ALL'}
+    }
+    lb = LocalBrowserBuilder(_CAP)
     browser = lb.build()
     return browser.driver
 

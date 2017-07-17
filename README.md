@@ -11,10 +11,9 @@
 
 ### **Install pip, web browsers**
 * [Follow these instructions](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/requirements_installation.md) to install pip, git, virtualenv/virtualenvwrapper
-* Download [Chrome browser](https://www.google.com/chrome/browser/desktop/index.html)
-* Download [Firefox v.46 browser](https://ftp.mozilla.org/pub/firefox/releases/46.0.1/). Firefox > v.47 requires [Marionette](https://developer.mozilla.org/en-US/docs/Mozilla/QA/Marionette) driver which is in beta phase (and not currently support in this library)
+* Download [Chrome browser](https://www.google.com/chrome/browser/desktop/index.html) and [Chrome Driver](https://sites.google.com/a/chromium.org/chromedriver/)
+* Download Firefox. Firefox > v.47 requires [Marionette](https://developer.mozilla.org/en-US/docs/Mozilla/QA/Marionette) driver
 * Install [PhantomJS](http://phantomjs.org/download.html) (headless browser)
-
 
 ### **Clone Skynet automation repo**
 ```bash
@@ -27,7 +26,7 @@ cd skynet
 
 ### **Install the python dependencies in a virtualenv**
 ```bash
-pip install -r requirements.txt
+pip install -r requirements.txt -c requirements/constraints.txt
 ```
 
 To verify drivers are working [check these instructions](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/verify_webdriver.md)
@@ -48,6 +47,43 @@ To run individual tests
 ```bash
 py.text -q <test_name.py>
 ```
+
+## **Install on-demand test infrastructure**
+We use a docker based on-demand Selenium Grid Infrastructure called [Zalenium](https://github.com/zalando/zalenium)
+### **Prerequisites**
+* Docker and docker-compose is installed
+* Grab the [docker-selenium](https://github.com/elgalu/docker-selenium) image
+ ```bash
+docker pull elgalu/selenium
+```
+### **Run it**
+* To start the hub
+```bash
+./docker_compose.sh start
+```
+* You can see the DockerSeleniumStarter node in the [grid](http://localhost:4444/grid/console)
+* You can live preview your running tests on [live]( http://localhost:4444/grid/admin/live)
+* You can view the recorded video, selenium and driver longs on the [dashboard](http://localhost:5555/)
+* To stop the hub
+```bash
+./docker_compose.sh stop
+```
+### **Docker configuration**
+The test infrastructure configurations are managed in the _**docker-compose.yaml_** file. To test any browser on any cloud provider
+ * Add appropriate cloud provider environment variables (username, access-key)
+ * Set the flag _--sauceLabsEnabled_ (or other provider) to true
+ * Set flag _--startTunnel_ to true
+ * Start the hub
+
+To enable video recording on the tests
+ * Set the flag _--videoRecordingEnabled_ to true (the videos will be available in the _/tmp/videos_ folder and dashboard)
+ 
+## **Test Setup**
+Test setup is managed in a configuration file _testsetup.ini_ which can be overridden on commandline
+To run the tests in cloud (grid):
+* Set the flag _local_ to false
+* Set the BROWSER details
+* Start the grid
 
 ## **Scripts**
 The package includes scripts to be able to run from commandline
@@ -121,7 +157,8 @@ $ nzme-pagevalidation --checkimages --checklinks 'https://www.nzherald.co.nz','h
 
 # Change Log
 ```bash
-0.2.15  Fix selenium driver taking too long to load 
+0.2.16  Add support for Selenium Grid - BREAKING CHANGE - need update to testconfig.ini
+0.2.15  Fix selenium driver taking too long to load
 0.2.14  Update dependencies
 0.2.13  Make API Wrapper generic
 0.2.12  Update selenium to 3.0.1

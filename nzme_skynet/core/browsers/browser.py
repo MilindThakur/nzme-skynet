@@ -1,9 +1,9 @@
 # coding=utf-8
+import logging
+
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.common.exceptions import TimeoutException
-import time
-import logging
 
 from nzme_skynet.core.actions.enums.timeouts import DefaultTimeouts
 from nzme_skynet.core.utils import js_wait
@@ -13,10 +13,11 @@ from nzme_skynet.core.utils import js_wait
 class Browser(object):
     action_class = None
 
-    def __init__(self, baseurl, driver=None, action=None):
+    # def __init__(self, baseurl, driver=None, action=None):
+    def __init__(self, baseurl):
         self.baseurl = baseurl
-        self.driver = driver
-        self.action = action
+        self.driver = None
+        self.action = None
         self.logger = logging.getLogger(__name__)
 
     def init_browser(self):
@@ -65,6 +66,9 @@ class Browser(object):
     def get_current_url(self):
         return self.driver.current_url
 
+    def get_current_desired_capabilities(self):
+        return self.driver.desired_capabilities
+
     def take_screenshot_current_window(self, filename):
         self.driver.get_screenshot_as_file(filename)
 
@@ -112,35 +116,21 @@ class Browser(object):
         alert = self.switch_to_alert(time)
         return alert.dismiss
 
-    def wait_for_ready_state_complete(self, timeout=DefaultTimeouts.VLARGE_TIMEOUT):
-        """
-        The DOM (Document Object Model) has a property called "readyState".
-        When the value of this becomes "complete", page resources are considered
-        fully loaded (although AJAX and other loads might still be happening).
-        This method will wait until document.readyState == "complete".
-
-        TODO: Could use WebdriverWait instead.
-        :param timeout: time in secs
-        :type timeout: int
-        :return: state if page has loaded
-        :rtype: boolean
-        """
-        start_ms = time.time() * 1000.0
-        stop_ms = start_ms + (timeout * 1000.0)
-        for x in range(int(timeout * 10)):
-            ready_state = self.driver.execute_script("return document.readyState")
-            if ready_state == u'complete':
-                return True
-            else:
-                now_ms = time.time() * 1000.0
-                if now_ms >= stop_ms:
-                    break
-                time.sleep(0.1)
-        raise Exception(
-            "Page elements never fully loaded after %s seconds!" % timeout)
-
     def wait_for_javascript_return(self, script, return_value):
         return WebDriverWait(self.driver, 10).until(self._wait_for_js(script, return_value))
+
+    def wait_for_page_load(self, timeout=DefaultTimeouts.DEFAULT_TIMEOUT, throw_on_timeout=False):
+        """
+        Waits for the current document to load (although AJAX and other loads might still be happening)
+        :param timeout: Time to wait for document to load, seconds
+        :param throw_on_timeout: Boolean to throw exception when timeout is reached
+        """
+        try:
+            WebDriverWait(self.driver, timeout).\
+                until(lambda driver: driver.execute_script('return document.readyState') == 'complete')
+        except:
+            if throw_on_timeout:
+                raise TimeoutException("Page elements never fully loaded after %s seconds" % timeout)
 
     def _wait_for_js(self, script, return_value):
         return js_wait.for_return(script, return_value)

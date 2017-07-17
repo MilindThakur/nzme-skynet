@@ -2,6 +2,7 @@
 import json
 import os
 from datetime import datetime
+import signal
 
 from nzme_skynet.core.browsers.localbrowserbuilder import LocalBrowserBuilder
 
@@ -9,6 +10,12 @@ from nzme_skynet.core.browsers.localbrowserbuilder import LocalBrowserBuilder
 class LayoutScreenshot(object):
     _SCREENSHOT_DIR_NAME = "screenshot"
     _SCREENSHOT_DIR_PATH = os.path.abspath('.') + "/%s" % _SCREENSHOT_DIR_NAME
+    _CAP = {
+        "type": "phantomjs",
+        "platform": 'LINUX',
+        "version": '',
+        "javascriptEnabled": True
+    }
 
     def __init__(self, urls_path, device_list=None, folder=None):
         with open(urls_path, 'r') as url:
@@ -30,7 +37,7 @@ class LayoutScreenshot(object):
             os.makedirs(folder)
 
     def take_screenshot(self):
-        lb = LocalBrowserBuilder("phantomJS")
+        lb = LocalBrowserBuilder(self._CAP)
         browser = lb.build()
         for url in self.urls_json["urls"]:
             browser.goto_url(url["url"])

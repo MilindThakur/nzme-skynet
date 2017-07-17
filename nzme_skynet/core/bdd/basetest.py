@@ -9,10 +9,6 @@ Ref: https://github.com/oleg-toporkov/python-bdd-selenium.git
 import logging
 import re
 
-from allure.common import AllureImpl
-from allure.constants import AttachmentType, Label
-from allure.structure import TestLabel
-
 from log import Logger
 from nzme_skynet.core.app import appbuilder
 from setupparser import Config
@@ -24,27 +20,18 @@ def before_all(context):
     Executed one in the beginning of entire test run
     :param context: behave.runner.Context
     """
-    # Setup the context variables from the config file
-    if context.config.userdata:
-        Config.BROWSER = context.config.userdata.get("browser", Config.BROWSER)
-        Config.URL = context.config.userdata.get("url", Config.URL)
-        Config.REUSE = context.config.userdata.get("reuse", Config.REUSE)
-        Config.CLOUD = context.config.userdata.get("cloud", Config.CLOUD)
-
     Logger.configure_logging()
-    logger = logging.getLogger(__name__)
 
-    allure_report_path = '{}/allure_report'.format(Config.LOG)
+    # These context variables can be overridden from command line
+    if context.config.userdata:
+        Config.BROWSER_OPTIONS['type'] = context.config.userdata.get("type", Config.BROWSER_OPTIONS['type'])
+        Config.BROWSER_OPTIONS['os'] = context.config.userdata.get("os", Config.BROWSER_OPTIONS['os'])
+        Config.BROWSER_OPTIONS['version'] = context.config.userdata.get("version", Config.BROWSER_OPTIONS['version'])
 
-    # Init allure
-    try:
-        context.allure = AllureImpl(allure_report_path)
-    except Exception:
-        logger.error('Failed to init allure at: {}'.format(allure_report_path))
-        raise
+        Config.ENV_IS_LOCAL = context.config.userdata.get("local", Config.ENV_IS_LOCAL)
+        Config.ENV_BASE_URL = context.config.userdata.get("baseurl", Config.ENV_BASE_URL)
 
 
-# noinspection PyUnusedLocal
 def after_all(context):
     """
     Executed at the end of the test run
@@ -59,17 +46,9 @@ def before_feature(context, feature):
     :param context: behave.runner.Context
     :param feature: behave.model.Feature
     """
-    logger = logging.getLogger(__name__)
     context.app = None
     context.picture_num = 0
-
-    # Start the feature in allure reporting
-    try:
-        context.allure.start_suite(feature.name, feature.description,
-                                   labels=[TestLabel(name=Label.FEATURE, value=feature.name)])
-    except Exception:
-        logger.error('Failed to init allure suite with name {}'.format(feature.name))
-        raise
+    context.test_group = feature.name
 
 
 def after_feature(context, feature):
@@ -78,14 +57,7 @@ def after_feature(context, feature):
     :param context: behave.runner.Context
     :param feature: behave.model.Feature
     """
-    logger = logging.getLogger(__name__)
-
-    # Stop the feature in allure reporting
-    try:
-        context.allure.stop_suite()
-    except Exception:
-        logger.error('Failed to stop allure suite with name {}'.format(feature.name))
-        raise
+    pass
 
 
 def before_scenario(context, scenario):
@@ -97,26 +69,37 @@ def before_scenario(context, scenario):
     logger = logging.getLogger(__name__)
     Logger.create_test_folder(scenario.name)
 
-    # Start the scenario in allure reporting
-    try:
-        context.allure.start_case(scenario.name,
-                                  labels=[TestLabel(name=Label.FEATURE, value=scenario.feature.name)])
-    except Exception:
-        logger.error('Failed to start init allure test with name {}'.format(scenario.name))
-        raise
-
     context.test_name = scenario.name
 
-    # Build the app instance
-    if context.app is None:
+    # cleanup app state for new test
+    if context.app is not None:
         try:
-            if 'api' in scenario.tags:
-                context.baseuri = Config.BASEURI
-            else:
-                context.app = appbuilder.build_desktop_browser(Config.BROWSER, Config.URL)
+            context.app.quit()
         except Exception:
-            logger.error('Failed to start browser instance: {}'.format(Config.BROWSER))
+            logger.error('Failed to stop browser instance')
             raise
+        context.app = None
+
+    # Build capabilities
+    cap = {
+        "browserName": Config.BROWSER_OPTIONS['type'],
+        "platform": Config.BROWSER_OPTIONS['os'],
+        "version": '' if 'latest' in Config.BROWSER_OPTIONS['version'] else Config.BROWSER_OPTIONS['version']
+    }
+
+    # Build the app instance
+    if 'api' not in scenario.tags:
+        try:
+            if Config.ENV_IS_LOCAL:
+                context.app = appbuilder.build_desktop_browser(Config.BROWSER_OPTIONS, Config.ENV_BASE_URL)
+            else:
+                cap['group'] = context.test_group
+                cap['name'] = context.test_name
+                context.app = appbuilder.build_docker_browser(Config.SEL_GRID_URL, cap, Config.ENV_BASE_URL)
+        except Exception, e:
+            logger.exception(e)
+            raise Exception("Failed to launch a browser")
+
     logger.info('Start of Scenario: {}'.format(scenario.name))
 
 
@@ -140,33 +123,13 @@ def after_scenario(context, scenario):
                 logger.error('Failed to take screenshot to: {}'.format(Config.LOG))
                 raise
 
-            # Attach screen shot to allure reporting
-            try:
-                with open(_screenshot, 'rb') as _file:
-                    context.allure.attach('{} fail'.format(scenario.name), _file.read(), AttachmentType.PNG)
-            except Exception:
-                logger.error('Failed to attach screenshot to report: {}'.format(_screenshot))
-                raise
-
-        if not Config.REUSE:
-            try:
-                context.app.quit()
-            except Exception:
-                logger.error('Failed to stop browser instance {}'.format(Config.BROWSER))
-                raise
-            context.app = None
-
-    # Add stack trace to allure reporting on failure
-    try:
-        _status = scenario.status
-        if _status == 'skipped':
-            _status = 'canceled'
-        context.allure.stop_case(_status,
-                                 getattr(context, 'last_error_message', None),
-                                 getattr(context, 'last_traceback', None))
-    except Exception:
-        logger.error('Failed to stop allure test with name: {}'.format(scenario.name))
-        raise
+    if context.app:
+        try:
+            context.app.quit()
+        except Exception:
+            logger.error('Failed to stop browser instance {}'.format(Config.BROWSER_OPTIONS['type']))
+            raise
+        context.app = None
 
     logger.info('End of test: {}. Status {} !!!\n\n\n'.format(scenario.name, scenario.status.upper()))
 
@@ -178,14 +141,7 @@ def before_step(context, step):
     :param step: behave.model.Step
 
     """
-    logger = logging.getLogger(__name__)
-
-    # Start allure reporting for the step
-    try:
-        context.allure.start_step(step.name)
-    except Exception:
-        logger.error('Failed to init allure step with name: {}'.format(step.name))
-        raise
+    pass
 
 
 def after_step(context, step):
@@ -213,21 +169,6 @@ def after_step(context, step):
             logger.error('Failed to take screenshot to: {}'.format(Config.LOG))
             logger.error('Screenshot name: {}'.format(step_name))
             raise
-
-        # Add screen shot for the step to allure reporting
-        # noinspection PyBroadException
-        try:
-            with open(_screenshot, 'rb') as _file:
-                context.allure.attach('{}_{}'.format(context.test_name, step.name), _file.read(), AttachmentType.PNG)
-        except Exception:
-            logger.error('Failed to attach to report screenshot: {}'.format(_screenshot))
-
-    # Stop allure reporting for the step
-    try:
-        context.allure.stop_step()
-    except Exception:
-        logger.error('Failed to stop allure step with name: {}'.format(step.name))
-        raise
 
     # Add stacktrace to allure reporting on failure
     if step.status.lower == 'failed':
