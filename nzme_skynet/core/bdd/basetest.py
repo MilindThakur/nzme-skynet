@@ -28,7 +28,7 @@ def before_all(context):
         Config.BROWSER_OPTIONS['os'] = context.config.userdata.get("os", Config.BROWSER_OPTIONS['os'])
         Config.BROWSER_OPTIONS['version'] = context.config.userdata.get("version", Config.BROWSER_OPTIONS['version'])
 
-        Config.ENV_IS_LOCAL = context.config.userdata.get("local", Config.ENV_IS_LOCAL)
+        Config.ENV_IS_LOCAL = context.config.userdata.getbool("local", Config.ENV_IS_LOCAL)
         Config.ENV_BASE_URL = context.config.userdata.get("baseurl", Config.ENV_BASE_URL)
 
 
