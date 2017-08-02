@@ -181,6 +181,7 @@ $ nzme-behave-parallel -p 4 -t @prod -D local=false -D type=firefox
 
 # Change Log
 ```bash
+0.2.18  Fix running BDD scearios parallel with multiple tags 
 0.2.17  Add support for running BDD tests in parallel
 0.2.16  Add support for Selenium Grid - BREAKING CHANGE - need update to testconfig.ini
 0.2.15  Fix selenium driver taking too long to load
