@@ -151,12 +151,37 @@ optional arguments:
   --checkall            validate all on url(s)
 
 
-
 $ nzme-pagevalidation --checkimages --checklinks 'https://www.nzherald.co.nz','http://www.zmonline.com' -f /home/Documents
 ```
 
+### **BDD Parallel Tests Run utility**
+Allows running BDD tests in parallel, hence saving on execution time.
+```bash
+$ pip install nzme-skynet
+$ nzme-behave-parallel -h
+usage: Run behave in parallel mode for scenarios [-h] [--processes PROCESSES]
+                                                 [--tags TAGS]
+                                                 [--define DEFINE]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --processes PROCESSES, -p PROCESSES
+                        Maximum number of processes. Default = 5
+  --tags TAGS, -t TAGS  specify behave tags to run
+  --define DEFINE, -D DEFINE
+                        Define user-specific data for the config.userdata
+                        dictionary. Example: -D foo=bar to store it in
+                        config.userdata["foo"].
+```
+E.g. to run 4 scenarios in parallel based on tags and override test configuration
+```bash
+$ nzme-behave-parallel -p 4 -t @prod -D local=false -D type=firefox
+```
+
+
 # Change Log
 ```bash
+0.2.17  Add support for running BDD tests in parallel
 0.2.16  Add support for Selenium Grid - BREAKING CHANGE - need update to testconfig.ini
 0.2.15  Fix selenium driver taking too long to load
 0.2.14  Update dependencies
