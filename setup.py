@@ -41,7 +41,8 @@ setup(
     entry_points={
         'console_scripts': [
             'nzme-screenshots = nzme_skynet.scripts.screenshots:main',
-            'nzme-pagevalidation = nzme_skynet.scripts.validation:main'
+            'nzme-pagevalidation = nzme_skynet.scripts.validation:main',
+            'nzme-behave-parallel = nzme_skynet.scripts.behave_parallel_scenarios:main'
         ]
     },
     packages=find_packages(exclude=["test"]),
