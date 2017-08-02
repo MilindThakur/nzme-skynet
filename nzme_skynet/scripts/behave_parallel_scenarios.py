@@ -31,7 +31,7 @@ def parse_arguments():
     """
     parser = argparse.ArgumentParser('Run behave in parallel mode for scenarios')
     parser.add_argument('--processes', '-p', type=int, help='Maximum number of processes. Default = 5', default=5)
-    parser.add_argument('--tags', '-t', help='specify behave tags to run', nargs='*')
+    parser.add_argument('--tags', '-t', help='specify behave tags to run', action='append')
     parser.add_argument('--define', '-D', action='append', help='Define user-specific data for the config.userdata '
                                                                 'dictionary. Example: -D foo=bar to store it in '
                                                                 'config.userdata["foo"].')
@@ -53,9 +53,9 @@ def _run_feature(feature_scenario, tags=None, userdata=None):
     execution_elements = feature_scenario.split(delimiter)
     logger.info("Processing feature: {} and scenario {}".format(execution_elements[0], execution_elements[1]))
     if not userdata:
-        params = "{0} --no-capture".format(tags)
+        params = "-t {0} --no-capture".format(' -t '.join(tags))
     else:
-        params = "{0} -D {1} --no-capture".format(tags, ' -D '.join(userdata))
+        params = "-t {0} -D {1} --no-capture".format(' -t '.join(tags), ' -D '.join(userdata))
     cmd = "behave --no-summary -k --junit -f plain {0} -i {1} --name \"{2}\" -o \"./reports/{1}/{2}.out\"".format(
            params, execution_elements[0], execution_elements[1])
     r = call(cmd, shell=True)
@@ -69,13 +69,9 @@ def main():
     Runner
     """
     args = parse_arguments()
-    tag_params = ''
-    if args.tags:
-        for tag in args.tags:
-            tag_params += "-t {0} ".format(tag)
     pool = Pool(args.processes)
     if args.tags:
-        cmd = 'behave -d --no-junit --f json --no-summary --no-skipped {}'.format(tag_params)
+        cmd = 'behave -d --no-junit --f json --no-summary --no-skipped -t {}'.format(' -t '.join(args.tags))
     else:
         cmd = 'behave -d --no-junit --f json --no-summary --no-skipped'
 
@@ -105,7 +101,7 @@ def main():
     else:
         logger.info("Will execute {} parallel process".format(args.processes))
 
-    run_feature = partial(_run_feature, tags=tag_params, userdata=args.define)
+    run_feature = partial(_run_feature, tags=args.tags, userdata=args.define)
     logger.info("--------------------------------------------------------------------------")
     output = 0
     for feature, scenario, status in pool.map(run_feature, features_and_scenarios):
