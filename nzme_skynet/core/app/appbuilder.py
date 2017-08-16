@@ -5,6 +5,7 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 from nzme_skynet.core.browsers.localbrowserbuilder import LocalBrowserBuilder
 from nzme_skynet.core.browsers.remotebrowserbuilder import RemoteBrowserBuilder
+from nzme_skynet.core.browsers.AppiumDriverBuilder import AndroidDriver, AppiumDriverBuilder
 
 CAPABILITIES = {"firefox": DesiredCapabilities.FIREFOX,
                 "chrome": DesiredCapabilities.CHROME,
@@ -19,6 +20,7 @@ CAPABILITIES = {"firefox": DesiredCapabilities.FIREFOX,
 logger = logging.getLogger(__name__)
 
 
+# TODO - convert this to  Driver factory?
 # Browser
 def build_desktop_browser(browser_options, base_url=None):
     logger.debug("Creating local browser instance")
@@ -43,7 +45,13 @@ def build_simulator_mobile_browser():
     raise NotImplementedError
 
 
+# Will this trigger a mobile app build? or is just for the Appium Driver.
 # Mobile App
+def build_appium_driver(desired_cap):
+    logger.debug("Creating Appium driver for: " + desired_cap['type'])
+    driver = AppiumDriverBuilder(desired_cap)
+    return driver.build()
+
 def build_real_mobile_native_app():
     raise NotImplementedError
 

@@ -80,25 +80,36 @@ def before_scenario(context, scenario):
             raise
         context.app = None
 
-    # Build capabilities
-    cap = {
-        "browserName": Config.BROWSER_OPTIONS['type'],
-        "platform": Config.BROWSER_OPTIONS['os'],
-        "version": '' if 'latest' in Config.BROWSER_OPTIONS['version'] else Config.BROWSER_OPTIONS['version']
-    }
 
-    # Build the app instance
-    if 'api' not in scenario.tags:
-        try:
-            if Config.ENV_IS_LOCAL:
-                context.app = appbuilder.build_desktop_browser(Config.BROWSER_OPTIONS, Config.ENV_BASE_URL)
+    # Build the app instancetry:
+    tags = str(context.config.tags)
+    try:
+        if 'api' not in tags:
+            if 'mobile-android' in tags:
+                context.app = appbuilder.build_appium_driver(Config.MOBILE_ANDROID_OPTIONS)
+            elif 'mobile-ios' in tags:
+                context.app = appbuilder.build_appium_driver(Config.MOBILE_IOS_OPTIONS)
             else:
-                cap['group'] = context.test_group
-                cap['name'] = context.test_name
-                context.app = appbuilder.build_docker_browser(Config.SEL_GRID_URL, cap, Config.ENV_BASE_URL)
-        except Exception, e:
-            logger.exception(e)
-            raise Exception("Failed to launch a browser")
+                # this falls back into a generic browser as a default.
+                # todo - expand for browser types chrome, firefox, safari ect
+                if Config.ENV_IS_LOCAL:
+                    context.app = appbuilder.build_desktop_browser(Config.BROWSER_OPTIONS, Config.ENV_BASE_URL)
+                else:
+                    # TODO - grab capabilities from a config
+                    # TODO - push this down into the docker_browser builder
+                    # Build capabilities
+                    cap = {
+                        "browserName": Config.BROWSER_OPTIONS['type'],
+                        "platform": Config.BROWSER_OPTIONS['os'],
+                        "version": '' if 'latest' in Config.BROWSER_OPTIONS['version'] else Config.BROWSER_OPTIONS[
+                            'version']
+                    }
+                    cap['group'] = context.test_group
+                    cap['name'] = context.test_name
+                    context.app = appbuilder.build_docker_browser(Config.SEL_GRID_URL, cap, Config.ENV_BASE_URL)
+    except Exception, e:
+        logger.exception(e)
+        raise Exception("Failed to define a driver")
 
     logger.info('Start of Scenario: {}'.format(scenario.name))
 
@@ -177,3 +188,4 @@ def after_step(context, step):
             context.last_error_message = step.error_message.split('ERROR:')[1]
         except IndexError:
             context.last_error_message = step.error_message
+
