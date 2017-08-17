@@ -23,8 +23,9 @@ def get_mobile_andorid_options(config):
                             'app': config.get('ANDROID', 'app'),
                             'appPackage': config.get('ANDROID', 'appPackage'),
                             'appActivity': config.get('ANDROID', 'appActivity'),
-                            'avd': config.get('ANDROID', 'avd')
-                            # 'fullReset': config.get('ANDROID', 'fullReset')
+                            # 'avd': config.get('ANDROID', 'avd'),
+                            'fullReset': config.get('ANDROID', 'fullReset'),
+                            'clearSystemFiles': config.get('ANDROID', 'clearSystemFiles')
                             }
     return mobile_local_options
 

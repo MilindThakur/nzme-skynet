@@ -10,3 +10,5 @@ class BrowserTypes(object):
     ANDROID_NATIVE_BROWSER  = "androidbrowser"
     IOS_NATIVE_BROWSER      = "iosbrowser"
     REMOTE                  = "remote"
+    ANDROID                 = "android"
+    IOS                     = "ios"

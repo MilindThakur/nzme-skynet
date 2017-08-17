@@ -16,7 +16,7 @@ services:
       - /usr/bin/docker:/usr/bin/docker
     ports:
       - 4444:4444
-      - 5555:5555
+      - 5556:5555
     command: >
       start --chromeContainers 0
             --firefoxContainers 0
@@ -36,3 +36,70 @@ services:
       - BROWSER_STACK_KEY
       - TESTINGBOT_KEY
       - TESTINGBOT_SECRET
+
+  # Docker-Android for Android application testing
+  nexus_7.1.1:
+    image: butomo1989/docker-android-x86-7.1.1
+    container_name: Nexus_5
+    hostname: Nexus_5
+    privileged: true
+    # Change path of apk that you want to test. I use sample_apk that I provide in folder "example"
+    volumes:
+      - ./test/mobile/testapps:/root/tmp
+    # Increase scale number if needed
+    # scale: 1
+    ports:
+      - 6080
+      - 4723
+    depends_on:
+      - "zalenium"
+    environment:
+      - DEVICE=Nexus 5
+      - CONNECT_TO_GRID=True
+      - APPIUM=true
+      - APPIUM_HOST=172.18.0.3
+      - SELENIUM_HOST=zalenium
+#      - SELENIUM_PORT=4444
+
+
+  # Docker-Android for mobile website testing with chrome browser
+  # Chrome browser exists only for version 7.0 and 7.1.1
+  samsung_galaxy_web_7.1.1:
+    image: butomo1989/docker-android-x86-6.0
+    container_name: Samsung_Galaxy_S6
+    hostname: Samsung_Galaxy_S6
+    privileged: true
+    # Increase scale number if needed
+    # scale: 1
+    ports:
+      - 6080
+      - 4724
+    depends_on:
+      - "zalenium"
+    environment:
+      - DEVICE=Samsung Galaxy S6
+      - CONNECT_TO_GRID=True
+      - APPIUM=true
+      - APPIUM_HOST=172.18.0.4
+      - APPIUM_PORT=4724
+      - SELENIUM_HOST=zalenium
+#      - SELENIUM_PORT=4444
+
+#  # Docker-Android for mobile website testing with default browser
+#  # Default browser exists only for version 5.0.1, 5.1.1 and 6.0
+#  samsung_galaxy_web_5.1.1:
+#    image: butomo1989/docker-android-x86-5.1.1
+#    privileged: true
+#    # Increase scale number if needed
+#    # scale: 1
+#    ports:
+#      - 6080
+#    depends_on:
+#      - "zalenium"
+#    environment:
+#      - DEVICE=Samsung Galaxy S6
+#      - CONNECT_TO_GRID=True
+#      - APPIUM=true
+#      - APPIUM_HOST=172.19.0.1
+#      - SELENIUM_HOST=172.19.0.1
+#      - SELENIUM_PORT=4444
