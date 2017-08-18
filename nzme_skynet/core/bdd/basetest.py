@@ -109,7 +109,7 @@ def before_scenario(context, scenario):
                     context.app = appbuilder.build_docker_browser(Config.SEL_GRID_URL, cap, Config.ENV_BASE_URL)
     except Exception, e:
         logger.exception(e)
-        raise Exception("Failed to define a driver")
+        raise Exception("Something broke creating a driver:" + e)
 
     logger.info('Start of Scenario: {}'.format(scenario.name))
 

@@ -20,7 +20,7 @@ class AppiumDriverBuilder(object):
                 return AndroidDriver(self.desired_caps)
             if self._driverType == BrowserTypes.IOS:
                 return IosDriver(self.desired_caps)
-                # return AndroidDriver(self.desired_caps)
+                # return IOSDriver(self.desired_caps)
                 raise NotImplementedError
             # TODO - this will need to be implemented at some stage
             if (self._driverType == BrowserTypes.ANDROID_BROWSER) or (self._browserType == BrowserTypes.IOS_BROWSER):
