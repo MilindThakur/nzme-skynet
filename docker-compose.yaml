@@ -47,10 +47,9 @@ services:
     volumes:
       - ./test/mobile/testapps:/root/tmp
     # Increase scale number if needed
-    # scale: 1
+#    scale: 1
     ports:
       - 6080
-      - 4723
     depends_on:
       - "zalenium"
     environment:
@@ -69,7 +68,7 @@ services:
     volumes:
       - ./test/mobile/testapps:/root/tmp
     # Increase scale number if needed
-    # scale: 1
+#    scale: 1
     ports:
       - 6080
     depends_on:

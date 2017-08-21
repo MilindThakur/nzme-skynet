@@ -15,31 +15,32 @@ def get_browser_options(config):
 
 
 def get_mobile_andorid_options(config):
-    mobile_local_options = {'type': config.get('ANDROID', 'type'),
+    mobile_local_options = {'platform': config.get('ANDROID', 'platform'),
                             'appium_url': config.get('ANDROID', 'appium_url'),
-                            'platformName': config.get('ANDROID', 'platformName'),
                             'platformVersion': config.get('ANDROID', 'platformVersion'),
+                            'version': config.get('ANDROID', 'version'),
+                            'platformName': config.get('ANDROID', 'platformName'),
                             'deviceName': config.get('ANDROID', 'deviceName'),
                             'app': config.get('ANDROID', 'app'),
                             'appPackage': config.get('ANDROID', 'appPackage'),
                             'appActivity': config.get('ANDROID', 'appActivity'),
-                            # 'avd': config.get('ANDROID', 'avd'),
                             'fullReset': config.get('ANDROID', 'fullReset'),
-                            'clearSystemFiles': config.get('ANDROID', 'clearSystemFiles')
+                            'clearSystemFiles': config.get('ANDROID', 'clearSystemFiles'),
+                            'newCommandTimeout':'newCommandTimeout=120'
                             }
     return mobile_local_options
 
 
 def get_mobile_ios_options(config):
-    mobile_local_options = {'type': config.get('IOS', 'type'),
+    mobile_local_options = {'platform': config.get('IOS', 'platform'),
                             'appium_url': config.get('IOS', 'appium_url'),
                             'platformName': config.get('IOS', 'platformName'),
                             'platformVersion': config.get('IOS', 'platformVersion'),
                             'deviceName': config.get('IOS', 'deviceName'),
                             'app': config.get('IOS', 'app'),
                             'bundleId': config.get('IOS', 'bundleId'),
-                            'appActivity': config.get('IOS', 'appActivity')
-                            # 'fullReset': config.get('IOS', 'fullReset')
+                            'appActivity': config.get('IOS', 'appActivity'),
+                            'fullReset': config.get('IOS', 'fullReset')
                             }
     return mobile_local_options
 

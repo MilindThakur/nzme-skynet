@@ -12,7 +12,7 @@ import re
 from log import Logger
 from nzme_skynet.core.app import appbuilder
 from setupparser import Config
-
+from selenium.common.exceptions import WebDriverException
 
 def before_all(context):
     """
@@ -109,7 +109,11 @@ def before_scenario(context, scenario):
                     context.app = appbuilder.build_docker_browser(Config.SEL_GRID_URL, cap, Config.ENV_BASE_URL)
     except Exception, e:
         logger.exception(e)
-        raise Exception("Something broke creating a driver:" + e)
+        if e.__class__ is WebDriverException:
+            #Should we fail the test and swallow the exception?
+            raise Exception("Webdriver returned an exception: " + str(e))
+        else:
+            raise Exception("Something broke creating a driver:" + str(e))
 
     logger.info('Start of Scenario: {}'.format(scenario.name))
 
@@ -126,7 +130,6 @@ def after_scenario(context, scenario):
 
         if scenario.status.lower == 'failed':
             _screenshot = '{}/{}_fail.png'.format(Config.LOG, scenario.name.replace(' ', '_'))
-
             # Take screen shot on a failure
             try:
                 context.app.take_screenshot_current_window(_screenshot)
@@ -137,7 +140,7 @@ def after_scenario(context, scenario):
     if context.app:
         try:
             context.app.quit()
-        except Exception:
+        except Exception, e:
             logger.error('Failed to stop browser instance {}'.format(Config.BROWSER_OPTIONS['type']))
             raise
         context.app = None
@@ -176,7 +179,7 @@ def after_step(context, step):
         try:
             context.app.take_screenshot_current_window(_screenshot)
             context.picture_num += 1
-        except Exception:
+        except Exception, e:
             logger.error('Failed to take screenshot to: {}'.format(Config.LOG))
             logger.error('Screenshot name: {}'.format(step_name))
             raise
@@ -188,4 +191,5 @@ def after_step(context, step):
             context.last_error_message = step.error_message.split('ERROR:')[1]
         except IndexError:
             context.last_error_message = step.error_message
+
 

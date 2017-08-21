@@ -7,7 +7,8 @@ from nzme_skynet.core.browsers.mobile.iosDriver import IosDriver
 class AppiumDriverBuilder(object):
     def __init__(self, desired_caps):
         self.desired_caps = desired_caps
-        self._driverType = desired_caps.get('type')
+        self._driverType = desired_caps.get('platform').lower()
+        self.driver = None
 
     def build(self):
         driver = self._construct_driver()
