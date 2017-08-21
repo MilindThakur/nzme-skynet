@@ -54,7 +54,9 @@ setup(
         'pytest-xdist',
         'requests',
         'selenium==3.3.1',
-        'faker'
+        'faker',
+        'browsermob-proxy',
+        'haralyzer'
     ],
     classifiers=[
         "Development Status :: ",
