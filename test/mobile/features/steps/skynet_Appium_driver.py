@@ -1,19 +1,22 @@
 from behave import *
-from test.mobile.pages.homepage import Homepage
+from selenium.webdriver.common.by import By
+
+from test.mobile.pages.pageobject.homepage import HomePage
 
 use_step_matcher("re")
 
 
 @given("I am on the test app home screen")
 def I_am_on_the_test_app_home_screen(context):
-    page = Homepage(context.app)
-    assert page.home_message.get_text() == "HomeMessage", "The Home message was not as we expected. We expected HomeMessage, but the " \
-                                         "app had: " + page.home_message.get_text()
+    assert HomePage(context.app).home_message.get_text() == "HomeMessage"
 
 
+@when("I navigate to the dashboard")
+def I_navigate_to_the_dashboard(context):
+    HomePage(context.app).navigation_bar.bar.find_sub_elements(By.ID, "navigation_dashboard")[0].click()
 
-@then("The home message is displayed")
-def The_home_message_is_displayed(context):
-    page = Homepage(context.app)
-    assert page.home_message.get_text() == "HomeMessage", "The Home message was not as we expected. We expected HomeMessage, but the " \
-                                         "app had: " + page.home_message.get_text()
+
+@then("The (?P<message>.+) message is displayed")
+def The_home_message_is_displayed(context, message):
+    assert HomePage(context.app).home_message.get_text() == message
+

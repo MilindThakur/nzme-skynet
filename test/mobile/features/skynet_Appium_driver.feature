@@ -8,7 +8,8 @@ Feature:
   @mobile-android
   Scenario: Running an android test with skynet
     Given I am on the test app home screen
-    Then The home message is displayed
+    When I navigate to the dashboard
+    Then The Dashboard message is displayed
 
 #  not_implemented
 #  @mobile-ios

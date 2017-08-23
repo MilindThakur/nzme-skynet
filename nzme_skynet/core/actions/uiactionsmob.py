@@ -1,5 +1,7 @@
 # coding=utf-8
 from nzme_skynet.core.actions.baseuiactions import BaseUIActions
+from selenium.webdriver.common.by import By
+
 
 
 class UIActionsMob(BaseUIActions):
@@ -14,6 +16,9 @@ class UIActionsMob(BaseUIActions):
 
     def element(self, by, locator):
         return super(UIActionsMob, self).element(by, locator)
+
+    def mobelement(self,locator, by=By.ID):
+        return super(UIActionsMob,self).mobelement(by, locator)
 
     def image(self, by, locator):
         return super(UIActionsMob, self).image(by, locator)
@@ -35,3 +40,4 @@ class UIActionsMob(BaseUIActions):
 
     def text(self, by, locator):
         return super(UIActionsMob, self).text(by, locator)
+

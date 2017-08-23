@@ -52,7 +52,11 @@ StartUp()
     # Ensure we have a clean environment
     docker-compose -f ${COMPOSE_FILE} -p zalenium down || true
     docker stop zalenium || true
+    docker stop Nexus_5 || true
+    docker stop Samsung_Galaxy_S6 || true
     docker rm zalenium || true
+    docker rm Nexus_5 || true
+    docker rm Samsung_Galaxy_S6 || true
     rm -rf /tmp/videos
     mkdir -p /tmp/videos
 

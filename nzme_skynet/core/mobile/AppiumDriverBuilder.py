@@ -1,7 +1,7 @@
 # coding=utf-8
-from nzme_skynet.core.browsers.web.browserTypes import BrowserTypes
-from nzme_skynet.core.browsers.mobile.androidDriver import AndroidDriver
-from nzme_skynet.core.browsers.mobile.iosDriver import IosDriver
+from nzme_skynet.core.mobile.drivers.androidDriver import AndroidDriver
+from nzme_skynet.core.mobile.enums.drivertypes import DriverTypes
+from nzme_skynet.core.mobile.drivers.iosDriver import IosDriver
 
 
 class AppiumDriverBuilder(object):
@@ -17,14 +17,14 @@ class AppiumDriverBuilder(object):
 
     def _construct_driver(self):
         try:
-            if self._driverType == BrowserTypes.ANDROID:
+            if self._driverType == DriverTypes.ANDROID:
                 return AndroidDriver(self.desired_caps)
-            if self._driverType == BrowserTypes.IOS:
+            if self._driverType == DriverTypes.IOS:
                 return IosDriver(self.desired_caps)
                 # return IOSDriver(self.desired_caps)
                 raise NotImplementedError
             # TODO - this will need to be implemented at some stage
-            if (self._driverType == BrowserTypes.ANDROID_BROWSER) or (self._browserType == BrowserTypes.IOS_BROWSER):
+            if (self._driverType == DriverTypes.ANDROID_BROWSER) or (self._browserType == DriverTypes.IOS_BROWSER):
                 raise NotImplementedError
             else:
                 raise ValueError("only Android, iOS, Android browser and iOS browser are supported")

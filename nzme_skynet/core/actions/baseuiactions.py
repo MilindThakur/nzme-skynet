@@ -2,13 +2,15 @@
 from nzme_skynet.core.actions.controls.button import Button
 from nzme_skynet.core.actions.controls.checkbox import Checkbox
 from nzme_skynet.core.actions.controls.elem import Elem
+from nzme_skynet.core.actions.controls.mobile.mobelem import MobElem
 from nzme_skynet.core.actions.controls.image import Image
 from nzme_skynet.core.actions.controls.radiobutton import RadioButton
 from nzme_skynet.core.actions.controls.select import SelectElem
 from nzme_skynet.core.actions.controls.table import Table
+from nzme_skynet.core.actions.controls.text import Text
 from nzme_skynet.core.actions.controls.textinput import TextInput
 from nzme_skynet.core.actions.controls.textlink import TextLink
-from nzme_skynet.core.actions.controls.text import Text
+
 
 class BaseUIActions(object):
     def __init__(self, driver):
@@ -22,6 +24,9 @@ class BaseUIActions(object):
 
     def element(self, by, locator):
         return Elem(self.driver, locator, by)
+
+    def mobelement(self, by, locator):
+        return MobElem(self.driver, locator, by)
 
     def image(self, by, locator):
         return Image(self.driver, locator, by)

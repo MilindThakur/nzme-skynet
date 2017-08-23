@@ -9,8 +9,8 @@ from nzme_skynet.core.actions.enums.timeouts import DefaultTimeouts
 class MobileApp(object):
     action_class = None
 
-    def __init__(self, baseurl):
-        self.baseurl = baseurl
+    def __init__(self, appiumUrl):
+        self.appiumUrl = appiumUrl
         self.driver = None
         self.action = None
         self.logger = logging.getLogger(__name__)
@@ -18,28 +18,23 @@ class MobileApp(object):
     def init_driver(self):
         self.driver = self._create_webdriver()
 
-    # TODO - Implement mobile actions
     def get_actions(self):
         if not self.action:
             self.action = self._create_actions()
         return self.action
 
-    # TODO - Implement mobile actions
     def _create_actions(self):
         return self.action_class(self.driver)
 
     def get_page_source(self):
         return self.driver.page_source
 
-    # Naming is not accurate for mobile apps, The method name is shared with the other browser drivers.
-    def take_screenshot_current_window(self, _screenshot):
-        return self.driver.save_screenshot(_screenshot)
-
     def get_driver(self):
         return self.driver
 
     def quit(self):
         self.driver.close_app()
+        self.driver.quit()
 
     def get_current_context(self):
         self.driver.contexts
@@ -47,12 +42,9 @@ class MobileApp(object):
     def get_current_desired_capabilities(self):
         return self.driver.desired_capabilities
 
+    # Naming is not accurate for mobile apps, The method name is shared with the other browser drivers.
     def take_screenshot_current_window(self, filename):
         self.driver.get_screenshot_as_file(filename)
-
-    # MOBILE
-    def take_screenshot_mobile(self, filename):
-        self.driver.save_screenshot(filename)
 
     # TODO - These are nice to haves.
     # def switch_to_alert(self, time=DefaultTimeouts.SHORT_TIMEOUT):

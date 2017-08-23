@@ -1,7 +1,8 @@
 # coding=utf-8
 from appium import webdriver
-from nzme_skynet.core.browsers.mobileapp import MobileApp
+
 from nzme_skynet.core.actions.uiactionsmob import UIActionsMob
+from nzme_skynet.core.mobile.mobileapp import MobileApp
 
 
 class AndroidDriver(MobileApp):
@@ -15,7 +16,12 @@ class AndroidDriver(MobileApp):
 
     def _create_webdriver(self):
         try:
-
             return webdriver.Remote(self.base_url, self.desired_caps)
         except Exception, e:
             raise
+
+    def get_driver_type(self):
+        return self.driver.desired_capabilities['platform']
+
+    def is_app_installed(self):
+        return self.driver.is_app_installed(self.desired_caps['appPackage'])
