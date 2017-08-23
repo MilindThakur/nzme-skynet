@@ -24,6 +24,7 @@ class MobileActionsTestCase(unittest.TestCase):
         assert self.app.get_driver().session_id is not None
         self.app.quit()
 
+    #specific to docker setup.
     def test_specific_device_caps(self):
         cap = {"deviceName": "Android Emulator",
                "appium_url": "http://localhost:4444/wd/hub",
@@ -44,8 +45,6 @@ class MobileActionsTestCase(unittest.TestCase):
             cls.app.quit()
         except Exception:
             raise
-
-
 
 if __name__ == "__main__":
     unittest.main()

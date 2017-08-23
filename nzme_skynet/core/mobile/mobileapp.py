@@ -9,8 +9,8 @@ from nzme_skynet.core.actions.enums.timeouts import DefaultTimeouts
 class MobileApp(object):
     action_class = None
 
-    def __init__(self, appiumUrl):
-        self.appiumUrl = appiumUrl
+    def __init__(self, desired_caps):
+        self.appiumUrl = desired_caps['appium_url']
         self.driver = None
         self.action = None
         self.logger = logging.getLogger(__name__)

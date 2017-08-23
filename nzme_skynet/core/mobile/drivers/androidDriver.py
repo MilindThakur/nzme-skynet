@@ -10,13 +10,13 @@ class AndroidDriver(MobileApp):
 
     def __init__(self, desired_caps):
         super(AndroidDriver, self).__init__(desired_caps)
-        self.base_url = desired_caps['appium_url']
+        self.appium_url = desired_caps['appium_url']
         self.desired_caps = desired_caps
         self.driver = None
 
     def _create_webdriver(self):
         try:
-            return webdriver.Remote(self.base_url, self.desired_caps)
+            return webdriver.Remote(self.appium_url, self.desired_caps)
         except Exception, e:
             raise
 
