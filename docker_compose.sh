@@ -54,9 +54,11 @@ StartUp()
     docker stop zalenium || true
     docker stop Nexus_5 || true
     docker stop Samsung_Galaxy_S6 || true
+    docker stop Samsung_Galaxy_S6_Chrome || true
     docker rm zalenium || true
     docker rm Nexus_5 || true
     docker rm Samsung_Galaxy_S6 || true
+    docker rm Samsung_Galaxy_S6_Chrome || true
     rm -rf /tmp/videos
     mkdir -p /tmp/videos
 

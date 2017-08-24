@@ -1,7 +1,7 @@
 from behave import *
 from selenium.webdriver.common.by import By
 
-from test.mobile.pages.pageobject.homepage import HomePage
+from test.mobile.pages.pageobject.mobile.homepage import HomePage
 
 use_step_matcher("re")
 

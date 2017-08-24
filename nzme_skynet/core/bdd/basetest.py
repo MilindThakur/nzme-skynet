@@ -87,6 +87,8 @@ def before_scenario(context, scenario):
         if 'api' not in tags:
             if 'mobile-android' in tags:
                 context.app = appbuilder.build_appium_driver(Config.MOBILE_ANDROID_OPTIONS)
+            if 'android-chrome' in tags:
+                    context.app = appbuilder.build_mobile_browser(Config.ANDROID_CHROME_OPTIONS)
             elif 'mobile-ios' in tags:
                 context.app = appbuilder.build_appium_driver(Config.MOBILE_IOS_OPTIONS)
             else:

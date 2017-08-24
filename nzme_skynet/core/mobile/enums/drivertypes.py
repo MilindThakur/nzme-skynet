@@ -2,7 +2,7 @@
 
 class DriverTypes(object):
 
-    ANDROID_NATIVE_BROWSER  = "androidbrowser"
-    IOS_NATIVE_BROWSER      = "iosbrowser"
+    ANDROID_BROWSER  = "androidbrowser"
+    IOS_BROWSER      = "iosbrowser"
     ANDROID                 = "android"
     IOS                     = "ios"

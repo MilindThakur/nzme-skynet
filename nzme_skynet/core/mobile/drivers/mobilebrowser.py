@@ -1,45 +1,42 @@
 # coding=utf-8
-from selenium.webdriver.remote.webdriver import WebDriver
 
-from nzme_skynet.core.actions.uiactionsmob import UIActionsMob
+import logging
+from appium import webdriver
+from nzme_skynet.core.actions.uiactionsweb import UIActionsWeb
 from nzme_skynet.core.browsers.browser import Browser
+from nzme_skynet.core.actions.enums.timeouts import DefaultTimeouts
 
 
-class MobileBrowser(Browser):
-    """
-    Requires Appium to be running in either iPhone or Android
-    simulator mode with settings matching desired capabilities.
-    """
-    _appium_cmd_executor = "http://0.0.0.1:4723/wd/hub"
-    action_class = UIActionsMob
+class Mobilebrowser(Browser):
+    action_class = UIActionsWeb
 
-    def __init__(self, des_cap, base_url):
-        super(MobileBrowser, self).__init__(base_url)
-        self.des_cap = des_cap
-        self.driver = None
-
-    def quit(self):
-        pass
-
-    def get_default_desiredcapabilities(self):
-        pass
+    def __init__(self, desired_caps):
+        super(Mobilebrowser, self).__init__(desired_caps['selenium_grid_hub'])
+        self.selenium_grid_hub_url = desired_caps['selenium_grid_hub']
+        self.logger = logging.getLogger(__name__)
+        self._desired_caps = desired_caps
 
     def get_browser_type(self):
-        return self.des_cap['device']
+        return self.driver.name
 
-    def init_browser(self):
-        # TODO: Check if Appium is running else set it in the required mode
-        self.driver = self._create_webdriver()
-        self.driver.implicitly_wait(5)
-        self.driver.maximize_window()
-        if self.baseurl is not None:
-            self.goto_url(self.baseurl)
+    def get_default_desiredcapabilities(self):
+        raise NotImplementedError
 
     def _create_webdriver(self):
-        return WebDriver(self._appium_cmd_executor, self.des_cap)
+        try:
+            return webdriver.Remote(self.selenium_grid_hub_url, self._desired_caps)
+        except Exception, e:
+            self.logger.debug("Failed to create webdriver instance, Exception:" + str(e.message))
+            raise
 
-    def goto_url(self, url):
-        self.driver.get(url)
+    def init_driver(self):
+        self.driver = self._create_webdriver()
+        # TODO: create timeout default class
+        self.driver.set_page_load_timeout(DefaultTimeouts.PAGE_LOAD_TIMEOUT)
+        self.driver.implicitly_wait(5)
 
-    def get_current_url(self):
-        return self.driver.current_url
+    def get_browser_version(self):
+        return self.driver.capabilities['version']
+
+    def get_browser_platform(self):
+        return self.driver.capabilities['platform']

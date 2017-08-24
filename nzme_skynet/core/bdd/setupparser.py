@@ -16,7 +16,7 @@ def get_browser_options(config):
 
 def get_mobile_andorid_options(config):
     mobile_local_options = {'platform': config.get('ANDROID', 'platform'),
-                            'appium_url': config.get('ANDROID', 'appium_url'),
+                            'appium_url': config.get('CLOUD', 'selenium_grid_hub'),
                             'platformVersion': config.get('ANDROID', 'platformVersion'),
                             'version': config.get('ANDROID', 'version'),
                             'platformName': config.get('ANDROID', 'platformName'),
@@ -33,7 +33,7 @@ def get_mobile_andorid_options(config):
 
 def get_mobile_ios_options(config):
     mobile_local_options = {'platform': config.get('IOS', 'platform'),
-                            'appium_url': config.get('IOS', 'appium_url'),
+                            'appium_url': config.get('CLOUD', 'selenium_grid_hub'),
                             'platformName': config.get('IOS', 'platformName'),
                             'platformVersion': config.get('IOS', 'platformVersion'),
                             'deviceName': config.get('IOS', 'deviceName'),
@@ -41,6 +41,19 @@ def get_mobile_ios_options(config):
                             'bundleId': config.get('IOS', 'bundleId'),
                             'appActivity': config.get('IOS', 'appActivity'),
                             'fullReset': config.get('IOS', 'fullReset')
+                            }
+    return mobile_local_options
+
+
+def get_android_chrome_options(config):
+    mobile_local_options = {
+                            'selenium_grid_hub': config.get('CLOUD', 'selenium_grid_hub'),
+                            'platform': config.get('ANDROID', 'platform'),
+                            'platformName': config.get('ANDROID', 'platformName'),
+                            'deviceName': config.get('ANDROID', 'deviceName'),
+                            'browserName': config.get('ANDROID_CHROME', 'browser'),
+                            'version': config.get('ANDROID', 'version'),
+                            "chromeOptions": {'args': [config.get('ANDROID_CHROME', 'chromeoptions')]}
                             }
     return mobile_local_options
 
@@ -58,6 +71,7 @@ class Config(object):
     # TODO - build up mobile options.
     MOBILE_ANDROID_OPTIONS = get_mobile_andorid_options(config)
     MOBILE_IOS_OPTIONS = get_mobile_ios_options(config)
+    ANDROID_CHROME_OPTIONS = get_android_chrome_options(config)
 
     ENV_BASE_URL = config.get('ENVIRONMENT', 'baseurl')
     ENV_IS_LOCAL = config.getboolean('ENVIRONMENT', 'local')

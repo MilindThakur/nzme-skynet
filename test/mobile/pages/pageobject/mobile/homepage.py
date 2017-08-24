@@ -1,4 +1,3 @@
-from selenium.webdriver.common.by import By
 from test.mobile.pages.componentobject.navigationbar import NavigationBar
 
 import logging
