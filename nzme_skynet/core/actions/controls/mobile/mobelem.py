@@ -8,10 +8,10 @@ class MobElem(Component):
         super(MobElem, self).__init__(driver, locator, by)
 
     def get_index(self):
-        return self.get_attr("index")
+        return int(self.get_attr("index"))
 
     def get_text(self):
-        return self.get_attr("text")
+        return str(self.get_attr("text"))
 
     def set_text(self,text):
         self.clear_text()
@@ -21,16 +21,19 @@ class MobElem(Component):
         return self.driver.find_element(by=self.by, value=self.locator).set_text("")
 
     def get_class(self):
-        return self.get_attr("class")
+        return str(self.get_attr("class"))
 
     def get_package(self):
-        return self.get_attr("package")
+        return str(self.get_attr("package"))
 
     def get_content_desc(self):
-        return self.get_attr("content-desc")
+        return str(self.get_attr("content-desc"))
 
     def is_checkable(self):
-        return self.get_attr("checkable")
+        if str(self.get_attr("checkeable")) == 'false':
+            return False
+        else:
+            return True
 
     def is_checked(self):
         if str(self.get_attr("checked")) == 'false':
@@ -39,28 +42,46 @@ class MobElem(Component):
             return True
 
     def is_clickable(self):
-        return self.get_attr("clickable")
+        if str(self.get_attr("clickable")) == 'false':
+            return False
+        else:
+            return True
 
     def is_long_clickable(self):
-        return self.get_attr("long-clickable")
-
-    def is_enabled(self):
-        return self.get_attr("enabled")
+        if str(self.get_attr("long-clickable")) == 'false':
+            return False
+        else:
+            return True
 
     def is_focused(self):
-        return self.get_attr("focused")
+        if str(self.get_attr("focused")) == 'false':
+            return False
+        else:
+            return True
 
     def is_focusable(self):
-        return self.get_attr("focusable")
+        if str(self.get_attr("focusable")) == 'false':
+            return False
+        else:
+            return True
 
     def is_scrollable(self):
-        return self.get_attr("scrollable")
+        if str(self.get_attr("scrollable")) == 'false':
+            return False
+        else:
+            return True
 
     def is_password(self):
-        return self.get_attr("password")
+        if str(self.get_attr("password")) == 'false':
+            return False
+        else:
+            return True
 
     def is_selected(self):
-        return self.get_attr("selected")
+        if str(self.get_attr("selected")) == 'false':
+            return False
+        else:
+            return True
     #
     # def get_location(self):
     #     self.X = self.get_attr("bounds")

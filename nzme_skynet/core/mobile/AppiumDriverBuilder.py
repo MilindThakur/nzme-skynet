@@ -18,7 +18,7 @@ class AppiumDriverBuilder(object):
 
     def _construct_driver(self):
         try:
-            if self.desired_caps['browserName'] is not None:
+            if 'browserName' in self.desired_caps:
                 return Mobilebrowser(self.desired_caps)
             if self._driverType == DriverTypes.ANDROID:
                 return AndroidDriver(self.desired_caps)

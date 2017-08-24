@@ -10,7 +10,7 @@ class MobileApp(object):
     action_class = None
 
     def __init__(self, desired_caps):
-        self.appiumUrl = desired_caps['appium_url']
+        self.selenium_grid_hub = desired_caps['selenium_grid_hub']
         self.driver = None
         self.action = None
         self.logger = logging.getLogger(__name__)

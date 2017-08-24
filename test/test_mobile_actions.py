@@ -10,7 +10,7 @@ class MobileActionsTestCase(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.cap = {"deviceName": "Android Emulator",
-               "appium_url": "http://localhost:4444/wd/hub",
+               "selenium_grid_hub": "http://localhost:4444/wd/hub",
                "platform": "android",
                "platformName": "Android",
                "app": "/root/tmp/app-debug.apk",
@@ -22,7 +22,7 @@ class MobileActionsTestCase(unittest.TestCase):
 
     def test_driver_type(self):
         self.assertEqual(str(self.app.get_driver_type()), self.cap['platform'])
-        self.assertEqual(self.app.appiumUrl, self.cap['appium_url'])
+        self.assertEqual(self.app.selenium_grid_hub, self.cap['selenium_grid_hub'])
 
     def test_driver_can_get_session(self):
         assert self.app.get_driver().session_id is not None

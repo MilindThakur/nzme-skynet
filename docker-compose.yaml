@@ -79,6 +79,8 @@ services:
     container_name: Samsung_Galaxy_S6_Chrome
     hostname: Samsung_Galaxy_S6_Chrome
     privileged: true
+    volumes:
+      - ./test/mobile/testapps:/root/tmp
     # Increase scale number if needed
     # scale: 1
     ports:

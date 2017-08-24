@@ -19,6 +19,9 @@ class Mobilebrowser(Browser):
     def get_browser_type(self):
         return self.driver.name
 
+    def get_driver_type(self):
+        return self.driver.desired_capabilities['platform']
+
     def get_default_desiredcapabilities(self):
         raise NotImplementedError
 

@@ -9,6 +9,7 @@ DOCKER_SELENIUM_URL = "http://localhost:4444/wd/hub"
 def driver_setup(request):
     cap = {
         "browserName": request.param,
+        "platformName":"",
         "platform": 'LINUX',
         "version": '',
         "javascriptEnabled": True

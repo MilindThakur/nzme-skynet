@@ -16,7 +16,7 @@ def get_browser_options(config):
 
 def get_mobile_andorid_options(config):
     mobile_local_options = {'platform': config.get('ANDROID', 'platform'),
-                            'appium_url': config.get('CLOUD', 'selenium_grid_hub'),
+                            'selenium_grid_hub': config.get('CLOUD', 'selenium_grid_hub'),
                             'platformVersion': config.get('ANDROID', 'platformVersion'),
                             'version': config.get('ANDROID', 'version'),
                             'platformName': config.get('ANDROID', 'platformName'),
@@ -33,7 +33,7 @@ def get_mobile_andorid_options(config):
 
 def get_mobile_ios_options(config):
     mobile_local_options = {'platform': config.get('IOS', 'platform'),
-                            'appium_url': config.get('CLOUD', 'selenium_grid_hub'),
+                            'selenium_grid_hub': config.get('CLOUD', 'selenium_grid_hub'),
                             'platformName': config.get('IOS', 'platformName'),
                             'platformVersion': config.get('IOS', 'platformVersion'),
                             'deviceName': config.get('IOS', 'deviceName'),

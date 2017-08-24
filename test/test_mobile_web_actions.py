@@ -6,10 +6,11 @@ from nzme_skynet.core.app import appbuilder
 from nzme_skynet.core.browsers.web.browserTypes import BrowserTypes
 from selenium.webdriver.chrome.options import Options
 
+TEST_URL = "https://www.google.co.nz"
+DOCKER_SELENIUM_URL = "http://localhost:4444/wd/hub"
+
 
 class MobileActionsTestCase(unittest.TestCase):
-    TEST_URL = "https://www.google.co.nz"
-    DOCKER_SELENIUM_URL = "http://localhost:4444/wd/hub"
 
     @classmethod
     def setUpClass(cls):
@@ -22,18 +23,17 @@ class MobileActionsTestCase(unittest.TestCase):
                 'version': '7.1.1',
                 "chromeOptions": {"args": ["--no-first-run"]}
         }
-        cls.app = appbuilder.build_mobile_browser(cls.cap, cls.TEST_URL)
+        cls.app = appbuilder.build_mobile_browser(cls.cap, TEST_URL)
 
     def test_driver_type(self):
         self.assertEqual(str(self.app.get_driver_type()), self.cap['platform'])
-        self.assertEqual(self.app.appiumUrl, self.cap['appium_url'])
+        self.assertEqual(self.app.selenium_grid_hub_url, self.cap['selenium_grid_hub'])
 
     def test_driver_can_get_session(self):
-        assert self.app.get_driver().session_id is not None
+        assert self.app.driver.session_id is not None
 
-    # def test_browser_setup(driver_setup):
-    #     assert driver_setup.baseurl == TEST_URL
-    #     assert (TEST_URL in driver_setup.get_current_url()) is True
+    def test_browser_setup(setUpClass):
+        assert (TEST_URL in setUpClass.app.get_current_url()) is True
 
     @classmethod
     def tearDownClass(cls):
