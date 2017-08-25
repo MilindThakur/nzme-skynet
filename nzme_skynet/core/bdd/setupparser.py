@@ -69,9 +69,12 @@ class Config(object):
         BROWSER_OPTIONS['type'] = 'chrome'
 
     # TODO - build up mobile options.
-    MOBILE_ANDROID_OPTIONS = get_mobile_andorid_options(config)
-    MOBILE_IOS_OPTIONS = get_mobile_ios_options(config)
-    ANDROID_CHROME_OPTIONS = get_android_chrome_options(config)
+    if 'ANDROID' in config.sections():
+        MOBILE_ANDROID_OPTIONS = get_mobile_andorid_options(config)
+    if 'IOS' in config.sections():
+        MOBILE_IOS_OPTIONS = get_mobile_ios_options(config)
+    if 'ANDROID_CHROME' in config.sections():
+        ANDROID_CHROME_OPTIONS = get_android_chrome_options(config)
 
     ENV_BASE_URL = config.get('ENVIRONMENT', 'baseurl')
     ENV_IS_LOCAL = config.getboolean('ENVIRONMENT', 'local')
