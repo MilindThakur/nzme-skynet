@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 # set -e: exit asap if a command exits with a non-zero status
 # set -x: print each command right before it is executed
 set -xe
@@ -45,20 +44,12 @@ StartUp()
     # elgalu/selenium is mandatory requirement
     DOCKER_SELENIUM_IMAGE_COUNT=$(docker images | grep "elgalu/selenium" | wc -l)
     if [ ${DOCKER_SELENIUM_IMAGE_COUNT} -eq 0 ]; then
-        echo "Seems that docker-selenium's image has not been downloaded yet, please run 'docker pull elgalu/selenium' first"
-        exit 1
+        echo "Seems that docker-selenium's image has not been downloaded yet, lets get it."
+        docker pull elgalu/selenium
     fi
 
     # Ensure we have a clean environment
-    docker-compose -f ${COMPOSE_FILE} -p zalenium down || true
-    docker stop zalenium || true
-    docker stop Nexus_5 || true
-    docker stop Samsung_Galaxy_S6 || true
-    docker stop Samsung_Galaxy_S6_Chrome || true
-    docker rm zalenium || true
-    docker rm Nexus_5 || true
-    docker rm Samsung_Galaxy_S6 || true
-    docker rm Samsung_Galaxy_S6_Chrome || true
+    docker-compose -f ${COMPOSE_FILE} down
     rm -rf /tmp/videos
     mkdir -p /tmp/videos
 
@@ -80,7 +71,7 @@ StartUp()
 ShutDown()
 {
     # Leave a clean environment
-    docker-compose -f ${COMPOSE_FILE} -p zalenium down
+    docker-compose -f ${COMPOSE_FILE} down
 }
 
 case ${SCRIPT_ACTION} in
