@@ -9,7 +9,7 @@ def get_browser_options(config):
                              'version': config.get('BROWSER', 'version'),
                              'os': config.get('BROWSER', 'os'),
                              'windowwidth': config.get('BROWSER', 'windowwidth'),
-                             'windowheight': config.get('BROWSER', 'windowheight'),
+                             'windowheight': config.get('BROWSER', 'windowheight')
                              }
     return browser_local_options
 
