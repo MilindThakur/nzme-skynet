@@ -1,6 +1,6 @@
 from test.mobile.pages.componentobject.navigationbar import NavigationBar
-
 import logging
+from appium.webdriver.common.mobileby import MobileBy
 
 
 class HomePage(object):
@@ -10,16 +10,16 @@ class HomePage(object):
 
         # IWebElements
 
-        self.title = self.app.get_actions().mobelement("HomeMessage")
-        self.home_message = self.app.get_actions().mobelement("HomeMessage")
+        self.title = self.app.get_actions().mobelement(MobileBy.ID, "HomeMessage")
+        self.home_message = self.app.get_actions().mobelement(MobileBy.ID, "HomeMessage")
         self._navigation_bar = None
-        self.radiobutton_on = self.app.get_actions().mobelement("radioButton_on")
-        self.radiobutton_off = self.app.get_actions().mobelement("radioButton_off")
-        self.text_label_test = self.app.get_actions().mobelement("textView_test")
-        self.enter_text_test = self.app.get_actions().mobelement("entertext_name_test")
-        self.toggleButton_test= self.app.get_actions().mobelement("toggleButton_test")
-        self.update_text_button = self.app.get_actions().mobelement("updateTextBoxbutton_test")
-        self.checkbox_test = self.app.get_actions().mobelement("checkBox_test")
+        self.radiobutton_on = self.app.get_actions().mobelement(MobileBy.ID, "radioButton_on")
+        self.radiobutton_off = self.app.get_actions().mobelement(MobileBy.ID, "radioButton_off")
+        self.text_label_test = self.app.get_actions().mobelement(MobileBy.ID, "textView_test")
+        self.enter_text_test = self.app.get_actions().mobelement(MobileBy.ID, "entertext_name_test")
+        self.toggleButton_test= self.app.get_actions().mobelement(MobileBy.ID, "toggleButton_test")
+        self.update_text_button = self.app.get_actions().mobelement(MobileBy.ID, "updateTextBoxbutton_test")
+        self.checkbox_test = self.app.get_actions().mobelement(MobileBy.ID, "checkBox_test")
 
 
     @property

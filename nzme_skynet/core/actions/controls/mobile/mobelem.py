@@ -1,14 +1,16 @@
 # coding=utf-8
-from selenium.webdriver.common.by import By
+from appium.webdriver.common.mobileby import MobileBy
+from appium.webdriver.common.mobileby import By
 from nzme_skynet.core.actions.controls.component import Component
 
 
 class MobElem(Component):
-    def __init__(self, driver, locator, by=By.CSS_SELECTOR):
+    def __init__(self, driver, locator, by):
         super(MobElem, self).__init__(driver, locator, by)
 
-    def get_index(self):
-        return int(self.get_attr("index"))
+    def click(self):
+        if self.will_be_visible():
+            self.driver.find_element(by=self.by, value=self.locator).click()
 
     def get_text(self):
         return str(self.get_attr("text"))

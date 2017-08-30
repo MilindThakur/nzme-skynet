@@ -14,6 +14,7 @@ class AppiumDriverBuilder(object):
     def build(self):
         driver = self._construct_driver()
         driver.init_driver()
+
         return driver
 
     def _construct_driver(self):

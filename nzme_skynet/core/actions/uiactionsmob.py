@@ -1,6 +1,8 @@
 # coding=utf-8
 from nzme_skynet.core.actions.baseuiactions import BaseUIActions
-from selenium.webdriver.common.by import By
+
+from appium.webdriver.common.mobileby import MobileBy
+from appium.webdriver.common.mobileby import By
 
 
 
@@ -17,7 +19,7 @@ class UIActionsMob(BaseUIActions):
     def element(self, by, locator):
         return super(UIActionsMob, self).element(by, locator)
 
-    def mobelement(self,locator, by=By.ID):
+    def mobelement(self, by, locator):
         return super(UIActionsMob,self).mobelement(by, locator)
 
     def image(self, by, locator):

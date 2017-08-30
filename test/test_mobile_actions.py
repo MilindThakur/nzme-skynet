@@ -1,6 +1,7 @@
 # coding=utf-8
 import unittest
 from nzme_skynet.core.app import appbuilder
+from appium.webdriver.common.mobileby import MobileBy
 
 
 class MobileActionsTestCase(unittest.TestCase):
@@ -31,31 +32,31 @@ class MobileActionsTestCase(unittest.TestCase):
         self.assertTrue(self.app.is_app_installed())
 
     def can_get_element(self):
-        self.assertNotEquals(None, self.app.get_actions().mobelement("navigation_dashboard"))
+        self.assertNotEquals(None, self.app.get_actions().mobelement(MobileBy.ID, "navigation_dashboard"))
 
     def test_can_tap_on_element(self):
         initial_page_source = self.app.get_page_source()
-        self.app.get_actions().mobelement("navigation_dashboard").click()
+        self.app.get_actions().mobelement(MobileBy.ID, "navigation_dashboard").click()
         self.assertNotEquals(initial_page_source, self.app.get_page_source(), "Page source did not change after "
                                                                               "element was clicked")
 
     def test_can_get_attributes(self):
-        checkbox = self.app.get_actions().mobelement("checkBox_test")
+        checkbox = self.app.get_actions().mobelement(MobileBy.ID, "checkBox_test")
         self.assertEqual("false", checkbox.get_attr("checked"))
 
     def test_action_textinput(self):
-        txt_input = self.app.get_actions().mobelement("entertext_name_test")
+        txt_input = self.app.get_actions().mobelement(MobileBy.ID, "entertext_name_test")
         txt_input.set_text("")
         self.assertEqual(txt_input.get_text(), "")
         txt_input.set_value("something")
         self.assertEqual(txt_input.get_text(), "something")
 
     def test_action_button(self):
-        submit_btn = self.app.get_actions().mobelement("toggleButton_test")
-        self.assertEqual(submit_btn.get_text(), "OFF")
+        submit_btn = self.app.get_actions().mobelement(MobileBy.ID, "toggleButton_test")
+        self.assertEqual(submit_btn.get_text().lower(), "off")
 
     def test_action_checkbox(self):
-        agree_chk = self.app.get_actions().mobelement("checkBox_test")
+        agree_chk = self.app.get_actions().mobelement(MobileBy.ID, "checkBox_test")
         self.assertFalse(agree_chk.is_checked())
         agree_chk.click()
         self.assertTrue(agree_chk.is_checked())

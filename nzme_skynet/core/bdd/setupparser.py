@@ -16,6 +16,7 @@ def get_browser_options(config):
 
 def get_mobile_andorid_options(config):
     mobile_local_options = {'platform': config.get('ANDROID', 'platform'),
+                            # 'automationName': 'uiautomator2',
                             'selenium_grid_hub': config.get('CLOUD', 'selenium_grid_hub'),
                             'platformVersion': config.get('ANDROID', 'platformVersion'),
                             'version': config.get('ANDROID', 'version'),

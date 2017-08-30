@@ -1,10 +1,6 @@
 # coding=utf-8
 import unittest
-
-from selenium.webdriver.common.by import By
 from nzme_skynet.core.app import appbuilder
-from nzme_skynet.core.browsers.web.browserTypes import BrowserTypes
-from selenium.webdriver.chrome.options import Options
 
 TEST_URL = "https://www.google.co.nz"
 DOCKER_SELENIUM_URL = "http://localhost:4444/wd/hub"
