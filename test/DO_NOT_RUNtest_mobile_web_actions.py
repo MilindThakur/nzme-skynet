@@ -1,6 +1,12 @@
 # coding=utf-8
 import unittest
 from nzme_skynet.core.app import appbuilder
+'''
+This cannot be run until the grid matcher in the zalenium image has been updated to match on multiple,
+opposed to match on any capability. This causes any request for 'chrome' to be matched to either desktop or mobile
+despite the platform being specified.
+'''
+
 
 TEST_URL = "https://www.google.co.nz"
 DOCKER_SELENIUM_URL = "http://localhost:4444/wd/hub"
