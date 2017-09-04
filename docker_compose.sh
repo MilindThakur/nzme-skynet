@@ -49,7 +49,7 @@ StartUp()
     fi
 
     # Ensure we have a clean environment
-    docker-compose -f ${COMPOSE_FILE} down
+    docker-compose -f ${COMPOSE_FILE} -p zalenium down
     rm -rf /tmp/videos
     mkdir -p /tmp/videos
 
@@ -71,7 +71,7 @@ StartUp()
 ShutDown()
 {
     # Leave a clean environment
-    docker-compose -f ${COMPOSE_FILE} down
+    docker-compose -f ${COMPOSE_FILE} -p zalenium down
 }
 
 case ${SCRIPT_ACTION} in
