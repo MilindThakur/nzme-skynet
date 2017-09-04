@@ -8,6 +8,7 @@ from selenium.common.exceptions import TimeoutException
 from nzme_skynet.core.actions.enums.timeouts import DefaultTimeouts
 from nzme_skynet.core.utils import js_wait
 
+
 class Browser(object):
     action_class = None
 
