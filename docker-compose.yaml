@@ -16,7 +16,6 @@ services:
       - /usr/bin/docker:/usr/bin/docker
     ports:
       - 4444:4444
-      - 5556:5555
     command: >
       start --chromeContainers 0
             --firefoxContainers 0
@@ -43,13 +42,11 @@ services:
     hostname: Nexus_5
     privileged: true
     volumes:
-      - ./test/mobile/testapps:/root/tmp
-    # Increase scale number if needed
-    # scale: 1
+      - $PWD/test/mobile/testapps:/root/tmp
     ports:
       - 6080
     depends_on:
-      - "zalenium"
+      - zalenium
     environment:
       - DEVICE=Nexus 5
       - CONNECT_TO_GRID=True
@@ -61,13 +58,11 @@ services:
     hostname: Samsung_Galaxy_S6
     privileged: true
     volumes:
-      - ./test/mobile/testapps:/root/tmp
-    # Increase scale number if needed
-    # scale: 1
+      - $PWD/test/mobile/testapps:/root/tmp
     ports:
       - 6080
     depends_on:
-      - "zalenium"
+      - zalenium
     environment:
       - DEVICE=Samsung Galaxy S6
       - CONNECT_TO_GRID=True
@@ -80,13 +75,11 @@ services:
 #    hostname: Samsung_Galaxy_S6_Chrome
 #    privileged: true
 #    volumes:
-#      - ./test/mobile/testapps:/root/tmp
-#    # Increase scale number if needed
-#    # scale: 1
+#      - $PWD/test/mobile/testapps:/root/tmp
 #    ports:
 #      - 6080
 #    depends_on:
-#      - "zalenium"
+#      - zalenium
 #    environment:
 #      - DEVICE=Samsung Galaxy S6
 #      - CONNECT_TO_GRID=True
