@@ -85,16 +85,18 @@ StartUp()
         exit 8
     fi
 
-    # Wait for Appium Emulator
-    if ! mtimeout --foreground "2m" bash -c WaitAppiumStarted; then
-        echo "Appium Node failed to join grid after 2 minutes, failing..."
-        exit 8
-    fi
-
-    echo "Wait for android emulator to be ready"
-    sleep 20s
-
-    wait_for_emulator
+#   Enable when testing on Android docker image in the docker-compose-yaml
+#   Requires machine to have hardware acceleration
+#    # Wait for Appium Emulator
+#    if ! mtimeout --foreground "2m" bash -c WaitAppiumStarted; then
+#        echo "Appium Node failed to join grid after 2 minutes, failing..."
+#        exit 8
+#    fi
+#
+#    echo "Wait for android emulator to be ready"
+#    sleep 20s
+#
+#    wait_for_emulator
 
     echo "Zalenium started! Ready to run some tests!"
 }
