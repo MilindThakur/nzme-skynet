@@ -36,6 +36,26 @@ WaitZaleniumStarted()
 }
 export -f WaitZaleniumStarted
 
+WaitAppiumStarted()
+{
+    DONE_MSG=":4723"
+    while ! docker logs zalenium | grep "${DONE_MSG}" >/dev/null; do
+        echo -n '.'
+        sleep 1
+    done
+}
+export -f WaitAppiumStarted
+
+wait_for_emulator()
+{
+    local bootanim=""
+    until [[ "$bootanim" =~ "1" ]]; do
+       bootanim=`docker exec Nexus_5 adb -e shell getprop dev.bootcomplete 2>&1`
+       echo "Waiting for emulator to start...$bootanim"
+       sleep 1
+    done
+}
+
 StartUp()
 {
     # Avoid "An HTTP request took too long to complete." error
@@ -64,6 +84,17 @@ StartUp()
         echo "Zalenium failed to start after 2 minutes, failing..."
         exit 8
     fi
+
+    # Wait for Appium Emulator
+    if ! mtimeout --foreground "2m" bash -c WaitAppiumStarted; then
+        echo "Appium Node failed to join grid after 2 minutes, failing..."
+        exit 8
+    fi
+
+    echo "Wait for android emulator to be ready"
+    sleep 20s
+
+    wait_for_emulator
 
     echo "Zalenium started! Ready to run some tests!"
 }
