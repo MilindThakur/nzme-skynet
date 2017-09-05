@@ -1,8 +1,6 @@
 # coding=utf-8
 import unittest
 
-import time
-
 from nzme_skynet.core.app import appbuilder
 from appium.webdriver.common.mobileby import MobileBy
 
@@ -13,7 +11,6 @@ class MobileActionsTestCase(unittest.TestCase):
     # if running locally target ./test/mobile/testapps/app-debug.apk
     @classmethod
     def setUpClass(cls):
-        time.sleep(20000)
         cls.cap = {"deviceName": "Android Emulator",
                "selenium_grid_hub": "http://localhost:4444/wd/hub",
                "platform": "android",

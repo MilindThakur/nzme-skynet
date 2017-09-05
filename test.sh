@@ -3,7 +3,8 @@
 cd test/testserver
 python -m SimpleHTTPServer &>/dev/null &
 cd ../../
-sleep 2
+# Wait for the emulators to start
+sleep 20
 py.test -v test
 pkill -f SimpleHTTPServer
 ./docker_compose.sh stop

@@ -52,21 +52,21 @@ services:
       - CONNECT_TO_GRID=True
       - APPIUM=True
 
-  samsung_galaxy_6.0:
-    image: butomo1989/docker-android-x86-6.0
-    container_name: Samsung_Galaxy_S6
-    hostname: Samsung_Galaxy_S6
-    privileged: true
-    volumes:
-      - $PWD/test/mobile/testapps:/root/tmp
-    ports:
-      - 6080
-    depends_on:
-      - zalenium
-    environment:
-      - DEVICE=Samsung Galaxy S6
-      - CONNECT_TO_GRID=True
-      - APPIUM=true
+#  samsung_galaxy_6.0:
+#    image: butomo1989/docker-android-x86-6.0
+#    container_name: Samsung_Galaxy_S6
+#    hostname: Samsung_Galaxy_S6
+#    privileged: true
+#    volumes:
+#      - $PWD/test/mobile/testapps:/root/tmp
+#    ports:
+#      - 6080
+#    depends_on:
+#      - zalenium
+#    environment:
+#      - DEVICE=Samsung Galaxy S6
+#      - CONNECT_TO_GRID=True
+#      - APPIUM=true
 
 #  # Chrome browser exists only for version 7.0 and 7.1.1
 #  samsung_galaxy_S6_Chrome:
