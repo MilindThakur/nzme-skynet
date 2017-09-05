@@ -50,8 +50,8 @@ StartUp()
 
     # Ensure we have a clean environment
     docker-compose -f ${COMPOSE_FILE} -p zalenium down
-    rm -rf /tmp/videos
-    mkdir -p /tmp/videos
+#    rm -rf /tmp/videos
+#    mkdir -p /tmp/videos
 
     # Start in daemon mode
     docker-compose -f ${COMPOSE_FILE} -p zalenium up --force-recreate -d
