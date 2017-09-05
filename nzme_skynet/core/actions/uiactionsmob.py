@@ -1,10 +1,6 @@
 # coding=utf-8
 from nzme_skynet.core.actions.baseuiactions import BaseUIActions
 
-from appium.webdriver.common.mobileby import MobileBy
-from appium.webdriver.common.mobileby import By
-
-
 
 class UIActionsMob(BaseUIActions):
     def __init__(self, driver):

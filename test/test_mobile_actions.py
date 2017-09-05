@@ -1,6 +1,8 @@
 # coding=utf-8
 import unittest
 
+import time
+
 from nzme_skynet.core.app import appbuilder
 from appium.webdriver.common.mobileby import MobileBy
 
@@ -11,6 +13,7 @@ class MobileActionsTestCase(unittest.TestCase):
     # if running locally target ./test/mobile/testapps/app-debug.apk
     @classmethod
     def setUpClass(cls):
+        time.sleep(20)
         cls.cap = {"deviceName": "Android Emulator",
                "selenium_grid_hub": "http://localhost:4444/wd/hub",
                "platform": "android",
@@ -42,7 +45,7 @@ class MobileActionsTestCase(unittest.TestCase):
 
     def test_can_get_attributes(self):
         checkbox = self.app.get_actions().mobelement(MobileBy.ID, "checkBox_test")
-        self.assertEqual("false", checkbox.get_attr("checked"))
+        self.assertFalse(checkbox.is_checked())
 
     def test_action_textinput(self):
         txt_input = self.app.get_actions().mobelement(MobileBy.ID, "entertext_name_test")
