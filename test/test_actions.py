@@ -26,6 +26,22 @@ class ActionsTestCase(unittest.TestCase):
         self.assertEqual(self.app.get_browser_type(), BrowserTypes.PHANTOM_JS)
         self.assertEqual(self.app.baseurl, self.TEST_URL)
 
+    def test_get_window_handles(self):
+        self.assertNotEqual(None, self.app.get_window_handles())
+        self.assertEqual(1, len(self.app.get_window_handles()))
+
+    def test_switch_window_handles(self):
+        new_page_text_link = self.app.get_actions().textlink(By.LINK_TEXT, "new_page")
+        new_page_handle = self.app.get_window_handles()[0]
+        new_page_text_link.click()
+        self.assertEqual(2, len(self.app.get_window_handles()))
+        self.app.switch_to_newest_window()
+        self.assertNotEqual(new_page_handle, self.app.get_current_window_handle())
+        self.app.driver.close()
+        self.assertEqual(1, len(self.app.get_window_handles()))
+        self.app.switch_to_oldest_window()
+        self.assertEqual(new_page_handle, self.app.get_current_window_handle())
+
     def test_action_textinput(self):
         txt_input = self.app.get_actions().textinput(By.NAME, "firstname")
         self.assertEqual(txt_input.get_value(), "")

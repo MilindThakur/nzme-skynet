@@ -57,10 +57,12 @@ setup(
         'faker',
         'browsermob-proxy',
         'haralyzer'
+        'Appium-Python-Client',
+        'faker'
     ],
     classifiers=[
         "Development Status :: ",
-        "Environment :: Web Environment",
+        "Environment :: Web/mobile Environment",
         "Intended Audience :: Developers, Testers",
         "Operating System :: OS Independent",
         "Programming Language :: Python :: 2.7",

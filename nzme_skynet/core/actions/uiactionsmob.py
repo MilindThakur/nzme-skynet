@@ -1,5 +1,6 @@
 # coding=utf-8
 from nzme_skynet.core.actions.baseuiactions import BaseUIActions
+from nzme_skynet.core.actions.controls.mobelem import MobElem
 
 
 class UIActionsMob(BaseUIActions):
@@ -14,6 +15,9 @@ class UIActionsMob(BaseUIActions):
 
     def element(self, by, locator):
         return super(UIActionsMob, self).element(by, locator)
+
+    def mobelement(self, by, locator):
+        return MobElem(self.driver, locator, by)
 
     def image(self, by, locator):
         return super(UIActionsMob, self).image(by, locator)
@@ -35,3 +39,4 @@ class UIActionsMob(BaseUIActions):
 
     def text(self, by, locator):
         return super(UIActionsMob, self).text(by, locator)
+

@@ -6,14 +6,17 @@
 * Out of box integration with cloud testing (e.g. Sauce Labs)
 * Plugins to query database, run REST api calls and load tests
 * Support for BDD
+* Support for Mobile app testing, see [Mobile app readme](docs/MOBILEREADME.md)
 
 ## **Setup instructions**
 
-### **Install pip, web browsers**
+### **Local install (non docker)** 
+### **Install pip, web browsers, Emulators**
 * [Follow these instructions](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/requirements_installation.md) to install pip, git, virtualenv/virtualenvwrapper
 * Download [Chrome browser](https://www.google.com/chrome/browser/desktop/index.html) and [Chrome Driver](https://sites.google.com/a/chromium.org/chromedriver/)
 * Download Firefox. Firefox > v.47 requires [Marionette](https://developer.mozilla.org/en-US/docs/Mozilla/QA/Marionette) driver
 * Install [PhantomJS](http://phantomjs.org/download.html) (headless browser)
+* Install [mobile dependencies] 
 
 ### **Clone Skynet automation repo**
 ```bash
@@ -52,10 +55,7 @@ py.text -q <test_name.py>
 We use a docker based on-demand Selenium Grid Infrastructure called [Zalenium](https://github.com/zalando/zalenium)
 ### **Prerequisites**
 * Docker and docker-compose is installed
-* Grab the [docker-selenium](https://github.com/elgalu/docker-selenium) image
- ```bash
-docker pull elgalu/selenium
-```
+
 ### **Run it**
 * To start the hub
 ```bash
@@ -89,7 +89,7 @@ To run the tests in cloud (grid):
 The package includes scripts to be able to run from commandline
 
 ### **Screenshot utility**
-Allows taking screenshots of the webpages across multiple devices
+Allows taking screenshots of the webpages across multiple devices (uses phandtom.js)
 ```bash
 $ pip install nzme-skynet
 $ nzme-screenshots -h
@@ -181,6 +181,7 @@ $ nzme-behave-parallel -p 4 -t prod -D local=false -D type=firefox
 
 # Change Log
 ```bash
+0.2.20  Add support for running Android app and browser tests using appium
 0.2.19  Fix running BDD scearios parallel with multiple tags and defines
 0.2.18  Fix running BDD scearios parallel with multiple tags 
 0.2.17  Add support for running BDD tests in parallel

@@ -8,3 +8,5 @@ class BrowserTypes(object):
     ANDROID_BROWSER = "androidbrowser"
     IOS_BROWSER = "iosbrowser"
     REMOTE = "remote"
+    ANDROID = "android"
+    IOS = "ios"

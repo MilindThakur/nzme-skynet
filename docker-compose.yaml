@@ -16,7 +16,6 @@ services:
       - /usr/bin/docker:/usr/bin/docker
     ports:
       - 4444:4444
-      - 5555:5555
     command: >
       start --chromeContainers 0
             --firefoxContainers 0
@@ -36,3 +35,38 @@ services:
       - BROWSER_STACK_KEY
       - TESTINGBOT_KEY
       - TESTINGBOT_SECRET
+
+# Enable for machines that have hardware acceleration enabled
+#  nexus_7.1.1:
+#    image: butomo1989/docker-android-x86-7.1.1
+#    container_name: Nexus_5
+#    hostname: Nexus_5
+#    privileged: true
+#    volumes:
+#      - $PWD/test/mobile/testapps:/root/tmp
+#    ports:
+#      - 6080
+#    depends_on:
+#      - zalenium
+#    environment:
+#      - DEVICE=Nexus 5
+#      - CONNECT_TO_GRID=True
+#      - APPIUM=True
+
+#  # Chrome browser exists only for version 7.0 and 7.1.1
+#  samsung_galaxy_S6_Chrome:
+#    image: butomo1989/docker-android-x86-7.1.1
+#    container_name: Samsung_Galaxy_S6_Chrome
+#    hostname: Samsung_Galaxy_S6_Chrome
+#    privileged: true
+#    volumes:
+#      - $PWD/test/mobile/testapps:/root/tmp
+#    ports:
+#      - 6080
+#    depends_on:
+#      - zalenium
+#    environment:
+#      - DEVICE=Samsung Galaxy S6
+#      - CONNECT_TO_GRID=True
+#      - MOBILE_WEB_TEST=True
+#      - APPIUM=True

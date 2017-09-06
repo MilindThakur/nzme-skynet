@@ -17,4 +17,4 @@ class RemoteBrowserBuilder(object):
         return browser
 
     def _construct_remote_browser(self):
-        return RemoteBrowser(self.command_executor,  self.desired_capabilities, self.base_url,)
+        return RemoteBrowser(self.command_executor,  self.desired_capabilities, self.base_url)

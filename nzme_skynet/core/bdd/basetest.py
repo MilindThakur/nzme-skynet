@@ -12,6 +12,7 @@ import re
 from log import Logger
 from nzme_skynet.core.app import appbuilder
 from setupparser import Config
+from selenium.common.exceptions import WebDriverException
 
 
 def before_all(context):
@@ -80,25 +81,42 @@ def before_scenario(context, scenario):
             raise
         context.app = None
 
-    # Build capabilities
-    cap = {
-        "browserName": Config.BROWSER_OPTIONS['type'],
-        "platform": Config.BROWSER_OPTIONS['os'],
-        "version": '' if 'latest' in Config.BROWSER_OPTIONS['version'] else Config.BROWSER_OPTIONS['version']
-    }
-
-    # Build the app instance
-    if 'api' not in scenario.tags:
-        try:
-            if Config.ENV_IS_LOCAL:
-                context.app = appbuilder.build_desktop_browser(Config.BROWSER_OPTIONS, Config.ENV_BASE_URL)
+    # Build the app instancetry:
+    tags = str(context.config.tags)
+    try:
+        if 'api' not in tags:
+            if 'android' in tags or 'ios' in tags:
+                if 'mobile-android' in tags:
+                    context.app = appbuilder.build_appium_driver(Config.MOBILE_ANDROID_OPTIONS)
+                if 'android-chrome' in tags:
+                    context.app = appbuilder.build_mobile_browser(Config.ANDROID_CHROME_OPTIONS)
+                if 'mobile-ios' in tags:
+                    context.app = appbuilder.build_appium_driver(Config.MOBILE_IOS_OPTIONS)
             else:
-                cap['group'] = context.test_group
-                cap['name'] = context.test_name
-                context.app = appbuilder.build_docker_browser(Config.SEL_GRID_URL, cap, Config.ENV_BASE_URL)
-        except Exception, e:
-            logger.exception(e)
-            raise Exception("Failed to launch a browser")
+                # this falls back into a generic browser as a default.
+                # todo - expand for browser types chrome, firefox, safari ect
+                if Config.ENV_IS_LOCAL:
+                    context.app = appbuilder.build_desktop_browser(Config.BROWSER_OPTIONS, Config.ENV_BASE_URL)
+                else:
+                    # TODO - grab capabilities from a config
+                    # TODO - push this down into the docker_browser builder
+                    # Build capabilities
+                    cap = {
+                        "browserName": Config.BROWSER_OPTIONS['type'],
+                        "platform": Config.BROWSER_OPTIONS['os'],
+                        "version": '' if 'latest' in Config.BROWSER_OPTIONS['version'] else Config.BROWSER_OPTIONS[
+                            'version']
+                    }
+                    cap['group'] = context.test_group
+                    cap['name'] = context.test_name
+                    context.app = appbuilder.build_docker_browser(Config.SEL_GRID_URL, cap, Config.ENV_BASE_URL)
+    except Exception as e:
+        logger.exception(e)
+        if e.__class__ is WebDriverException:
+            # Should we fail the test and swallow the exception?
+            raise Exception("Webdriver returned an exception: " + str(e))
+        else:
+            raise Exception("Something broke creating a driver:" + str(e))
 
     logger.info('Start of Scenario: {}'.format(scenario.name))
 
@@ -115,7 +133,6 @@ def after_scenario(context, scenario):
 
         if scenario.status.lower == 'failed':
             _screenshot = '{}/{}_fail.png'.format(Config.LOG, scenario.name.replace(' ', '_'))
-
             # Take screen shot on a failure
             try:
                 context.app.take_screenshot_current_window(_screenshot)

@@ -5,6 +5,7 @@ pytest
 pytest-xdist
 requests
 selenium==3.3.1
+Appium-Python-Client
 faker
 browsermob-proxy
 haralyzer
