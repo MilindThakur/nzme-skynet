@@ -9,11 +9,9 @@ from nzme_skynet.core.actions.enums.timeouts import DefaultTimeouts
 from nzme_skynet.core.utils import js_wait
 
 
-
 class Browser(object):
     action_class = None
 
-    # def __init__(self, baseurl, driver=None, action=None):
     def __init__(self, baseurl):
         self.baseurl = baseurl
         self.driver = None
@@ -36,6 +34,22 @@ class Browser(object):
 
     def get_current_window_size(self):
         return self.driver.get_window_size()
+
+    def get_window_handles(self):
+        return self.driver.window_handles
+
+    def get_current_window_handle(self):
+        return self.driver.current_window_handle
+
+    def switch_to_newest_window(self):
+        return self.driver.switch_to.window(self.get_window_handles()[len(self.get_window_handles()) - 1])
+
+    def switch_to_oldest_window(self):
+        try:
+            return self.driver.switch_to.window(self.get_window_handles()[0])
+        except Exception, e:
+            self.logger.debug("Failed switching back to oldest window. " + e.message)
+            raise
 
     def refresh_page(self):
         self.driver.refresh()

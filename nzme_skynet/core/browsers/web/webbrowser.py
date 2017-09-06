@@ -28,12 +28,15 @@ class Webbrowser(Browser):
 
     def init_browser(self):
         self.driver = self._create_webdriver()
-        if self._init_browser_window_height and self._init_browser_window_width:
-            self.driver.set_window_size(self._init_browser_window_width, self._init_browser_window_height)
-        else:
-            self.logger.debug("No default window size found, setting to maximise")
-            self.driver.maximize_window()
+        # TODO - Make this more robust and not use driver.capabilities
+        if self.driver.capabilities['platform'] is not 'ANDROID':# or self.driver.capabilities['platform'] is not 'iOS'   << to be implemented with iOS
+            if self._init_browser_window_height and self._init_browser_window_width:
+                self.driver.set_window_size(self._init_browser_window_width, self._init_browser_window_height)
+            else:
+                self.logger.debug("No default window size found, setting to maximise")
+                self.driver.maximize_window()
         # TODO: create timeout default class
+        self.driver.set_page_load_timeout(DefaultTimeouts.PAGE_LOAD_TIMEOUT)
         self.driver.set_page_load_timeout(DefaultTimeouts.PAGE_LOAD_TIMEOUT)
         self.driver.implicitly_wait(5)
         if self.baseurl is not None:

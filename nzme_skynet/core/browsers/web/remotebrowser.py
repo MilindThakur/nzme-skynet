@@ -7,6 +7,7 @@ from nzme_skynet.core.browsers.web.webbrowser import Webbrowser
 
 
 class RemoteBrowser(Webbrowser):
+
     def __init__(self, command_executor, des_cap, base_url):
         super(RemoteBrowser, self).__init__(base_url)
         self.command_executor = command_executor

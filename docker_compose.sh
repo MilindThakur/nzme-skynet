@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 # set -e: exit asap if a command exits with a non-zero status
 # set -x: print each command right before it is executed
 set -xe
@@ -37,6 +36,26 @@ WaitZaleniumStarted()
 }
 export -f WaitZaleniumStarted
 
+WaitAppiumStarted()
+{
+    DONE_MSG=":4723"
+    while ! docker logs zalenium | grep "${DONE_MSG}" >/dev/null; do
+        echo -n '.'
+        sleep 1
+    done
+}
+export -f WaitAppiumStarted
+
+wait_for_emulator()
+{
+    local bootanim=""
+    until [[ "$bootanim" =~ "1" ]]; do
+       bootanim=`docker exec Nexus_5 adb -e shell getprop dev.bootcomplete 2>&1`
+       echo "Waiting for emulator to start...$bootanim"
+       sleep 1
+    done
+}
+
 StartUp()
 {
     # Avoid "An HTTP request took too long to complete." error
@@ -45,16 +64,14 @@ StartUp()
     # elgalu/selenium is mandatory requirement
     DOCKER_SELENIUM_IMAGE_COUNT=$(docker images | grep "elgalu/selenium" | wc -l)
     if [ ${DOCKER_SELENIUM_IMAGE_COUNT} -eq 0 ]; then
-        echo "Seems that docker-selenium's image has not been downloaded yet, please run 'docker pull elgalu/selenium' first"
-        exit 1
+        echo "Seems that docker-selenium's image has not been downloaded yet, lets get it."
+        docker pull elgalu/selenium
     fi
 
     # Ensure we have a clean environment
-    docker-compose -f ${COMPOSE_FILE} -p zalenium down || true
-    docker stop zalenium || true
-    docker rm zalenium || true
-    rm -rf /tmp/videos
-    mkdir -p /tmp/videos
+    docker-compose -f ${COMPOSE_FILE} -p zalenium down
+#    rm -rf /tmp/videos
+#    mkdir -p /tmp/videos
 
     # Start in daemon mode
     docker-compose -f ${COMPOSE_FILE} -p zalenium up --force-recreate -d
@@ -67,6 +84,19 @@ StartUp()
         echo "Zalenium failed to start after 2 minutes, failing..."
         exit 8
     fi
+
+#   Enable when testing on Android docker image in the docker-compose-yaml
+#   Requires machine to have hardware acceleration
+#    # Wait for Appium Emulator
+#    if ! mtimeout --foreground "2m" bash -c WaitAppiumStarted; then
+#        echo "Appium Node failed to join grid after 2 minutes, failing..."
+#        exit 8
+#    fi
+#
+#    echo "Wait for android emulator to be ready"
+#    sleep 20s
+#
+#    wait_for_emulator
 
     echo "Zalenium started! Ready to run some tests!"
 }

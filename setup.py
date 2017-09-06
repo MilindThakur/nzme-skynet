@@ -54,11 +54,12 @@ setup(
         'pytest-xdist',
         'requests',
         'selenium==3.3.1',
+        'Appium-Python-Client',
         'faker'
     ],
     classifiers=[
         "Development Status :: ",
-        "Environment :: Web Environment",
+        "Environment :: Web/mobile Environment",
         "Intended Audience :: Developers, Testers",
         "Operating System :: OS Independent",
         "Programming Language :: Python :: 2.7",
