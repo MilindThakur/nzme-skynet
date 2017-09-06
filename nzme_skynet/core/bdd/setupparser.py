@@ -54,7 +54,8 @@ def get_android_chrome_options(config):
                             'deviceName': config.get('ANDROID', 'deviceName'),
                             'browserName': config.get('ANDROID_CHROME', 'browser'),
                             'version': config.get('ANDROID', 'version'),
-                            "chromeOptions": {'args': [config.get('ANDROID_CHROME', 'chromeoptions')]}
+                            "chromeOptions": {'args': [config.get('ANDROID_CHROME', 'chromeoptions')]},
+                            "baseUrl": config.get('ENVIRONMENT', 'baseurl')
                             }
     return mobile_local_options
 

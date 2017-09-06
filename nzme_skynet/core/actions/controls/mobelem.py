@@ -4,22 +4,23 @@ from nzme_skynet.core.actions.controls.component import Component
 
 
 class MobElem(Component):
+
     def __init__(self, driver, locator, by):
         super(MobElem, self).__init__(driver, locator, by)
 
     def click(self):
-        if self.will_be_visible():
-            self.driver.find_element(by=self.by, value=self.locator).click()
+        if self.is_currently_visible():
+            self.find_element().click()
 
     def get_text(self):
         return self.get_attr("text")
 
-    def set_text(self,text):
+    def set_text(self, text):
         self.clear_text()
-        return self.driver.find_element(by=self.by, value=self.locator).set_text(text)
+        return self.find_element().set_text(text)
 
     def clear_text(self):
-        return self.driver.find_element(by=self.by, value=self.locator).set_text("")
+        return self.find_element().set_text("")
 
     def get_class(self):
         return self.get_attr("class")

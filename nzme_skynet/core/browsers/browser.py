@@ -12,7 +12,6 @@ from nzme_skynet.core.utils import js_wait
 class Browser(object):
     action_class = None
 
-    # def __init__(self, baseurl, driver=None, action=None):
     def __init__(self, baseurl):
         self.baseurl = baseurl
         self.driver = None

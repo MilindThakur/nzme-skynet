@@ -2,7 +2,6 @@
 from nzme_skynet.core.actions.controls.button import Button
 from nzme_skynet.core.actions.controls.checkbox import Checkbox
 from nzme_skynet.core.actions.controls.elem import Elem
-from nzme_skynet.core.actions.controls.mobile.mobelem import MobElem
 from nzme_skynet.core.actions.controls.image import Image
 from nzme_skynet.core.actions.controls.radiobutton import RadioButton
 from nzme_skynet.core.actions.controls.select import SelectElem
@@ -24,9 +23,6 @@ class BaseUIActions(object):
 
     def element(self, by, locator):
         return Elem(self.driver, locator, by)
-
-    def mobelement(self, by, locator):
-        return MobElem(self.driver, locator, by)
 
     def image(self, by, locator):
         return Image(self.driver, locator, by)

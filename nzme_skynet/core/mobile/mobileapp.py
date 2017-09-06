@@ -4,19 +4,31 @@ import logging
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.common.exceptions import TimeoutException
 from nzme_skynet.core.actions.enums.timeouts import DefaultTimeouts
+from nzme_skynet.core.actions.uiactionsmob import UIActionsMob
+from appium import webdriver
 
 
 class MobileApp(object):
-    action_class = None
+    action_class = UIActionsMob
 
     def __init__(self, desired_caps):
-        self.selenium_grid_hub = desired_caps['selenium_grid_hub']
+        self._desired_caps = desired_caps
         self.driver = None
         self.action = None
         self.logger = logging.getLogger(__name__)
 
     def init_driver(self):
-        self.driver = self._create_webdriver()
+        try:
+            self.driver = webdriver.Remote(self._desired_caps['selenium_grid_hub'], self._desired_caps)
+        except Exception, e:
+            self.logger.exception("Failed to launch appium driver, Exception: {0}".format(e))
+            raise
+
+    def is_app_installed(self):
+        return self.driver.is_app_installed(self._desired_caps['appPackage'])
+
+    def get_driver_type(self):
+        return self.driver.desired_capabilities['platform']
 
     def get_actions(self):
         if not self.action:
@@ -37,7 +49,7 @@ class MobileApp(object):
         self.driver.quit()
 
     def get_current_context(self):
-        self.driver.contexts
+        return self.driver.contexts
 
     def get_current_desired_capabilities(self):
         return self.driver.desired_capabilities

@@ -2,19 +2,18 @@
 
 import logging
 from appium import webdriver
-from nzme_skynet.core.actions.uiactionsweb import UIActionsWeb
+from nzme_skynet.core.actions.uiactionsmob import UIActionsMob
 from nzme_skynet.core.browsers.browser import Browser
 from nzme_skynet.core.actions.enums.timeouts import DefaultTimeouts
 
 
-class Mobilebrowser(Browser):
-    action_class = UIActionsWeb
+class MobileBrowser(Browser):
+    action_class = UIActionsMob
 
     def __init__(self, desired_caps):
-        super(Mobilebrowser, self).__init__(desired_caps['selenium_grid_hub'])
-        self.selenium_grid_hub_url = desired_caps['selenium_grid_hub']
+        super(MobileBrowser, self).__init__(desired_caps['baseUrl'])
+        self._desired_caps = desired_caps.pop('baseUrl')
         self.logger = logging.getLogger(__name__)
-        self._desired_caps = desired_caps
 
     def get_browser_type(self):
         return self.driver.name
@@ -27,9 +26,9 @@ class Mobilebrowser(Browser):
 
     def _create_webdriver(self):
         try:
-            return webdriver.Remote(self.selenium_grid_hub_url, self._desired_caps)
+            return webdriver.Remote(self._desired_caps['selenium_grid_hub'], self._desired_caps)
         except Exception, e:
-            self.logger.debug("Failed to create webdriver instance, Exception:" + str(e.message))
+            self.logger.exception("Failed to create webdriver instance, Exception:" + str(e.message))
             raise
 
     def init_driver(self):
@@ -43,3 +42,6 @@ class Mobilebrowser(Browser):
 
     def get_browser_platform(self):
         return self.driver.capabilities['platform']
+
+    def init_browser(self):
+        raise NotImplementedError

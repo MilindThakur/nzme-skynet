@@ -1,7 +1,8 @@
 # coding=utf-8
 from appium import webdriver
 
-class IosDriver():
+
+class IosDriver(object):
     def __init__(self, desired_caps):
         self.base_url = desired_caps['appium_url']
         self.desired_caps = desired_caps

@@ -5,7 +5,7 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 from nzme_skynet.core.browsers.localbrowserbuilder import LocalBrowserBuilder
 from nzme_skynet.core.browsers.remotebrowserbuilder import RemoteBrowserBuilder
-from nzme_skynet.core.mobile.AppiumDriverBuilder import AppiumDriverBuilder
+from nzme_skynet.core.mobile.appiumdriverbuilder import AppiumDriverBuilder
 
 CAPABILITIES = {"firefox": DesiredCapabilities.FIREFOX,
                 "chrome": DesiredCapabilities.CHROME,
@@ -48,7 +48,7 @@ def build_mobile_browser(desired_cap, test_url=None):
 def build_simulator_mobile_browser():
     raise NotImplementedError
 
-# Mobile App
+
 def build_appium_driver(desired_cap):
     logger.debug("Creating Appium driver for: " + desired_cap['platform'])
     return AppiumDriverBuilder(desired_cap).build()
