@@ -181,6 +181,7 @@ $ nzme-behave-parallel -p 4 -t prod -D local=false -D type=firefox
 
 # Change Log
 ```bash
+0.2.20  Add support for running Android app and browser tests using appium
 0.2.19  Fix running BDD scearios parallel with multiple tags and defines
 0.2.18  Fix running BDD scearios parallel with multiple tags 
 0.2.17  Add support for running BDD tests in parallel
