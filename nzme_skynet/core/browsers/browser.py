@@ -58,7 +58,6 @@ class Browser(object):
         return self.driver
 
     def quit(self):
-        self.driver.close()
         self.driver.quit()
 
     def goto_url(self, url):

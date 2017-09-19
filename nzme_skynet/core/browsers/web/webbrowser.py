@@ -29,7 +29,7 @@ class Webbrowser(Browser):
     def init_browser(self):
         self.driver = self._create_webdriver()
         # TODO - Make this more robust and not use driver.capabilities
-        if self.driver.capabilities['platform'] is not 'ANDROID':# or self.driver.capabilities['platform'] is not 'iOS'   << to be implemented with iOS
+        if self.driver.capabilities['browserName']:
             if self._init_browser_window_height and self._init_browser_window_width:
                 self.driver.set_window_size(self._init_browser_window_width, self._init_browser_window_height)
             else:
@@ -37,8 +37,7 @@ class Webbrowser(Browser):
                 self.driver.maximize_window()
         # TODO: create timeout default class
         self.driver.set_page_load_timeout(DefaultTimeouts.PAGE_LOAD_TIMEOUT)
-        self.driver.set_page_load_timeout(DefaultTimeouts.PAGE_LOAD_TIMEOUT)
-        self.driver.implicitly_wait(5)
+        # self.driver.implicitly_wait(5)
         if self.baseurl is not None:
             self.goto_url(self.baseurl)
         # Any other special settings
@@ -50,4 +49,6 @@ class Webbrowser(Browser):
         return self.driver.capabilities['version']
 
     def get_browser_platform(self):
-        return self.driver.capabilities['platform']
+        # Since Selenium 3.5.0, the OS name can exist in capability 'platform' or
+        # 'platformName'
+        return self.driver.capabilities['platform'] or self.driver.capabilities['platformName']
