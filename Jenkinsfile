@@ -8,6 +8,15 @@ node {
     stage('Preparing workspace'){
         // checkout the project into workspace
         checkout scm
+
+    // prepare the virtualenv
+    if (!fileExists('.env')){
+        sh "virtualenv --no-site-packages .env"
+        }
+    sh """
+    . .env/bin/activate
+    pip install -r requirements/ci.txt
+    """
     }
 
     stage('Running tests'){
