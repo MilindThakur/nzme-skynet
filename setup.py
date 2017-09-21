@@ -56,7 +56,7 @@ setup(
         'selenium==3.5.0',
         'faker',
         'browsermob-proxy',
-        'haralyzer'
+        'haralyzer',
         'Appium-Python-Client',
         'faker'
     ],
