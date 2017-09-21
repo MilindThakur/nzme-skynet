@@ -8,7 +8,7 @@ from haralyzer import HarParser
 from selenium import webdriver
 
 
-class Har(object):
+class BrowserProxy(object):
     """
     Create HTTP Archive (har) file using browsermob-proxy. Useful for watching
     and manipulating network traffic originating from the browser.
@@ -58,6 +58,7 @@ class Har(object):
         chrome_options.add_argument("--proxy-server={0}".format(self._proxy.proxy))
         chrome_options.add_argument('--ignore-certificate-errors')
         chrome_options.add_argument('--test-type')
+        chrome_options.add_argument('headless')
         self._driver = webdriver.Chrome(chrome_options=chrome_options)
 
     def _create_grid_browser_driver(self):
