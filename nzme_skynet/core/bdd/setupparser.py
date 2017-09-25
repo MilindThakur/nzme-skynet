@@ -9,8 +9,8 @@ def get_browser_options(config):
                              'version': config.get('BROWSER', 'version'),
                              'os': config.get('BROWSER', 'os'),
                              'windowwidth': config.get('BROWSER', 'windowwidth'),
-                             'windowheight': config.get('BROWSER', 'windowheight'),
-                            }
+                             'windowheight': config.get('BROWSER', 'windowheight')
+                             }
     return browser_local_options
 
 
@@ -60,6 +60,14 @@ def get_android_chrome_options(config):
     return mobile_local_options
 
 
+def get_environment_options(config):
+    return {
+            'test_url': config.get('ENVIRONMENT', 'test_url'),
+            'local_run': config.getboolean('ENVIRONMENT', 'local_run'),
+            'grid_url': config.get('ENVIRONMENT', 'selenium_grid_hub')
+    }
+
+
 class Config(object):
     config = ConfigParser.SafeConfigParser(allow_no_value=True)
     config.read('testsetup.ini')
@@ -78,9 +86,11 @@ class Config(object):
     if 'ANDROID_CHROME' in config.sections():
         ANDROID_CHROME_OPTIONS = get_android_chrome_options(config)
 
-    ENV_BASE_URL = config.get('ENVIRONMENT', 'baseurl')
-    ENV_IS_LOCAL = config.getboolean('ENVIRONMENT', 'local')
+    ENV_OPTIONS = get_environment_options(config)
 
-    SEL_GRID_URL = config.get('CLOUD', 'selenium_grid_hub')
+    # ENV_BASE_URL = config.get('ENVIRONMENT', 'baseurl')
+    # ENV_IS_LOCAL = config.getboolean('ENVIRONMENT', 'local')
+    #
+    # SEL_GRID_URL = config.get('CLOUD', 'selenium_grid_hub')
     LOG = os.path.abspath('logs')
 

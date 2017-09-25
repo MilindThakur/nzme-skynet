@@ -181,6 +181,7 @@ $ nzme-behave-parallel -p 4 -t prod -D local=false -D type=firefox
 
 # Change Log
 ```bash
+0.2.22  Add support for runnig UI tests through a proxy
 0.2.21  Upgrade to selenium 3.5.0
 0.2.20  Add support for running Android app and browser tests using appium
 0.2.19  Fix running BDD scearios parallel with multiple tags and defines

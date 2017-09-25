@@ -36,6 +36,16 @@ services:
       - TESTINGBOT_KEY
       - TESTINGBOT_SECRET
 
+  browsermobproxy:
+    container_name: browsermobproxy
+    image: rubytester/browsermob-proxy
+    ports:
+      - 9090-9191:9090-9191
+    expose:
+      - 9090-9191
+    links:
+      - zalenium
+
 # Enable for machines that have hardware acceleration enabled
 #  nexus_7.1.1:
 #    image: butomo1989/docker-android-x86-7.1.1

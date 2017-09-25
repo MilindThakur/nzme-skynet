@@ -4,7 +4,7 @@ import unittest
 from selenium.webdriver.common.by import By
 
 from nzme_skynet.core.actions.enums.checkboxstates import CheckboxState
-from nzme_skynet.core.app import appbuilder
+from nzme_skynet.core.app.appbuilder import build_desktop_browser
 from nzme_skynet.core.browsers.web.browserTypes import BrowserTypes
 
 
@@ -19,7 +19,7 @@ class ActionsTestCase(unittest.TestCase):
             "version": '',
             "javascriptEnabled": True
         }
-        cls.app = appbuilder.build_desktop_browser(cap)
+        cls.app = build_desktop_browser(cap)
         cls.app.goto_url(cls.TEST_URL)
 
     def test_browser_type(self):

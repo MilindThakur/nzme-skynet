@@ -7,3 +7,5 @@ requests
 selenium==3.5.0
 Appium-Python-Client
 faker
+browsermob-proxy
+haralyzer

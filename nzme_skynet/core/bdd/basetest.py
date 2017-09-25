@@ -28,9 +28,9 @@ def before_all(context):
         Config.BROWSER_OPTIONS['type'] = context.config.userdata.get("type", Config.BROWSER_OPTIONS['type'])
         Config.BROWSER_OPTIONS['os'] = context.config.userdata.get("os", Config.BROWSER_OPTIONS['os'])
         Config.BROWSER_OPTIONS['version'] = context.config.userdata.get("version", Config.BROWSER_OPTIONS['version'])
+        Config.BROWSER_OPTIONS['testurl'] = context.config.userdata.get("testurl", Config.BROWSER_OPTIONS['testurl'])
 
-        Config.ENV_IS_LOCAL = context.config.userdata.getbool("local", Config.ENV_IS_LOCAL)
-        Config.ENV_BASE_URL = context.config.userdata.get("baseurl", Config.ENV_BASE_URL)
+        Config.ENV_OPTIONS['local_run'] = context.config.userdata.getbool("local_run", Config.ENV_OPTIONS['local_run'])
 
 
 def after_all(context):
@@ -95,21 +95,21 @@ def before_scenario(context, scenario):
             else:
                 # this falls back into a generic browser as a default.
                 # todo - expand for browser types chrome, firefox, safari ect
-                if Config.ENV_IS_LOCAL:
-                    context.app = appbuilder.build_desktop_browser(Config.BROWSER_OPTIONS, Config.ENV_BASE_URL)
+                if Config.ENV_OPTIONS['local_run']:
+                    context.app = appbuilder.build_desktop_browser(Config.BROWSER_OPTIONS, Config.ENV_OPTIONS['test_url'])
                 else:
                     # TODO - grab capabilities from a config
                     # TODO - push this down into the docker_browser builder
                     # Build capabilities
-                    cap = {
-                        "browserName": Config.BROWSER_OPTIONS['type'],
-                        "platform": Config.BROWSER_OPTIONS['os'],
-                        "version": '' if 'latest' in Config.BROWSER_OPTIONS['version'] else Config.BROWSER_OPTIONS[
-                            'version']
-                    }
-                    cap['group'] = context.test_group
-                    cap['name'] = context.test_name
-                    context.app = appbuilder.build_docker_browser(Config.SEL_GRID_URL, cap, Config.ENV_BASE_URL)
+                    cap = {"browserName": Config.BROWSER_OPTIONS['type'],
+                           "platform": Config.BROWSER_OPTIONS['os'],
+                           "version": '' if 'latest' in Config.BROWSER_OPTIONS['version'] else Config.BROWSER_OPTIONS[
+                               'version'],
+                           'group': context.test_group,
+                           'name': context.test_name}
+                    context.app = appbuilder.build_docker_browser(Config.ENV_OPTIONS['grid_url'],
+                                                                  cap,
+                                                                  Config.BROWSER_OPTIONS['testurl'])
     except Exception as e:
         logger.exception(e)
         if e.__class__ is WebDriverException:
