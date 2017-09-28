@@ -2,9 +2,8 @@
 import json
 import os
 from datetime import datetime
-import signal
 
-from nzme_skynet.core.browsers.localbrowserbuilder import LocalBrowserBuilder
+from nzme_skynet.core.driver.web.builder.localbrowserbuilder import LocalBrowserBuilder
 
 
 class LayoutScreenshot(object):

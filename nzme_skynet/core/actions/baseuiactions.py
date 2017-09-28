@@ -13,34 +13,34 @@ from nzme_skynet.core.actions.controls.textlink import TextLink
 
 class BaseUIActions(object):
     def __init__(self, driver):
-        self.driver = driver
+        self.__driver = driver
 
     def button(self, by, locator):
-        return Button(self.driver, locator, by)
+        return Button(self.__driver, locator, by)
 
     def checkbox(self, by, locator):
-        return Checkbox(self.driver, locator, by)
+        return Checkbox(self.__driver, locator, by)
 
     def element(self, by, locator):
-        return Elem(self.driver, locator, by)
+        return Elem(self.__driver, locator, by)
 
     def image(self, by, locator):
-        return Image(self.driver, locator, by)
+        return Image(self.__driver, locator, by)
 
     def textlink(self, by, locator):
-        return TextLink(self.driver, locator, by)
+        return TextLink(self.__driver, locator, by)
 
     def radiobutton(self, by, locator):
-        return RadioButton(self.driver, locator, by)
+        return RadioButton(self.__driver, locator, by)
 
     def selectlist(self, by, locator):
-        return SelectElem(self.driver, locator, by)
+        return SelectElem(self.__driver, locator, by)
 
     def table(self, by, locator):
-        return Table(self.driver, locator, by)
+        return Table(self.__driver, locator, by)
 
     def textinput(self, by, locator):
-        return TextInput(self.driver, locator, by)
+        return TextInput(self.__driver, locator, by)
 
     def text(self, by, locator):
-        return Text(self.driver, locator, by)
+        return Text(self.__driver, locator, by)

@@ -1,8 +1,7 @@
 # coding=utf-8
 import itertools
 import requests
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
-from nzme_skynet.core.browsers.localbrowserbuilder import LocalBrowserBuilder
+from nzme_skynet.core.driver.web.builder.localbrowserbuilder import LocalBrowserBuilder
 
 
 def create_webdriver_instance():
@@ -17,12 +16,14 @@ def create_webdriver_instance():
     browser = lb.build()
     return browser.driver
 
+
 def validate_url(url, driver):
     result = driver.current_url
     if url in result:
         return True
     else:
         return False
+
 
 def _validate_images_on_url(url, driver, open_url=True):
     broken_images_list = []
@@ -40,6 +41,7 @@ def _validate_images_on_url(url, driver, open_url=True):
     else:
         return Exception("Invalid URL used - please try again")
 
+
 def _validate_links_on_url(url, driver, open_url=True):
     broken_links_list = []
     if open_url:
@@ -53,6 +55,7 @@ def _validate_links_on_url(url, driver, open_url=True):
         return broken_links_list
     else:
         return Exception("Invalid URL used - please try again")
+
 
 def _validate_js_error_on_url(url, driver, open_url=True):
     js_error = []
@@ -68,17 +71,21 @@ def _validate_js_error_on_url(url, driver, open_url=True):
     else:
         return Exception("Invalid URL used - please try again")
 
+
 def validate_images(url):
     driver = create_webdriver_instance()
     return _validate_images_on_url(url, driver)
+
 
 def validate_links(url):
     driver = create_webdriver_instance()
     return _validate_links_on_url(url, driver)
 
+
 def validate_js_error(url):
     driver = create_webdriver_instance()
     return _validate_js_error_on_url(url, driver)
+
 
 def validate_all(urls):
     driver = create_webdriver_instance()

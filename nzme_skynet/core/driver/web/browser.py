@@ -4,18 +4,18 @@ import logging
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.common.exceptions import TimeoutException
+from abc import abstractproperty
 
 from nzme_skynet.core.actions.enums.timeouts import DefaultTimeouts
 from nzme_skynet.core.utils import js_wait
 
 
 class Browser(object):
-    action_class = None
 
     def __init__(self, baseurl):
         self.baseurl = baseurl
         self.driver = None
-        self.action = None
+        self._action = None
         self.logger = logging.getLogger(__name__)
 
     def init_browser(self):
@@ -24,13 +24,9 @@ class Browser(object):
     def set_base_url(self, baseurl):
         self.baseurl = baseurl
 
-    def get_actions(self):
-        if not self.action:
-            self.action = self._create_actions()
-        return self.action
-
-    def _create_actions(self):
-        return self.action_class(self.driver)
+    @abstractproperty
+    def action(self):
+        pass
 
     def get_current_window_size(self):
         return self.driver.get_window_size()

@@ -1,5 +1,8 @@
-# coding=utf-8
-class BrowserTypes(object):
+# -*- coding: utf-8 -*-
+
+
+class DriverTypes(object):
+
     FIREFOX = "firefox"
     CHROME = "chrome"
     PHANTOM_JS = "phantomjs"

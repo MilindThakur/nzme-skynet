@@ -4,7 +4,7 @@ from selenium.webdriver.firefox.webdriver import WebDriver
 import selenium
 from distutils.version import StrictVersion
 
-from nzme_skynet.core.browsers.web.webbrowser import Webbrowser
+from nzme_skynet.core.driver.web.browsers.webbrowser import Webbrowser
 
 
 class FirefoxBrowser(Webbrowser):

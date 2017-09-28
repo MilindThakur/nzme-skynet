@@ -1,5 +1,5 @@
 # coding=utf-8
-from nzme_skynet.core.mobile.mobileapp import MobileApp
+from nzme_skynet.core.driver.mobile.app.mobileapp import MobileApp
 
 
 class AndroidDriver(MobileApp):

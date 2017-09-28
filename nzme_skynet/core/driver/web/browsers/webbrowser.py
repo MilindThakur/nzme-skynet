@@ -3,13 +3,11 @@
 import logging
 
 from nzme_skynet.core.actions.uiactionsweb import UIActionsWeb
-from nzme_skynet.core.browsers.browser import Browser
+from nzme_skynet.core.driver.web.browser import Browser
 from nzme_skynet.core.actions.enums.timeouts import DefaultTimeouts
 
 
 class Webbrowser(Browser):
-
-    action_class = UIActionsWeb
 
     def __init__(self, baseurl, **kwargs):
         super(Webbrowser, self).__init__(baseurl)
@@ -25,6 +23,12 @@ class Webbrowser(Browser):
 
     def _create_webdriver(self):
         raise NotImplementedError
+
+    @property
+    def action(self):
+        if not self._action:
+            self._action = UIActionsWeb(self.driver)
+        return self._action
 
     def init_browser(self):
         self.driver = self._create_webdriver()

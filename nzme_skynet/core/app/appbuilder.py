@@ -3,9 +3,9 @@ import logging
 
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
-from nzme_skynet.core.browsers.localbrowserbuilder import LocalBrowserBuilder
-from nzme_skynet.core.browsers.remotebrowserbuilder import RemoteBrowserBuilder
-from nzme_skynet.core.mobile.appiumdriverbuilder import AppiumDriverBuilder
+from nzme_skynet.core.driver.web.builder.localbrowserbuilder import LocalBrowserBuilder
+from nzme_skynet.core.driver.web.builder.remotebrowserbuilder import RemoteBrowserBuilder
+from nzme_skynet.core.driver.mobile.builder.appiumdriverbuilder import AppiumDriverBuilder
 
 CAPABILITIES = {"firefox": DesiredCapabilities.FIREFOX,
                 "chrome": DesiredCapabilities.CHROME,

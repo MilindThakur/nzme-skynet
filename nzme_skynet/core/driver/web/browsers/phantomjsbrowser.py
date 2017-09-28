@@ -1,7 +1,7 @@
 # coding=utf-8
 from selenium.webdriver.phantomjs.webdriver import WebDriver
 
-from nzme_skynet.core.browsers.web.webbrowser import Webbrowser
+from nzme_skynet.core.driver.web.browsers.webbrowser import Webbrowser
 
 
 class PhantomJSBrowser(Webbrowser):

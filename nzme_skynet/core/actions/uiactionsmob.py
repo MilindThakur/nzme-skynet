@@ -17,7 +17,7 @@ class UIActionsMob(BaseUIActions):
         return super(UIActionsMob, self).element(by, locator)
 
     def mobelement(self, by, locator):
-        return MobElem(self.driver, locator, by)
+        return MobElem(self.__driver, locator, by)
 
     def image(self, by, locator):
         return super(UIActionsMob, self).image(by, locator)

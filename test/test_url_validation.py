@@ -38,5 +38,6 @@ class UrlValidationTestCase(unittest.TestCase):
         self.driver.service.process.send_signal(signal.SIGTERM)
         self.driver.quit()
 
+
 if __name__ == "__main__":
     unittest.main()

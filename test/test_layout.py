@@ -34,5 +34,6 @@ class LayoutTestCase(unittest.TestCase):
         if os.path.exists(self.CUSTOM_DOWNLOAD_FOLDER):
             shutil.rmtree(self.CUSTOM_DOWNLOAD_FOLDER)
 
+
 if __name__ == "__main__":
     unittest.main()

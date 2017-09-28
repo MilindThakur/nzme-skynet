@@ -3,7 +3,7 @@ import logging
 
 from selenium.webdriver.remote.webdriver import WebDriver
 
-from nzme_skynet.core.browsers.web.webbrowser import Webbrowser
+from nzme_skynet.core.driver.web.browsers.webbrowser import Webbrowser
 
 
 class RemoteBrowser(Webbrowser):

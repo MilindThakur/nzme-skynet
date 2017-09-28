@@ -1,5 +1,5 @@
 # coding=utf-8
-from nzme_skynet.core.browsers.web.remotebrowser import RemoteBrowser
+from nzme_skynet.core.driver.web.browsers.remotebrowser import RemoteBrowser
 import logging
 
 

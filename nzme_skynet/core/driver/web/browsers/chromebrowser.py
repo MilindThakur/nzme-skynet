@@ -3,7 +3,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
-from nzme_skynet.core.browsers.web.webbrowser import Webbrowser
+from nzme_skynet.core.driver.web.browsers.webbrowser import Webbrowser
 
 
 class ChromeBrowser(Webbrowser):

@@ -18,7 +18,7 @@ class Image(Component):
         raise NotImplementedError
 
     def is_image_loaded(self):
-        return self.driver.execute_script("return arguments[0].complete && "
+        return self._driver.execute_script("return arguments[0].complete && "
                                           "typeof arguments[0].naturalWidth != \"undefined\" && "
                                           "arguments[0].naturalWidth > 0", self.find_element())
 
@@ -39,7 +39,7 @@ class Image(Component):
         if lazy_loading:
             return self._wait_for_lazy_loaded_image(timeout)
         else:
-            return self.will_be_displayed()
+            return self.will_be_visible()
 
     def get_title(self):
         return self.get_attr("title")
