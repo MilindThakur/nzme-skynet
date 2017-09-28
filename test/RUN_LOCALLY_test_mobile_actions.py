@@ -1,10 +1,10 @@
 # coding=utf-8
+import time
 import unittest
 
-import time
-
-from nzme_skynet.core.app import appbuilder
 from appium.webdriver.common.mobileby import MobileBy
+
+from nzme_skynet.core.driver import builder
 
 
 class MobileActionsTestCase(unittest.TestCase):
@@ -22,7 +22,7 @@ class MobileActionsTestCase(unittest.TestCase):
                "fullReset": "true",
                "appPackage": "nzme.test.skynettestapp",
                "appActivity": ".MainActivity"}
-        cls.app = appbuilder.build_appium_driver(cls.cap)
+        cls.app = builder.build_appium_driver(cls.cap)
 
     def test_driver_type(self):
         self.assertEqual(str(self.app.get_driver_type()), self.cap['platform'])

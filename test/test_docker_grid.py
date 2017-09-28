@@ -1,5 +1,6 @@
 import pytest
-from nzme_skynet.core.app import appbuilder
+
+from nzme_skynet.core.driver import builder
 
 TEST_URL = "https://www.google.co.nz"
 DOCKER_SELENIUM_URL = "http://localhost:4444/wd/hub"
@@ -14,7 +15,7 @@ def driver_setup(request):
         "javascriptEnabled": True
     }
     try:
-        app = appbuilder.build_docker_browser(DOCKER_SELENIUM_URL, cap, TEST_URL)
+        app = builder.build_docker_browser(DOCKER_SELENIUM_URL, cap, TEST_URL)
         yield app
     except Exception:
         raise

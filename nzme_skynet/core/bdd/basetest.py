@@ -9,10 +9,11 @@ Ref: https://github.com/oleg-toporkov/python-bdd-selenium.git
 import logging
 import re
 
-from log import Logger
-from nzme_skynet.core.app import appbuilder
-from setupparser import Config
 from selenium.common.exceptions import WebDriverException
+
+from log import Logger
+from nzme_skynet.core.driver import builder
+from setupparser import Config
 
 
 def before_all(context):
@@ -87,16 +88,16 @@ def before_scenario(context, scenario):
         if 'api' not in tags:
             if 'android' in tags or 'ios' in tags:
                 if 'mobile-android' in tags:
-                    context.app = appbuilder.build_appium_driver(Config.MOBILE_ANDROID_OPTIONS)
+                    context.app = builder.build_appium_driver(Config.MOBILE_ANDROID_OPTIONS)
                 if 'android-chrome' in tags:
-                    context.app = appbuilder.build_mobile_browser(Config.ANDROID_CHROME_OPTIONS)
+                    context.app = builder.build_mobile_browser(Config.ANDROID_CHROME_OPTIONS)
                 if 'mobile-ios' in tags:
-                    context.app = appbuilder.build_appium_driver(Config.MOBILE_IOS_OPTIONS)
+                    context.app = builder.build_appium_driver(Config.MOBILE_IOS_OPTIONS)
             else:
                 # this falls back into a generic browser as a default.
                 # todo - expand for browser types chrome, firefox, safari ect
                 if Config.ENV_OPTIONS['local_run']:
-                    context.app = appbuilder.build_desktop_browser(Config.BROWSER_OPTIONS, Config.ENV_OPTIONS['test_url'])
+                    context.app = builder.build_desktop_browser(Config.BROWSER_OPTIONS, Config.ENV_OPTIONS['test_url'])
                 else:
                     # TODO - grab capabilities from a config
                     # TODO - push this down into the docker_browser builder
@@ -107,9 +108,9 @@ def before_scenario(context, scenario):
                                'version'],
                            'group': context.test_group,
                            'name': context.test_name}
-                    context.app = appbuilder.build_docker_browser(Config.ENV_OPTIONS['grid_url'],
-                                                                  cap,
-                                                                  Config.BROWSER_OPTIONS['testurl'])
+                    context.app = builder.build_docker_browser(Config.ENV_OPTIONS['grid_url'],
+                                                               cap,
+                                                               Config.BROWSER_OPTIONS['testurl'])
     except Exception as e:
         logger.exception(e)
         if e.__class__ is WebDriverException:

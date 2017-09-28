@@ -4,7 +4,7 @@ import unittest
 from selenium.webdriver.common.by import By
 
 from nzme_skynet.core.actions.enums.checkboxstates import CheckboxState
-from nzme_skynet.core.app.appbuilder import build_desktop_browser
+from nzme_skynet.core.driver.builder import build_desktop_browser
 from nzme_skynet.core.driver.drivertypes import DriverTypes
 
 
