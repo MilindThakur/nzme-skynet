@@ -9,12 +9,11 @@ from appium import webdriver
 
 
 class MobileApp(object):
-    action_class = UIActionsMob
 
     def __init__(self, desired_caps):
         self._desired_caps = desired_caps
         self.driver = None
-        self.action = None
+        self._action = None
         self.logger = logging.getLogger(__name__)
 
     def init_driver(self):
@@ -30,13 +29,11 @@ class MobileApp(object):
     def get_driver_type(self):
         return self.driver.desired_capabilities['platform']
 
-    def get_actions(self):
-        if not self.action:
-            self.action = self._create_actions()
-        return self.action
-
-    def _create_actions(self):
-        return self.action_class(self.driver)
+    @property
+    def action(self):
+        if not self._action:
+            self._action = UIActionsMob(self.driver)
+        return self._action
 
     def get_page_source(self):
         return self.driver.page_source
