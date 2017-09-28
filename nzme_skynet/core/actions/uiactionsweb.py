@@ -36,13 +36,3 @@ class UIActionsWeb(BaseUIActions):
 
     def text(self, by, locator):
         return super(UIActionsWeb, self).text(by, locator)
-
-    def scroll_to_element(self, element):
-        element_location = element.location['y']
-        element_location -= 130
-        if element_location < 0:
-            element_location = 0
-        scroll_script = "window.scrollTo(0, %s);" % element_location
-        # The old jQuery scroll_script required by=By.CSS_SELECTOR
-        # scroll_script = "jQuery('%s')[0].scrollIntoView()" % selector
-        self.driver.execute_script(scroll_script)
