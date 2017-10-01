@@ -15,9 +15,6 @@ class Webbrowser(Browser):
         self._init_browser_window_height = kwargs.get('windowheight')
         self.logger = logging.getLogger(__name__)
 
-    def get_browser_type(self):
-        return self.driver.name
-
     def get_default_desiredcapabilities(self):
         raise NotImplementedError
 
@@ -26,11 +23,12 @@ class Webbrowser(Browser):
 
     @property
     def action(self):
+        # type: () -> UIActionsWeb
         if not self._action:
             self._action = UIActionsWeb(self.driver)
         return self._action
 
-    def init_browser(self):
+    def init_driver(self):
         self.driver = self._create_webdriver()
         # TODO - Make this more robust and not use driver.capabilities
         if self.driver.capabilities['browserName']:

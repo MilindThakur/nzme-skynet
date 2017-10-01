@@ -6,6 +6,8 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from nzme_skynet.core.driver.web.builder.localbrowserbuilder import LocalBrowserBuilder
 from nzme_skynet.core.driver.web.builder.remotebrowserbuilder import RemoteBrowserBuilder
 from nzme_skynet.core.driver.mobile.builder.appiumdriverbuilder import AppiumDriverBuilder
+from nzme_skynet.core.driver.web.browsers.webbrowser import Webbrowser
+from nzme_skynet.core.driver.web.browsers.remotebrowser import RemoteBrowser
 
 CAPABILITIES = {"firefox": DesiredCapabilities.FIREFOX,
                 "chrome": DesiredCapabilities.CHROME,
@@ -23,6 +25,7 @@ logger = logging.getLogger(__name__)
 # TODO - convert this to  Driver factory?
 # Browser
 def build_desktop_browser(browser_options, base_url=None):
+    # type: () -> Webbrowser
     logger.debug("Creating local browser instance")
     builder = LocalBrowserBuilder(browser_options, base_url)
     return builder.build()
@@ -30,6 +33,7 @@ def build_desktop_browser(browser_options, base_url=None):
 
 # Docker
 def build_docker_browser(sel_grid_url, desired_cap, base_url=None):
+    # type: () -> RemoteBrowser
     logger.debug("Creating a browser instance using selenium-grid")
     desired_cap['javascriptEnabled'] = True
     builder = RemoteBrowserBuilder(sel_grid_url, desired_capabilities=desired_cap,

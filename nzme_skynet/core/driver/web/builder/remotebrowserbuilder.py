@@ -12,7 +12,7 @@ class RemoteBrowserBuilder(object):
 
     def build(self):
         browser = self._construct_remote_browser()
-        browser.init_browser()
+        browser.init_driver()
         self.logger.debug("Successfully initialised browser {0}".format(self.desired_capabilities['browserName']))
         return browser
 

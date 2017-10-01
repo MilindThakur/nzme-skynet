@@ -18,8 +18,11 @@ class Browser(object):
         self._action = None
         self.logger = logging.getLogger(__name__)
 
-    def init_browser(self):
+    def init_driver(self):
         raise NotImplementedError
+
+    def get_browser_type(self):
+        return self.driver.name
 
     def set_base_url(self, baseurl):
         self.baseurl = baseurl

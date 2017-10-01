@@ -14,9 +14,6 @@ class MobileBrowser(Browser):
         self._desired_caps = desired_caps.pop('baseUrl')
         self.logger = logging.getLogger(__name__)
 
-    def get_browser_type(self):
-        return self.driver.name
-
     @property
     def action(self):
         if not self._action:
@@ -47,6 +44,3 @@ class MobileBrowser(Browser):
 
     def get_browser_platform(self):
         return self.driver.capabilities['platform']
-
-    def init_browser(self):
-        raise NotImplementedError

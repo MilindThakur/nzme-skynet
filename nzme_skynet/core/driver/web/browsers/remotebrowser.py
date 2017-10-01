@@ -14,12 +14,6 @@ class RemoteBrowser(Webbrowser):
         self.des_cap = des_cap
         self.logger = logging.getLogger(__name__)
 
-    def get_browser_type(self):
-        return self.des_cap['browserName']
-
-    def get_remote_url(self):
-        pass
-
     def _create_webdriver(self):
         self.logger.debug("Instantiating a browser of type {0} with version {1} on os {2}".
                           format(self.des_cap['browserName'], self.des_cap['version'], self.des_cap['platform']))

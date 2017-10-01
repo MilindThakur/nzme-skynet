@@ -13,7 +13,7 @@ class LocalBrowserBuilder(object):
 
     def build(self):
         browser = self._construct_browser()
-        browser.init_browser()
+        browser.init_driver()
         return browser
 
     def _construct_browser(self):
