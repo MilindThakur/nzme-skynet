@@ -47,10 +47,3 @@ class Webbrowser(Browser):
     def set_window_size(self, width, height):
         self.driver.set_window_size(width, height)
 
-    def get_browser_version(self):
-        return self.driver.capabilities['version']
-
-    def get_browser_platform(self):
-        # Since Selenium 3.5.0, the OS name can exist in capability 'platform' or
-        # 'platformName'
-        return self.driver.capabilities['platform'] or self.driver.capabilities['platformName']

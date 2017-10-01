@@ -24,6 +24,14 @@ class Browser(object):
     def get_browser_type(self):
         return self.driver.name
 
+    def get_browser_version(self):
+        return self.driver.capabilities['version']
+
+    def get_browser_platform(self):
+        # Since Selenium 3.5.0, the OS name can exist in capability 'platform' or
+        # 'platformName'
+        return self.driver.capabilities['platform'] or self.driver.capabilities['platformName']
+
     def set_base_url(self, baseurl):
         self.baseurl = baseurl
 

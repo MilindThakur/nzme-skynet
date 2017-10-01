@@ -39,8 +39,3 @@ class MobileBrowser(Browser):
         self.driver.set_page_load_timeout(DefaultTimeouts.PAGE_LOAD_TIMEOUT)
         self.driver.implicitly_wait(5)
 
-    def get_browser_version(self):
-        return self.driver.capabilities['version']
-
-    def get_browser_platform(self):
-        return self.driver.capabilities['platform']
