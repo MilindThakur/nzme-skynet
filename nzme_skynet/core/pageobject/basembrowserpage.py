@@ -5,11 +5,11 @@ import logging
 from nzme_skynet.core.pageobject.ibasepage import IBasePage
 
 
-class BaseMobilePage(IBasePage):
+class BaseMobileBrowserPage(IBasePage):
     page_url = None
 
     def __init__(self, nzmedriver):
-        # type: (MobileBrowser) -> None
+        # type: (BaseMobileBrowserPage) -> None
         if not isinstance(nzmedriver, MobileBrowser):
             raise TypeError('expected driver to be a MobileBrowser type')
         self.page = nzmedriver
