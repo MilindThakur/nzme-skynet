@@ -2,7 +2,7 @@
 from selenium.webdriver import ActionChains
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.ui import WebDriverWait
-
+from selenium.webdriver.remote.webelement import WebElement
 
 from nzme_skynet.core.actions.enums.timeouts import DefaultTimeouts
 
@@ -14,9 +14,11 @@ class Component(object):
         self._by = by
 
     def find_element(self):
+        # type: () -> WebElement
         return self._driver.find_element(by=self._by, value=self._locator)
 
     def find_sub_elements(self, by, locator):
+        # type: () -> WebElement
         return self._driver.find_element(by=self._by, value=self._locator).find_elements(by=by, value=locator)
 
     def is_currently_visible(self, time=DefaultTimeouts.SHORT_TIMEOUT):
