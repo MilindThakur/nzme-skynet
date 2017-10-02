@@ -61,13 +61,10 @@ class Browser(object):
     def refresh_page(self):
         self.driver.refresh()
 
-    def get_webdriver(self):
-        return self.driver
-
     def quit(self):
         self.driver.quit()
 
-    def goto_url(self, url):
+    def _goto_url(self, url):
         self.baseurl = url
         try:
             self.driver.get(url)
@@ -78,10 +75,16 @@ class Browser(object):
 
     def goto_absolute_url(self, url):
         self.baseurl = url
-        self.goto_url(url)
+        self._goto_url(url)
 
     def goto_relative_url(self, url):
-        self.goto_url(self.baseurl + url)
+        self._goto_url(self.baseurl + url)
+
+    def goto_url(self, url, relative=True):
+        if relative:
+            self.goto_relative_url(url)
+        else:
+            self.goto_absolute_url(url)
 
     def get_current_url(self):
         return self.driver.current_url

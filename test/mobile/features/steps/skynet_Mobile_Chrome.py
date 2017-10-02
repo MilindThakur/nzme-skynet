@@ -12,7 +12,7 @@ def I_have__a_device_with_chrome_open(context):
 
 @when("I navigate to (?P<url>.+)")
 def I_navigate_to_a_url(context, url):
-    context.app.goto_url(url)
+    context.app.goto_url(url, relative=False)
 
 
 @then("The google homepage is displayed")

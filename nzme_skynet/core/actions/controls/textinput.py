@@ -12,6 +12,3 @@ class TextInput(Component):
 
     def set_value(self, value):
         self.send_keys(value)
-
-    def clear(self):
-        super(TextInput, self).clear()

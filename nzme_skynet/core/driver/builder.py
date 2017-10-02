@@ -45,7 +45,7 @@ def build_mobile_browser(desired_cap, test_url=None):
     driver = AppiumDriverBuilder(desired_cap).build()
     # need to accept terms and conditions if displayed.
     if test_url is not None:
-        driver.goto_url(test_url)
+        driver.goto_url(test_url, relative=False)
     return driver
 
 

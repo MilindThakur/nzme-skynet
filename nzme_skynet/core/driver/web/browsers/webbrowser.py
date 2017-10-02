@@ -41,7 +41,7 @@ class Webbrowser(Browser):
         self.driver.set_page_load_timeout(DefaultTimeouts.PAGE_LOAD_TIMEOUT)
         # self.driver.implicitly_wait(5)
         if self.baseurl is not None:
-            self.goto_url(self.baseurl)
+            self.goto_url(self.baseurl, relative=False)
         # Any other special settings
 
     def set_window_size(self, width, height):

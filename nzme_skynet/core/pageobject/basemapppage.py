@@ -7,11 +7,11 @@ from nzme_skynet.core.pageobject.ibasepage import IBasePage
 
 class BaseMAppPage(IBasePage):
 
-    def __init__(self, appdriver):
+    def __init__(self, nzmedriver):
         # type: (MobileApp) -> None
-        if not isinstance(appdriver, MobileApp):
+        if not isinstance(nzmedriver, MobileApp):
             raise TypeError('expected driver to be a MobileApp type')
-        self.app = appdriver
+        self.app = nzmedriver
         self.logger = logging.getLogger(__name__)
 
     @property

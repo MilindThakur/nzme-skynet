@@ -39,7 +39,7 @@ class LayoutScreenshot(object):
         lb = LocalBrowserBuilder(self._CAP)
         browser = lb.build()
         for url in self.urls_json["urls"]:
-            browser.goto_url(url["url"])
+            browser.goto_url(url["url"], relative=False)
             for device in self._devices_list:
                 browser.set_window_size(self.devices_json[device]["w"], self.devices_json[device]["h"])
                 filename = "%s_%s_%s.png" % (url["name"].replace(" ", ""), device,

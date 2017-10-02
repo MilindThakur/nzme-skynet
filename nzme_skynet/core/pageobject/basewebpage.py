@@ -7,16 +7,16 @@ from nzme_skynet.core.pageobject.ibasepage import IBasePage
 class BaseWebPage(IBasePage):
     page_url = None
 
-    def __init__(self, webdriver):
+    def __init__(self, nzmedriver):
         # type: (Webbrowser) -> None
-        if not isinstance(webdriver, Webbrowser):
+        if not isinstance(nzmedriver, Webbrowser):
             raise TypeError('expect driver to be a Webbrowser type')
-        self.app = webdriver
+        self.page = nzmedriver
         self.logger = logging.getLogger(__name__)
 
-    def goto(self):
-        self.app.goto_relative_url(self.page_url)
+    def goto(self, relative=True):
+        self.page.goto_url(self.page_url, relative)
 
     @property
     def locate(self):
-        return self.app.action
+        return self.page.action
