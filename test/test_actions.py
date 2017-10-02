@@ -20,7 +20,7 @@ class ActionsTestCase(unittest.TestCase):
             "javascriptEnabled": True
         }
         cls.app = build_desktop_browser(cap)
-        cls.app.goto_url(cls.TEST_URL)
+        cls.app.goto_url(cls.TEST_URL, relative=False)
 
     def test_browser_type(self):
         self.assertEqual(self.app.get_browser_type(), DriverTypes.PHANTOM_JS)
