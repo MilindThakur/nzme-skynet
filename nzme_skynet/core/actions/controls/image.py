@@ -3,11 +3,11 @@ import time
 
 from selenium.webdriver.common.by import By
 
-from nzme_skynet.core.actions.controls.component import Component
+from nzme_skynet.core.actions.controls.clickable import Clickable
 from nzme_skynet.core.actions.enums.timeouts import DefaultTimeouts
 
 
-class Image(Component):
+class Image(Clickable):
     def __init__(self, driver, locator, by=By.CSS_SELECTOR):
         super(Image, self).__init__(driver, locator, by)
 
@@ -19,8 +19,8 @@ class Image(Component):
 
     def is_image_loaded(self):
         return self._driver.execute_script("return arguments[0].complete && "
-                                          "typeof arguments[0].naturalWidth != \"undefined\" && "
-                                          "arguments[0].naturalWidth > 0", self.find_element())
+                                           "typeof arguments[0].naturalWidth != \"undefined\" && "
+                                           "arguments[0].naturalWidth > 0", self.find_element())
 
     def _wait_for_lazy_loaded_image(self, timeout=DefaultTimeouts.DEFAULT_TIMEOUT):
         start_ms = time.time() * 1000.0

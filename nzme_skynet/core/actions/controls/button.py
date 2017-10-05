@@ -1,10 +1,11 @@
 # coding=utf-8
 from selenium.webdriver.common.by import By
 
-from nzme_skynet.core.actions.controls.component import Component
+from nzme_skynet.core.actions.controls.clickabletext import ClickableText
 
 
-class Button(Component):
+class Button(ClickableText):
+
     def __init__(self, driver, locator, by=By.CSS_SELECTOR):
         super(Button, self).__init__(driver, locator, by)
 

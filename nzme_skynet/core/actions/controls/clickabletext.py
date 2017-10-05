@@ -1,15 +1,15 @@
-# coding=utf-8
-from selenium.webdriver.common.by import By
+# -*- coding: utf-8 -*-
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.ui import WebDriverWait
 
-from nzme_skynet.core.actions.controls.component import Component
+from nzme_skynet.core.actions.controls.clickable import Clickable
 from nzme_skynet.core.actions.enums.timeouts import DefaultTimeouts
 
 
-class Text(Component):
-    def __init__(self, driver, locator, by=By.CSS_SELECTOR):
-        super(Text, self).__init__(driver, locator, by)
+class ClickableText(Clickable):
+
+    def __init__(self, driver, locator, by):
+        super(ClickableText, self).__init__(driver, locator, by)
 
     def get_text(self):
         return self.find_element().text
@@ -23,9 +23,3 @@ class Text(Component):
             return True
         except Exception:
             return False
-
-    def contains(self, text):
-        return self.get_text().contains(text)
-
-    def matches(self, regex):
-        return self.get_text().matches(regex)

@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
-from nzme_skynet.core.pageobject.basewebpage import BaseWebPage
-from selenium.webdriver.common.by import By
 import unittest
+
+from selenium.webdriver.common.by import By
+
 from nzme_skynet.core.driver.builder import build_docker_browser
+from nzme_skynet.core.pageobject.basewebpage import BaseWebPage
 
 
 class GoogleHomePage(BaseWebPage):

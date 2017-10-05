@@ -61,25 +61,12 @@ class Component(object):
         except Exception:
             return False
 
-    def currently_has_text(self, text, time=DefaultTimeouts.SHORT_TIMEOUT):
-        return self.will_have_text(text, time=time)
-
-    def will_have_text(self, text, time=DefaultTimeouts.LARGE_TIMEOUT):
-        try:
-            WebDriverWait(self._driver, time).until(ec.text_to_be_present_in_element((self._by, self._locator), text))
-            return True
-        except Exception:
-            return False
-
     def exists(self):
         try:
             self.find_element()
             return True
         except Exception:
             return False
-
-    def is_selected(self):
-        return self.find_element().is_selected()
 
     def is_disabled(self):
         return not self.find_element().is_enabled()
@@ -100,36 +87,16 @@ class Component(object):
         except Exception:
             return False
 
-    def get_text(self):
-        return self.find_element().text
-
     def get_location(self):
         return self.find_element().location
 
     def get_css_property(self, cssproperty):
         return self._driver.value_of_css_property(cssproperty)
 
-    def click(self):
-        self.is_ready_to_interact()
-        self.find_element().click()
-
     def hover_over(self):
         elem = self.find_element()
         hover = ActionChains(self._driver).move_to_element(elem)
         hover.perform()
-
-    def send_keys(self, value):
-        self.find_element().send_keys(value)
-
-    def set_value(self, value):
-        self.send_keys(value)
-
-    # TODO
-    # def get_size(self, webElements):
-    #     raise NotImplementedError
-
-    def clear(self):
-        self.find_element().clear()
 
     def scroll_to_element(self, offset=200):
         loc = self.get_location()
@@ -138,7 +105,3 @@ class Component(object):
     # TODO
     # def highlight(self):
     #     raise NotImplementedError
-
-    def scroll_and_click(self):
-        self.scroll_to_element()
-        self.click()
