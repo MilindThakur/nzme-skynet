@@ -20,6 +20,10 @@ class BrowserProxy(object):
         self.local_run = local_run
         self._grid_url = grid_url
 
+    @property
+    def driver(self):
+        return self._driver
+
     def start(self):
         if self.local_run:
             self._start_local_server_proxy()
