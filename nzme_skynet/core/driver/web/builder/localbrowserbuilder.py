@@ -1,8 +1,8 @@
 # coding=utf-8
-from nzme_skynet.core.driver.drivertypes import DriverTypes
-from nzme_skynet.core.driver.web.browsers.phantomjsbrowser import PhantomJSBrowser
+from nzme_skynet.core.driver.enums.drivertypes import DriverTypes
+from nzme_skynet.core.driver.web.browsers.chromebrowser import ChromeBrowser, ChromeBrowser2
 from nzme_skynet.core.driver.web.browsers.firefoxbrowser import FirefoxBrowser
-from nzme_skynet.core.driver.web.browsers.chromebrowser import ChromeBrowser
+from nzme_skynet.core.driver.web.browsers.phantomjsbrowser import PhantomJSBrowser
 
 
 class LocalBrowserBuilder(object):

@@ -1,5 +1,13 @@
 # -*- coding: utf-8 -*-
 
+DESKTOP_WEBDRIVERS = [
+    "chrome",
+    "firefox",
+    "phantomjs",
+    "ie",
+    "safari"
+]
+
 
 class DriverTypes(object):
 
@@ -8,8 +16,6 @@ class DriverTypes(object):
     PHANTOM_JS = "phantomjs"
     IE = "IE"
     SAFARI = "safari"
-    ANDROID_BROWSER = "androidbrowser"
-    IOS_BROWSER = "iosbrowser"
-    REMOTE = "remote"
     ANDROID = "android"
     IOS = "ios"
+

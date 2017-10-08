@@ -1,7 +1,7 @@
 # coding=utf-8
+from nzme_skynet.core.driver.enums.drivertypes import DriverTypes
 from nzme_skynet.core.driver.mobile.app.androiddriver import AndroidDriver
 from nzme_skynet.core.driver.mobile.browser.mobilebrowser import MobileBrowser
-from nzme_skynet.core.driver.drivertypes import DriverTypes
 
 
 class AppiumDriverBuilder(object):
