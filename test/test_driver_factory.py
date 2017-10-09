@@ -13,22 +13,24 @@ class DriverFactoryTest(unittest.TestCase):
     # Chrome browser does not run in CI without headless mode.
     # Test should fail on CI but pass locally.
     @unittest.expectedFailure
-    def test_default_chrome_driver_creation(self):
+    def test_default_chrome_local_driver_creation(self):
         def_driver = DriverFactory()
         with self.assertRaises(Exception) as context:
             def_driver.get_driver_by_name('chrome')
         self.assertTrue('No driver has registered' in context.exception)
         test_driver = def_driver.register_driver()
+        self.assertEqual('chrome', test_driver.name)
         self.assertIsInstance(test_driver, WebDriver)
         def_driver.deregister_driver()
         with self.assertRaises(Exception) as context:
             def_driver.get_driver_by_name('chrome')
         self.assertTrue('No driver has registered' in context.exception)
 
-    def test_custom_driver_registration(self):
+    def test_custom_local_driver_registration(self):
         def_driver = DriverFactory()
-        def_driver.register_driver('phantomjs')
-        self.assertIsInstance(def_driver.get_driver(), WebDriver)
+        test_driver = def_driver.register_driver('phantomjs')
+        self.assertIsInstance(test_driver, WebDriver)
+        self.assertEqual('phantomjs', test_driver.name)
         def_driver.deregister_driver()
         with self.assertRaises(Exception) as context:
             def_driver.get_driver_by_name('phantomjs')
@@ -39,13 +41,15 @@ class DriverFactoryTest(unittest.TestCase):
         def_driver.set_run_env(local=False)
         test_remote_driver = def_driver.register_driver()
         self.assertIsInstance(test_remote_driver, WebDriver)
+        self.assertEqual('chrome', test_remote_driver.name)
         def_driver.deregister_driver()
 
-    def test_custom_default_remote_driver_registration(self):
+    def test_custom_remote_driver_registration(self):
         def_driver = DriverFactory()
         def_driver.set_run_env(local=False)
         test_remote_driver = def_driver.register_driver('firefox')
         self.assertIsInstance(test_remote_driver, WebDriver)
+        self.assertEqual('firefox', test_remote_driver.name)
         def_driver.deregister_driver()
 
     def test_unsupported_custom_remote_driver_registration(self):
