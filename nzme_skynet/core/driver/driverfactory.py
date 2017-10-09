@@ -14,12 +14,24 @@ class DriverFactory(object):
         self._registered_driver = None
         self.logger = logging.getLogger(__name__)
 
-    def register_driver(self, driver_name):
+    def register_driver(self, driver_name=None, capabilities=None):
+        if driver_name is None:
+            driver_name = DriverTypes.CHROME
         if self._run_env == RunEnv.LOCAL:
             return self.register_local_driver(driver_name)
         elif self._run_env == RunEnv.REMOTE:
-            return self.register_remote_driver(driver_name)
-        raise Exception("Unknown driver type")
+            return self.register_remote_driver(driver_name, capabilities)
+        raise Exception("Failed to register driver")
+
+    def deregister_driver(self):
+        if not self._registered_driver_name:
+            raise Exception("No driver has registered yet")
+        try:
+            self._registered_driver.quit()
+            self._registered_driver = None
+            self._registered_driver_name = None
+        except Exception:
+            raise Exception("Failed to deregister driver")
 
     def register_local_driver(self, driver_type, driver_options=None):
         try:
@@ -39,23 +51,19 @@ class DriverFactory(object):
             self.logger.debug("Successfully registered remote driver {0}".format(driver_type))
             return self._registered_driver
         except Exception:
-            raise Exception("Unknown driver")
+            raise
 
     def get_driver(self):
-        try:
-            if self._registered_driver_name:
-                return self.get_driver_by_name(self._registered_driver_name)
-            # Register Chrome driver by default.
-            self.register_driver(DriverTypes.CHROME)
-            return self.get_driver_by_name('chrome')
-        except Exception:
-            raise Exception("Failed to get WebDriver")
+        if self._registered_driver_name:
+            return self.get_driver_by_name(self._registered_driver_name)
 
     def get_driver_by_name(self, driver_name):
+        if not self._registered_driver_name:
+            raise Exception("No driver has registered")
         if driver_name not in self._registered_driver_name:
             raise Exception("Cannot find Driver with name {0}".format(driver_name))
         try:
-            if driver_name in self._registered_driver_name and self._registered_driver:
+            if driver_name in self._registered_driver_name:
                 return self._registered_driver
         except Exception:
             raise Exception("Driver {0} not registered".format(driver_name))

@@ -12,6 +12,10 @@ class BrowserDriver(object):
     def add_extension(self, extension):
         raise NotImplementedError
 
+    @staticmethod
+    def get_default_capability():
+        raise NotImplementedError
+
     def set_proxy(self):
         # Implemented here
         pass

@@ -11,6 +11,10 @@ class Chrome(BrowserDriver):
         self._driver_options = driver_options
         self._options = Options()
 
+    @staticmethod
+    def get_default_capability():
+        return DesiredCapabilities.CHROME.copy()
+
     def _create_default_chrome_options(self):
         self.add_option("--start-maximized")
         self.add_option("--test-type")

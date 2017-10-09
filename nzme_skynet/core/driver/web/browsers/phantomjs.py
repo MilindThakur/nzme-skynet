@@ -5,12 +5,16 @@ from selenium.webdriver.phantomjs.webdriver import WebDriver
 
 class PhantomJS(BrowserDriver):
 
+    @staticmethod
+    def get_default_capability():
+        pass
+
     def __init__(self, driver_options):
         self._driver_options = driver_options
         self._service_args = None
 
     def add_option(self, option):
-        pass
+        self._service_args.append(option)
 
     def _create_default_phantonjs_options(self):
         self._service_args = ["--ignore-ssl-errors=true",
@@ -20,8 +24,9 @@ class PhantomJS(BrowserDriver):
 
     def _set_options(self):
         self._create_default_phantonjs_options()
-        for arg in self._driver_options:
-            self._service_args.add(arg)
+        if self._driver_options:
+            for arg in self._driver_options:
+                self.add_option(arg)
 
     def add_extension(self, extension):
         # Not Extensions are available for phantomjs

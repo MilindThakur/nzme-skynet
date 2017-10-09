@@ -13,6 +13,10 @@ class FireFox(BrowserDriver):
         self._profile = FirefoxProfile()
         self._options = Options()
 
+    @staticmethod
+    def get_default_capability():
+        return DesiredCapabilities.FIREFOX.copy()
+
     def _create_default_firefox_options(self):
         pass
 

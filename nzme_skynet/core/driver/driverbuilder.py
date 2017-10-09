@@ -14,29 +14,29 @@ class DriverBuilder(object):
 
     def __init__(self, driver_type, driver_options, local=True):
         self._driver_type = driver_type
-        self._driver_opions = driver_options
+        self._driver_options = driver_options
         self._run_env = local
         self._is_desktop_web = driver_type in DESKTOP_WEBDRIVERS
 
     def build(self):
         try:
             if self._run_env and self._is_desktop_web:
-                return self._build_local_web_driver(self._driver_type, self._driver_opions)
+                return self._build_local_web_driver()
             elif not self._run_env and self._is_desktop_web:
-                return self._build_remote_driver(self._driver_opions)
+                return self._build_remote_driver()
             elif not self._is_desktop_web:
-                return self._build_mobile_web_driver(self._driver_type, self._driver_opions, browser="chrome")
+                return self._build_mobile_web_driver(self._driver_type, self._driver_options, browser="chrome")
         except Exception:
-            raise Exception("Failed to build driver for {0}".format(self._driver_type))
+            raise
 
-    def _build_local_web_driver(self, driver_type, driver_options):
+    def _build_local_web_driver(self):
         driver_init = None
-        if driver_type == DriverTypes.CHROME:
-            driver_init = Chrome(driver_options)
-        if driver_type == DriverTypes.FIREFOX:
-            driver_init = FireFox(driver_options)
-        if driver_type == DriverTypes.PHANTOM_JS:
-            driver_init = PhantomJS(driver_options)
+        if self._driver_type == DriverTypes.CHROME:
+            driver_init = Chrome(self._driver_options)
+        if self._driver_type == DriverTypes.FIREFOX:
+            driver_init = FireFox(self._driver_options)
+        if self._driver_type == DriverTypes.PHANTOM_JS:
+            driver_init = PhantomJS(self._driver_options)
         try:
             return driver_init.create_driver()
         except Exception:
@@ -56,9 +56,16 @@ class DriverBuilder(object):
         except Exception:
             raise Exception("{0} not identified, supports only android and ios".format(driver_type))
 
-    def _build_remote_driver(self, driver_options):
-        driver_init = Remote(driver_options)
+    def _build_remote_driver(self):
+        if not self._driver_options:
+            if self._driver_type == DriverTypes.CHROME:
+                self._driver_options = Chrome.get_default_capability()
+            elif self._driver_type == DriverTypes.FIREFOX:
+                self._driver_options = FireFox.get_default_capability()
+            else:
+                raise Exception("Only supports Chrome and Firefox in remote mode when no capabilities passed")
+        driver_init = Remote(self._driver_options)
         try:
-            driver_init.create_driver()
+            return driver_init.create_driver()
         except Exception:
             raise Exception("Failed to initialise remote browser driver")
