@@ -16,7 +16,7 @@ class Checkbox(Clickable):
             self.uncheck()
 
     def is_checked(self):
-        self.find_element().is_selected()
+        return self.find_element().is_selected()
 
     def check(self):
         if not self.is_checked():

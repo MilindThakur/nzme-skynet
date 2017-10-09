@@ -7,3 +7,6 @@ from nzme_skynet.core.actions.controls.button import Button
 class RadioButton(Button):
     def __init__(self, driver, locator, by=By.CSS_SELECTOR):
         super(RadioButton, self).__init__(driver, locator, by)
+
+    def is_selected(self):
+        return self.find_element().is_selected()
