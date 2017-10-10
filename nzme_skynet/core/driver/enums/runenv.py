@@ -4,5 +4,5 @@
 class RunEnv(object):
 
     LOCAL = 1
-    REMOTE = 2
+    REMOTE = 0
 

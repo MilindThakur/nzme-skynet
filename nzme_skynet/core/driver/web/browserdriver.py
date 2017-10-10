@@ -3,6 +3,9 @@ from nzme_skynet.core.actions.enums.timeouts import DefaultTimeouts
 
 
 class BrowserDriver(object):
+    """
+    A base abstract class for web based (browser) drivers
+    """
 
     def _create_driver(self):
         raise NotImplementedError
@@ -18,7 +21,7 @@ class BrowserDriver(object):
         raise NotImplementedError
 
     def set_proxy(self):
-        # Implemented here
+        # TODO: Implemented here
         pass
 
     def init(self):

@@ -1,64 +1,62 @@
 # -*- coding: utf-8 -*-
 
-from nzme_skynet.core.driver.enums.runenv import RunEnv
 from nzme_skynet.core.driver.enums.drivertypes import DriverTypes
-import logging
-from nzme_skynet.core.driver.driverbuilder import DriverBuilder
+from nzme_skynet.core.driver.mobile.app.mapp import MApp
+from nzme_skynet.core.driver.mobile.browser.mbrowser import MBrowser
+from nzme_skynet.core.driver.web.browsers.chrome import Chrome
+from nzme_skynet.core.driver.web.browsers.firefox import FireFox
+from nzme_skynet.core.driver.web.browsers.phantomjs import PhantomJS
+from nzme_skynet.core.driver.web.browsers.remote import Remote
 
 
 class DriverFactory(object):
-
-    def __init__(self):
-        self._run_env = RunEnv.LOCAL  # Run locally by default
-        self._registered_driver = None
-        self.logger = logging.getLogger(__name__)
-
-    def register_driver(self, driver_name=None, capabilities=None):
-        if driver_name is None:
-            driver_name = DriverTypes.CHROME
-        if self._run_env == RunEnv.LOCAL:
-            return self.register_local_driver(driver_name)
-        elif self._run_env == RunEnv.REMOTE:
-            return self.register_remote_driver(driver_name, capabilities)
-        raise Exception("Failed to register driver")
-
-    def deregister_driver(self):
-        if not self._registered_driver:
-            raise Exception("No driver has registered yet")
-        try:
-            self._registered_driver.quit()
-            self._registered_driver = None
-        except Exception:
-            raise Exception("Failed to deregister driver")
-
-    def register_local_driver(self, driver_type, driver_options=None):
-        try:
-            builder = DriverBuilder(driver_type, driver_options, local=True)
-            self._registered_driver = builder.build()
-            self.logger.debug("Successfully registered local driver {0}".format(driver_type))
-            return self._registered_driver
-        except Exception:
-            raise Exception("Unknown driver type")
-
-    def register_remote_driver(self, driver_type, driver_options=None):
-        try:
-            builder = DriverBuilder(driver_type, driver_options, local=False)
-            self._registered_driver = builder.build()
-            self.logger.debug("Successfully registered remote driver {0}".format(driver_type))
-            return self._registered_driver
-        except Exception:
-            raise
+    """
+    A simple driver factory that creates and returns driver based on browser/app
+    type and test environment (local/grid).
+    """
 
     @staticmethod
-    def get_driver(self):
-        if not self._registered_driver:
-            raise Exception("No driver registered")
-        return self._registered_driver
-
-    def set_run_env(self, local=True):
-        if local:
-            self.logger.debug("Setting test env to local")
-            self._run_env = RunEnv.LOCAL
+    def build_local_web_driver(driver_type="chrome", driver_options=None):
+        if driver_type == DriverTypes.CHROME:
+            driver = Chrome(driver_options)
+        elif driver_type == DriverTypes.FIREFOX:
+            driver = FireFox(driver_options)
+        elif driver_type == DriverTypes.PHANTOMJS:
+            driver = PhantomJS(driver_options)
         else:
-            self.logger.debug("Setting test env to remote")
-            self._run_env = RunEnv.REMOTE
+            raise Exception("Only supports Chrome, Firefox, PhantomJS in local mode")
+        try:
+            return driver.init()
+        except Exception:
+            raise Exception("Failed to initialise local web driver")
+
+    @staticmethod
+    def build_mobile_app_driver(driver_type, driver_options):
+        try:
+            driver_init = MApp(mplatform=driver_type, desired_capabilities=driver_options)
+            return driver_init.create_driver()
+        except Exception:
+            raise Exception("{0} not identified, supports only android and ios".format(driver_type))
+
+    @staticmethod
+    def build_mobile_web_driver(driver_type, driver_options=None, browser=None):
+        try:
+            driver_init = MBrowser(platform=driver_type, desired_capabilities=driver_options, browser=browser)
+            return driver_init.create_driver()
+        except Exception:
+            raise Exception("{0} not identified, supports only android and ios".format(driver_type))
+
+    @staticmethod
+    def build_remote_web_driver(driver_type="chrome", driver_options=None):
+        if not driver_options:
+            if driver_type == DriverTypes.CHROME:
+                driver_options = Chrome.get_default_capability()
+            elif driver_type == DriverTypes.FIREFOX:
+                driver_options = FireFox.get_default_capability()
+            else:
+                raise Exception("Only supports Chrome and Firefox in remote mode when no capabilities passed")
+        driver = Remote(driver_options)
+        try:
+            return driver.init()
+        except Exception:
+            raise Exception("Failed to initialise remote web driver")
