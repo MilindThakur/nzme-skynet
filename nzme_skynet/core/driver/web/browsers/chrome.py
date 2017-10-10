@@ -1,15 +1,16 @@
 # -*- coding: utf-8 -*-
-from nzme_skynet.core.driver.web.browsers.browserdriver import BrowserDriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
+from nzme_skynet.core.driver.web.browserdriver import BrowserDriver
+
 
 class Chrome(BrowserDriver):
-
     def __init__(self, driver_options):
         self._driver_options = driver_options
         self._options = Options()
+        self._driver = None
 
     @staticmethod
     def get_default_capability():
@@ -34,7 +35,13 @@ class Chrome(BrowserDriver):
     def add_extension(self, extension):
         self._options.add_extension(extension)
 
-    def create_driver(self):
+    def _create_driver(self):
         self._set_options()
-        return WebDriver(desired_capabilities=DesiredCapabilities.CHROME.copy(),
-                         chrome_options=self._options)
+        self._driver = WebDriver(desired_capabilities=DesiredCapabilities.CHROME.copy(),
+                                 chrome_options=self._options)
+
+    def get_webdriver(self):
+        # type: () -> WebDriver
+        if not self._driver:
+            raise Exception("Driver has not been created")
+        return self._driver

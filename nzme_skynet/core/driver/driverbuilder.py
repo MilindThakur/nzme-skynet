@@ -30,15 +30,15 @@ class DriverBuilder(object):
             raise
 
     def _build_local_web_driver(self):
-        driver_init = None
+        driver = None
         if self._driver_type == DriverTypes.CHROME:
-            driver_init = Chrome(self._driver_options)
+            driver = Chrome(self._driver_options)
         if self._driver_type == DriverTypes.FIREFOX:
-            driver_init = FireFox(self._driver_options)
+            driver = FireFox(self._driver_options)
         if self._driver_type == DriverTypes.PHANTOM_JS:
-            driver_init = PhantomJS(self._driver_options)
+            driver = PhantomJS(self._driver_options)
         try:
-            return driver_init.create_driver()
+            return driver.init()
         except Exception:
             raise Exception("Failed to initialise local browser driver")
 

@@ -53,6 +53,7 @@ class DriverFactory(object):
         except Exception:
             raise
 
+    @staticmethod
     def get_driver(self):
         if self._registered_driver_name:
             return self.get_driver_by_name(self._registered_driver_name)
