@@ -40,8 +40,7 @@ class Chrome(BrowserDriver):
         self._driver = WebDriver(desired_capabilities=DesiredCapabilities.CHROME.copy(),
                                  chrome_options=self._options)
 
-    def get_webdriver(self):
+    @property
+    def webdriver(self):
         # type: () -> WebDriver
-        if not self._driver:
-            raise Exception("Driver has not been created")
         return self._driver
