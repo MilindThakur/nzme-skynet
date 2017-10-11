@@ -13,6 +13,13 @@ class DriverRegistry(object):
 
     @staticmethod
     def register_driver(driver_type='chrome', driver_options=None, local=True):
+        """
+        Build and register driver
+        :param driver_type: DriverTypes
+        :param driver_options: capabilities
+        :param local: Local or Selenium Grid/Server
+        :return:
+        """
         new_driver = None
         try:
             if driver_type in DESKTOP_WEBBROWSER:
@@ -31,13 +38,31 @@ class DriverRegistry(object):
 
     @staticmethod
     def deregister_driver():
+        """
+        Removes current driver from registry
+        :return:
+        """
         if not get_driver():
             raise Exception("No registered driver found")
-        get_driver().quit()
+        DriverRegistry.get_webdriver().quit()
         deregister_driver()
 
     @staticmethod
     def get_driver():
+        """
+        Returns Skynet driver from registry
+        """
         if not get_driver():
             raise Exception("No registered driver found")
         return get_driver()
+
+    @staticmethod
+    def get_webdriver():
+        """
+        Returns Selenium Webdriver from registry
+        :return:
+        """
+        if not get_driver():
+            raise Exception("No registered driver found")
+        return get_driver().webdriver
+
