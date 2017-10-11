@@ -10,6 +10,10 @@ class BrowserDriver(object):
     def _create_driver(self):
         raise NotImplementedError
 
+    @property
+    def webdriver(self):
+        raise NotImplementedError
+
     def add_option(self, option):
         raise NotImplementedError
 
@@ -26,9 +30,5 @@ class BrowserDriver(object):
 
     def init(self):
         self._create_driver()
-        self.get_webdriver().maximize_window()
-        self.get_webdriver().set_page_load_timeout(DefaultTimeouts.PAGE_LOAD_TIMEOUT)
-        return self.get_webdriver()
-
-    def get_webdriver(self):
-        raise NotImplementedError
+        self.webdriver.maximize_window()
+        self.webdriver.set_page_load_timeout(DefaultTimeouts.PAGE_LOAD_TIMEOUT)
