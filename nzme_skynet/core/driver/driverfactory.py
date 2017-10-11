@@ -26,7 +26,8 @@ class DriverFactory(object):
         else:
             raise Exception("Only supports Chrome, Firefox, PhantomJS in local mode")
         try:
-            return driver.init()
+            driver.init()
+            return driver
         except Exception:
             raise Exception("Failed to initialise local web driver")
 
