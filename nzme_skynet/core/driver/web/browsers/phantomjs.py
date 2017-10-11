@@ -34,10 +34,9 @@ class PhantomJS(BrowserDriver):
         self._set_options()
         self._driver = WebDriver(service_args=self._service_args)
 
-    def get_webdriver(self):
+    @property
+    def webdriver(self):
         # type: () -> WebDriver
-        if not self._driver:
-            raise Exception("Driver has not been created")
         return self._driver
 
     @staticmethod

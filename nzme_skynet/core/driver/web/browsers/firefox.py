@@ -39,8 +39,7 @@ class FireFox(BrowserDriver):
                                  firefox_options=self._options,
                                  capabilities=DesiredCapabilities.FIREFOX.copy())
 
-    def get_webdriver(self):
+    @property
+    def webdriver(self):
         # type: () -> WebDriver
-        if not self._driver:
-            raise Exception("Driver has not been created")
         return self._driver

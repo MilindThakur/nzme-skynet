@@ -20,8 +20,7 @@ class Remote(BrowserDriver):
     def _create_driver(self):
         self._driver = WebDriver(command_executor=self._remote_url, desired_capabilities=self._desired_cap)
 
-    def get_webdriver(self):
+    @property
+    def webdriver(self):
         # type: () -> WebDriver
-        if not self._driver:
-            raise Exception("Driver has not been created")
         return self._driver
