@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from selenium.webdriver.remote.webdriver import WebDriver
 
 
 class BaseDriver(object):
@@ -12,7 +11,6 @@ class BaseDriver(object):
 
     @property
     def webdriver(self):
-        # type: () -> WebDriver
         raise NotImplementedError
 
     @property
@@ -84,12 +82,38 @@ class BaseDriver(object):
 
     # Device Specific Interfaces
 
+    # Device Actions Specific Interfaces
+
+    def pinch_and_zoom(self):
+        raise NotImplementedError
+
+    def swipe(self):
+        raise NotImplementedError
+
+    def scroll(self):
+        raise NotImplementedError
+
+    # Device App Specific Interfaces
+
     def is_app_installed(self):
         raise NotImplementedError
 
     def launch_app(self):
         raise NotImplementedError
 
+    def close_app(self):
+        raise NotImplementedError
+
     @property
     def context(self):
+        raise NotImplementedError
+
+    def reset(self):
+        raise NotImplementedError
+
+    @property
+    def current_running_activity(self):
+        raise NotImplementedError
+
+    def wait_for_activity(self, activity_name, timeout):
         raise NotImplementedError
