@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
+from nzme_skynet.core.driver.basedriver import BaseDriver
 from nzme_skynet.core.driver.enums.drivertypes import DESKTOP_WEBBROWSER, DriverTypes, MOBILE_WEBBROWSER, MOBILE_APP
 from nzme_skynet.core.driver.driverfactory import DriverFactory
 from nzme_skynet.core.driver import register_driver, deregister_driver, get_driver
+from selenium.webdriver.remote.webdriver import WebDriver
 
 
 class DriverRegistry(object):
@@ -21,6 +23,8 @@ class DriverRegistry(object):
         :return:
         """
         new_driver = None
+        if get_driver():
+            raise Exception("Only one driver can be registered at a time")
         try:
             if driver_type in DESKTOP_WEBBROWSER:
                 if local:
@@ -49,6 +53,7 @@ class DriverRegistry(object):
 
     @staticmethod
     def get_driver():
+        # type: () -> BaseDriver
         """
         Returns Skynet driver from registry
         """
@@ -58,6 +63,7 @@ class DriverRegistry(object):
 
     @staticmethod
     def get_webdriver():
+        # type: () -> WebDriver
         """
         Returns Selenium Webdriver from registry
         :return:
