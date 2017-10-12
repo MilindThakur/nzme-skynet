@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from nzme_skynet.core.driver.enums.drivertypes import DriverTypes
-from nzme_skynet.core.driver.mobile.app.mapp import MApp
+from nzme_skynet.core.driver.mobile.app.androidappdriver import AndroidAppDriver
+from nzme_skynet.core.driver.mobile.app.iosappdriver import IOSAppDriver
 from nzme_skynet.core.driver.mobile.browser.mbrowser import MBrowser
 from nzme_skynet.core.driver.web.browsers.chrome import Chrome
 from nzme_skynet.core.driver.web.browsers.firefox import FireFox
@@ -32,17 +33,23 @@ class DriverFactory(object):
             raise Exception("Failed to initialise local web driver")
 
     @staticmethod
-    def build_mobile_app_driver(driver_type, driver_options):
+    def build_mobile_app_driver(driver_type, driver_capabilities):
+        if driver_type == DriverTypes.IOS:
+            driver = IOSAppDriver(desired_capabilities=driver_capabilities)
+        elif driver_type == DriverTypes.ANDROID:
+            driver = AndroidAppDriver(desired_capabilities=driver_capabilities)
+        else:
+            raise Exception("Only supports Android and IOS app drivers")
         try:
-            driver_init = MApp(mplatform=driver_type, desired_capabilities=driver_options)
-            return driver_init.create_driver()
+            driver.init()
+            return driver
         except Exception:
-            raise Exception("{0} not identified, supports only android and ios".format(driver_type))
+            raise Exception("Failed to initialise mobile app driver")
 
     @staticmethod
-    def build_mobile_web_driver(driver_type, driver_options=None, browser=None):
+    def build_mobile_web_driver(driver_type, driver_capabilities=None, browser='chrome'):
         try:
-            driver_init = MBrowser(platform=driver_type, desired_capabilities=driver_options, browser=browser)
+            driver_init = MBrowser(platform=driver_type, desired_capabilities=driver_capabilities, browser=browser)
             return driver_init.create_driver()
         except Exception:
             raise Exception("{0} not identified, supports only android and ios".format(driver_type))
