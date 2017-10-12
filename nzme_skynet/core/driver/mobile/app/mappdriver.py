@@ -29,3 +29,6 @@ class MAppDriver(MobileDriver):
 
     def wait_for_android_activity(self, activity_name, timeout):
         self.webdriver.wait_activity(activity=activity_name, timeout=timeout)
+
+    def init(self):
+        self._create_driver()
