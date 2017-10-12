@@ -22,14 +22,24 @@ class DriverFactoryTest(unittest.TestCase):
             DriverRegistry.deregister_driver()
         self.assertTrue('No registered driver found' in context.exception)
 
-    # Chrome browser does not run in CI without headless mode.
-    # Test should fail on CI but pass locally.
+    # # Chrome browser does not run in CI without headless mode.
+    # # Test should fail on CI but pass locally.
     @unittest.expectedFailure
     def test_default_chrome_local_driver_creation(self):
         DriverRegistry.register_driver()
-        self.assertEqual(DriverRegistry.get_webdriver().name, DriverTypes.CHROME)
         self.assertIsInstance(DriverRegistry.get_driver(), BrowserDriver)
         self.assertIsInstance(DriverRegistry.get_webdriver(), WebDriver)
+        self.assertEqual(DriverRegistry.get_driver().name, DriverTypes.CHROME)
+        DriverRegistry.deregister_driver()
+        with self.assertRaises(Exception) as context:
+            DriverRegistry.get_driver()
+        self.assertTrue('No registered driver found' in context.exception)
+
+    def test_registering_multiple_drivers(self):
+        DriverRegistry.register_driver()
+        with self.assertRaises(Exception) as context:
+            DriverRegistry.register_driver()
+        self.assertTrue('Only one driver can be registered at a time' in context.exception)
         DriverRegistry.deregister_driver()
         with self.assertRaises(Exception) as context:
             DriverRegistry.get_driver()
@@ -37,9 +47,9 @@ class DriverFactoryTest(unittest.TestCase):
 
     def test_custom_local_driver_registration(self):
         DriverRegistry.register_driver(DriverTypes.PHANTOMJS)
-        self.assertEqual(DriverRegistry.get_webdriver().name, DriverTypes.PHANTOMJS)
         self.assertIsInstance(DriverRegistry.get_driver(), BrowserDriver)
         self.assertIsInstance(DriverRegistry.get_webdriver(), WebDriver)
+        self.assertEqual(DriverRegistry.get_driver().name, DriverTypes.PHANTOMJS)
         DriverRegistry.deregister_driver()
         with self.assertRaises(Exception) as context:
             DriverRegistry.get_driver()
@@ -54,7 +64,7 @@ class DriverFactoryTest(unittest.TestCase):
         DriverRegistry.register_driver(local=False)
         self.assertIsInstance(DriverRegistry.get_driver(), BrowserDriver)
         self.assertIsInstance(DriverRegistry.get_webdriver(), WebDriver)
-        self.assertEqual(DriverRegistry.get_webdriver().name, DriverTypes.CHROME)
+        self.assertEqual(DriverRegistry.get_driver().name, DriverTypes.CHROME)
         DriverRegistry.deregister_driver()
         with self.assertRaises(Exception) as context:
             DriverRegistry.get_driver()
@@ -64,7 +74,7 @@ class DriverFactoryTest(unittest.TestCase):
         DriverRegistry.register_driver(driver_type=DriverTypes.FIREFOX, local=False)
         self.assertIsInstance(DriverRegistry.get_driver(), BrowserDriver)
         self.assertIsInstance(DriverRegistry.get_webdriver(), WebDriver)
-        self.assertEqual(DriverRegistry.get_webdriver().name, DriverTypes.FIREFOX)
+        self.assertEqual(DriverRegistry.get_driver().name, DriverTypes.FIREFOX)
         DriverRegistry.deregister_driver()
         with self.assertRaises(Exception) as context:
             DriverRegistry.get_driver()
@@ -86,7 +96,7 @@ class DriverFactoryTest(unittest.TestCase):
         DriverRegistry.register_driver(driver_options=test_capabilities, local=False)
         self.assertIsInstance(DriverRegistry.get_driver(), BrowserDriver)
         self.assertIsInstance(DriverRegistry.get_webdriver(), WebDriver)
-        self.assertEqual(DriverRegistry.get_webdriver().name, DriverTypes.CHROME)
+        self.assertEqual(DriverRegistry.get_driver().name, DriverTypes.CHROME)
         DriverRegistry.deregister_driver()
         with self.assertRaises(Exception) as context:
             DriverRegistry.get_driver()
