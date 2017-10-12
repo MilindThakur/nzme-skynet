@@ -10,8 +10,8 @@ class MAppDriver(MobileDriver):
     def is_app_installed(self):
         return self.webdriver.is_app_installed(self.desired_capabilities['appPackage'])
 
-    def launch_app(self):
-        self.webdriver.launch_app()
+    def _create_desired_capabilities(self):
+        raise NotImplementedError
 
     @property
     def context(self):
