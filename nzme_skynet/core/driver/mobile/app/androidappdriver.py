@@ -13,6 +13,28 @@ class AndroidAppDriver(MAppDriver):
     def _create_driver(self):
         self._driver = WebDriver(command_executor=self._remote_url, desired_capabilities=self._desired_cap)
 
+    def _set_default_capabilities(self):
+        self._create_desired_capabilities()
+        self._desired_cap['fullReset'] = 'True'
+
+    def _create_desired_capabilities(self):
+        if not self._desired_cap:
+            raise Exception("No capabilities provided to init Appium driver")
+        if not self._desired_cap['platformVersion']:
+            raise Exception("Please provide platformVersion to test app against")
+        if not self._desired_cap['app']:
+            raise Exception("Please provide absolute app path for .apk")
+        if not self._desired_cap['appPackage']:
+            raise Exception("Please provide the java package of the app")
+        if not self._desired_cap['appActivity']:
+            raise Exception("Please provide the activity to launch")
+
+        self._desired_cap['platformName'] = 'Android'
+        self._desired_cap['platform'] = 'ANDROID'
+        if not self._desired_cap['deviceName']:
+            # Run tests on Android emulator by default
+            self._desired_cap['deviceName'] = 'Android Emulator'
+
     @property
     def webdriver(self):
         # type: () -> WebDriver
