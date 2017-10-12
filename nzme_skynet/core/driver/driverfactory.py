@@ -3,7 +3,8 @@
 from nzme_skynet.core.driver.enums.drivertypes import DriverTypes
 from nzme_skynet.core.driver.mobile.app.androidappdriver import AndroidAppDriver
 from nzme_skynet.core.driver.mobile.app.iosappdriver import IOSAppDriver
-from nzme_skynet.core.driver.mobile.browser.mbrowser import MBrowser
+from nzme_skynet.core.driver.mobile.browser.androidbrowserdriver import AndroidBrowserDriver
+from nzme_skynet.core.driver.mobile.browser.iosbrowserdriver import IOSBrowserDriver
 from nzme_skynet.core.driver.web.browsers.chrome import Chrome
 from nzme_skynet.core.driver.web.browsers.firefox import FireFox
 from nzme_skynet.core.driver.web.browsers.phantomjs import PhantomJS
@@ -47,12 +48,19 @@ class DriverFactory(object):
             raise Exception("Failed to initialise mobile app driver")
 
     @staticmethod
-    def build_mobile_web_driver(driver_type, driver_capabilities=None, browser='chrome'):
+    def build_mobile_web_driver(driver_type, driver_capabilities, browsername):
+        if driver_type == DriverTypes.IOSWEB:
+            driver = IOSBrowserDriver(desired_capabilities=driver_capabilities, browsername=browsername)
+        elif driver_type == DriverTypes.ANDROIDWEB:
+            driver = AndroidBrowserDriver(desired_capabilities=driver_capabilities, browsername=browsername)
+        else:
+            raise Exception("Only supports Android and IOS browser drivers")
+
         try:
-            driver_init = MBrowser(platform=driver_type, desired_capabilities=driver_capabilities, browser=browser)
-            return driver_init.create_driver()
+            driver.init()
+            return driver
         except Exception:
-            raise Exception("{0} not identified, supports only android and ios".format(driver_type))
+            raise Exception("Failed to initialise mobile browser driver")
 
     @staticmethod
     def build_remote_web_driver(driver_type="chrome", driver_options=None):
