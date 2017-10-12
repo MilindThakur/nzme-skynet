@@ -98,9 +98,6 @@ class BaseDriver(object):
     def is_app_installed(self):
         raise NotImplementedError
 
-    def launch_app(self):
-        raise NotImplementedError
-
     def close_app(self):
         raise NotImplementedError
 
