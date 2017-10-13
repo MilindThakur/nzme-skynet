@@ -1,6 +1,6 @@
 # coding=utf-8
-from nzme_skynet.core.actions.controls.clickable import Clickable
-from nzme_skynet.core.actions.enums.checkboxstates import CheckboxState
+from nzme_skynet.core.controls.controls.clickable import Clickable
+from nzme_skynet.core.controls.enums.checkboxstates import CheckboxState
 
 
 class Checkbox(Clickable):

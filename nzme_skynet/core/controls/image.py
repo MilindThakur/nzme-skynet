@@ -1,8 +1,8 @@
 # coding=utf-8
 import time
 
-from nzme_skynet.core.actions.controls.clickable import Clickable
-from nzme_skynet.core.actions.enums.timeouts import DefaultTimeouts
+from nzme_skynet.core.controls.controls.clickable import Clickable
+from nzme_skynet.core.controls.enums.timeouts import DefaultTimeouts
 
 
 class Image(Clickable):

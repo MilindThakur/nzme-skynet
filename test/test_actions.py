@@ -3,16 +3,16 @@ import unittest
 
 from selenium.webdriver.common.by import By
 
-from nzme_skynet.core.actions.controls.button import Button
-from nzme_skynet.core.actions.controls.checkbox import Checkbox
-from nzme_skynet.core.actions.controls.radiobutton import RadioButton
-from nzme_skynet.core.actions.controls.select import SelectElem
-from nzme_skynet.core.actions.controls.textinput import TextInput
-from nzme_skynet.core.actions.controls.textlink import TextLink
-from nzme_skynet.core.actions.controls.image import Image
-from nzme_skynet.core.actions.controls.text import Text
-from nzme_skynet.core.actions.controls.element import Element
-from nzme_skynet.core.actions.enums.checkboxstates import CheckboxState
+from nzme_skynet.core.controls.button import Button
+from nzme_skynet.core.controls.checkbox import Checkbox
+from nzme_skynet.core.controls.radiobutton import RadioButton
+from nzme_skynet.core.controls.select import SelectElem
+from nzme_skynet.core.controls.textinput import TextInput
+from nzme_skynet.core.controls.textlink import TextLink
+from nzme_skynet.core.controls.image import Image
+from nzme_skynet.core.controls.text import Text
+from nzme_skynet.core.controls.element import Element
+from nzme_skynet.core.controls.enums.checkboxstates import CheckboxState
 from nzme_skynet.core.driver.driverregistry import DriverRegistry
 from nzme_skynet.core.driver.enums.drivertypes import DriverTypes
 

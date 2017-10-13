@@ -5,7 +5,7 @@ from selenium.webdriver.support import expected_conditions
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.wait import WebDriverWait
 from nzme_skynet.core.utils import js_wait
-from nzme_skynet.core.actions.enums.timeouts import DefaultTimeouts
+from nzme_skynet.core.controls.enums.timeouts import DefaultTimeouts
 
 
 class BrowserDriver(BaseDriver):

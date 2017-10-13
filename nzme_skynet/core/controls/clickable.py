@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from nzme_skynet.core.actions.baseelement import BaseElement
+from nzme_skynet.core.controls.baseelement import BaseElement
 
 
 class Clickable(BaseElement):

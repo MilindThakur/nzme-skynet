@@ -1,7 +1,7 @@
 # coding=utf-8
 from distutils.util import strtobool
 
-from nzme_skynet.core.actions.controls.clickable import Clickable
+from nzme_skynet.core.controls.controls.clickable import Clickable
 
 
 class MobElem(Clickable):

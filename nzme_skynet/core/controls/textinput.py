@@ -1,5 +1,5 @@
 # coding=utf-8
-from nzme_skynet.core.actions.controls.text import Text
+from nzme_skynet.core.controls.controls.text import Text
 
 
 class TextInput(Text):

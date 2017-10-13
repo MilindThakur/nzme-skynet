@@ -1,5 +1,5 @@
 # coding=utf-8
-from nzme_skynet.core.actions.controls.clickabletext import ClickableText
+from nzme_skynet.core.controls.controls.clickabletext import ClickableText
 
 
 class TextLink(ClickableText):

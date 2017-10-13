@@ -2,8 +2,8 @@
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.ui import WebDriverWait
 
-from nzme_skynet.core.actions.controls.clickable import Clickable
-from nzme_skynet.core.actions.enums.timeouts import DefaultTimeouts
+from nzme_skynet.core.controls.controls.clickable import Clickable
+from nzme_skynet.core.controls.enums.timeouts import DefaultTimeouts
 
 
 class ClickableText(Clickable):
