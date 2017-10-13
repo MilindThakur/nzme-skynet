@@ -8,18 +8,25 @@ from nzme_skynet.core.actions.enums.timeouts import DefaultTimeouts
 
 class ClickableText(Clickable):
 
-    def __init__(self, driver, locator, by):
-        super(ClickableText, self).__init__(driver, locator, by)
+    def __init__(self, by, locator):
+        super(ClickableText, self).__init__(by, locator)
 
-    def get_text(self):
-        return self.find_element().text
+    @property
+    def text(self):
+        return self._find_element().text
 
     def currently_has_text(self, text):
         return self.will_have_text(text, time=DefaultTimeouts.SHORT_TIMEOUT)
 
     def will_have_text(self, text, time=DefaultTimeouts.LARGE_TIMEOUT):
         try:
-            WebDriverWait(self._driver, time).until(ec.text_to_be_present_in_element((self._by, self._locator), text))
-            return True
+            return WebDriverWait(self.driver, time).until(ec.text_to_be_present_in_element((self._by, self._locator),
+                                                                                           text))
         except Exception:
             return False
+
+    def contains(self, text):
+        return self.text.contains(text)
+
+    def matches(self, regex):
+        return self.text.matches(regex)

@@ -1,32 +1,32 @@
 # coding=utf-8
 import time
 
-from selenium.webdriver.common.by import By
-
 from nzme_skynet.core.actions.controls.clickable import Clickable
 from nzme_skynet.core.actions.enums.timeouts import DefaultTimeouts
 
 
 class Image(Clickable):
-    def __init__(self, driver, locator, by=By.CSS_SELECTOR):
-        super(Image, self).__init__(driver, locator, by)
 
-    def get_src(self):
-        return self.get_attr("src")
+    def __init__(self, by, locator):
+        super(Image, self).__init__(by, locator)
+
+    @property
+    def src(self):
+        return self.get_attribute("src")
 
     def get_filename(self):
         raise NotImplementedError
 
     def is_image_loaded(self):
-        return self._driver.execute_script("return arguments[0].complete && "
-                                           "typeof arguments[0].naturalWidth != \"undefined\" && "
-                                           "arguments[0].naturalWidth > 0", self.find_element())
+        return self.driver.execute_script("return arguments[0].complete && "
+                                          "typeof arguments[0].naturalWidth != \"undefined\" && "
+                                          "arguments[0].naturalWidth > 0", self._find_element())
 
     def _wait_for_lazy_loaded_image(self, timeout=DefaultTimeouts.DEFAULT_TIMEOUT):
         start_ms = time.time() * 1000.0
         stop_ms = start_ms + (timeout * 1000.0)
         for x in range(int(timeout * 10)):
-            if self.get_attr('data-original') == self.get_attr('src'):
+            if self.get_attribute('data-original') == self.get_attribute('src'):
                 return True
             else:
                 now_ms = time.time() * 1000.0
@@ -41,11 +41,14 @@ class Image(Clickable):
         else:
             return self.will_be_visible()
 
-    def get_title(self):
-        return self.get_attr("title")
+    @property
+    def title(self):
+        return self.get_attribute("title")
 
-    def get_width(self):
-        return self.get_attr("width")
+    @property
+    def width(self):
+        return self.get_attribute("width")
 
-    def get_height(self):
-        return self.get_attr("height")
+    @property
+    def height(self):
+        return self.get_attribute("height")

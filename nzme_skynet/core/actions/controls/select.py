@@ -1,19 +1,19 @@
 # coding=utf-8
-from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
 
-from nzme_skynet.core.actions.controls.component import Component
+from nzme_skynet.core.actions.baseelement import BaseElement
 
 
-class SelectElem(Component):
-    def __init__(self, driver, locator, by=By.CSS_SELECTOR):
-        super(SelectElem, self).__init__(driver, locator, by)
+class SelectElem(BaseElement):
+
+    def __init__(self, by, locator):
+        super(SelectElem, self).__init__(by, locator)
         self.select = None
         self._select_init()
 
     def _select_init(self):
         try:
-            self.select = Select(self.find_element())
+            self.select = Select(self._find_element())
         except Exception:
             pass
 

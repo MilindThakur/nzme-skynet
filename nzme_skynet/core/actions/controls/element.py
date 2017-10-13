@@ -4,7 +4,7 @@ from selenium.webdriver.common.by import By
 from nzme_skynet.core.actions.baseelement import BaseElement
 
 
-class Table(BaseElement):
+class Element(BaseElement):
 
     def __init__(self, locator, by=By.CSS_SELECTOR):
-        super(Table, self).__init__(locator, by)
+        super(Element, self).__init__(locator, by)

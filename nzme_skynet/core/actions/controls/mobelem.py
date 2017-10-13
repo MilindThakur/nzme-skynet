@@ -1,64 +1,60 @@
 # coding=utf-8
 from distutils.util import strtobool
-from nzme_skynet.core.actions.controls.component import Component
+
+from nzme_skynet.core.actions.controls.clickable import Clickable
 
 
-class MobElem(Component):
+class MobElem(Clickable):
 
-    def __init__(self, driver, locator, by):
-        super(MobElem, self).__init__(driver, locator, by)
+    def __init__(self, locator, by):
+        super(MobElem, self).__init__(locator, by)
 
-    def click(self):
-        if self.is_currently_visible():
-            self.find_element().click()
-
-    def get_text(self):
-        return self.get_attr("text")
+    @property
+    def text(self):
+        return self.get_attribute("text")
 
     def set_text(self, text):
         self.clear_text()
-        return self.find_element().set_text(text)
+        return self._find_element().set_text(text)
 
     def clear_text(self):
-        return self.find_element().set_text("")
+        return self._find_element().set_text("")
 
-    def get_class(self):
-        return self.get_attr("class")
+    @property
+    def classname(self):
+        return self.get_attribute("class")
 
-    def get_package(self):
-        return self.get_attr("package")
+    @property
+    def package(self):
+        return self.get_attribute("package")
 
-    def get_content_desc(self):
-        return self.get_attr("content-desc")
+    @property
+    def content_desc(self):
+        return self.get_attribute("content-desc")
 
     def is_checkable(self):
-        return strtobool(self.get_attr("checkeable"))
+        return strtobool(self.get_attribute("checkeable"))
 
     def is_checked(self):
-        return strtobool(self.get_attr("checked"))
+        return strtobool(self.get_attribute("checked"))
 
     def is_clickable(self):
-        return strtobool(self.get_attr("clickable"))
+        return strtobool(self.get_attribute("clickable"))
 
     def is_long_clickable(self):
-        return strtobool(self.get_attr("long-clickable"))
+        return strtobool(self.get_attribute("long-clickable"))
 
     def is_focused(self):
-        return strtobool(self.get_attr("focused"))
+        return strtobool(self.get_attribute("focused"))
 
     def is_focusable(self):
-        return strtobool(self.get_attr("focusable"))
+        return strtobool(self.get_attribute("focusable"))
 
     def is_scrollable(self):
-        return strtobool(self.get_attr("scrollable"))
+        return strtobool(self.get_attribute("scrollable"))
 
     def is_password(self):
-        return strtobool(self.get_attr("password"))
+        return strtobool(self.get_attribute("password"))
 
     def is_selected(self):
-        return strtobool(self.get_attr("selected"))
-
-    #
-    # def get_location(self):
-    #     self.X = self.get_attr("bounds")
-    #     self.Y =
+        return strtobool(self.get_attribute("selected"))

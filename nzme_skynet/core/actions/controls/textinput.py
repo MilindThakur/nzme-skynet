@@ -1,24 +1,22 @@
 # coding=utf-8
-
-from selenium.webdriver.common.by import By
-
 from nzme_skynet.core.actions.controls.text import Text
 
 
 class TextInput(Text):
 
-    def __init__(self, driver, locator, by=By.CSS_SELECTOR):
-        super(TextInput, self).__init__(driver, locator, by)
+    def __init__(self, by, locator):
+        super(TextInput, self).__init__(by, locator)
 
     def focus(self):
         raise NotImplementedError
 
     def clear(self):
-        self.find_element().clear()
+        self._find_element().clear()
 
-    def get_value(self):
-        return self.get_attr("value")
+    @property
+    def value(self):
+        return self.get_attribute("value")
 
     def set_value(self, value):
         self.clear()
-        self.find_element().send_keys(value)
+        self._find_element().send_keys(value)
