@@ -24,6 +24,16 @@ class BaseDriver(object):
     # Browser Specific Interfaces
 
     @property
+    def window_handles(self):
+        raise NotImplementedError
+
+    def switch_to_newest_window(self):
+        raise NotImplementedError
+
+    def switch_to_oldest_window(self):
+        raise NotImplementedError
+
+    @property
     def title(self):
         raise NotImplementedError
 
