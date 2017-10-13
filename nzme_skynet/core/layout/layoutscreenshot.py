@@ -3,7 +3,8 @@ import json
 import os
 from datetime import datetime
 
-from nzme_skynet.core.driver.web.builder.localbrowserbuilder import LocalBrowserBuilder
+from nzme_skynet.core.driver.driverregistry import DriverRegistry
+from nzme_skynet.core.driver.enums.drivertypes import DriverTypes
 
 
 class LayoutScreenshot(object):
@@ -29,20 +30,17 @@ class LayoutScreenshot(object):
             self._folder = folder
         else:
             self._folder = self._SCREENSHOT_DIR_PATH
-        self._create_screenshot_folder(self._folder)
-
-    def _create_screenshot_folder(self, folder):
         if not os.path.exists(folder):
             os.makedirs(folder)
 
     def take_screenshot(self):
-        lb = LocalBrowserBuilder(self._CAP)
-        browser = lb.build()
+        DriverRegistry.register_driver(DriverTypes.PHANTOMJS)
+        driver = DriverRegistry.get_driver()
         for url in self.urls_json["urls"]:
-            browser.goto_url(url["url"], relative=False)
+            driver.goto_url(url["url"], absolute=True)
             for device in self._devices_list:
-                browser.set_window_size(self.devices_json[device]["w"], self.devices_json[device]["h"])
+                driver.set_window_size(self.devices_json[device]["w"], self.devices_json[device]["h"])
                 filename = "%s_%s_%s.png" % (url["name"].replace(" ", ""), device,
                                              datetime.now().strftime("%Y%m%d-%H%M%S"))
-                browser.take_screenshot_current_window(self._folder + "/%s" % filename)
-        browser.quit()
+                driver.take_screenshot_current_window(self._folder + "/%s" % filename)
+        DriverRegistry.deregister_driver()

@@ -105,7 +105,7 @@ class ActionsTestCase(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        cls.driver.quit()
+        DriverRegistry.deregister_driver()
 
 
 if __name__ == "__main__":
