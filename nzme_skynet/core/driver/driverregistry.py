@@ -33,7 +33,7 @@ class DriverRegistry(object):
                     new_driver = DriverFactory.build_remote_web_driver(driver_type, driver_options)
             elif driver_type in MOBILE_WEBBROWSER:
                 new_driver = DriverFactory.build_mobile_web_driver(driver_type, driver_options,
-                                                                   browser=DriverTypes.CHROME)
+                                                                   browsername=DriverTypes.CHROME)
             elif driver_type in MOBILE_APP:
                 new_driver = DriverFactory.build_mobile_app_driver(driver_type, driver_options)
             register_driver(new_driver)
