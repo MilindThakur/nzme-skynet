@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from nzme_skynet.core.driver.mobile.mobileDriver import MobileDriver
+from nzme_skynet.core.driver.mobile.mobiledriver import MobileDriver
 from nzme_skynet.core.driver.web.browserdriver import BrowserDriver
 from appium.webdriver.webdriver import WebDriver
 
