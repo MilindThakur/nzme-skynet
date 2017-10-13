@@ -1,8 +1,14 @@
 # -*- coding: utf-8 -*-
 from nzme_skynet.core.driver.mobile.mobileDriver import MobileDriver
+from appium.webdriver.webdriver import WebDriver
 
 
 class MAppDriver(MobileDriver):
+
+    def __init__(self, desired_capabilities, remote_url='http://127.0.0.1:4444/wd/hub'):
+        self._desired_cap = desired_capabilities
+        self._remote_url = remote_url
+        self._driver = None
 
     def close_app(self):
         self.webdriver.close_app()
@@ -17,9 +23,6 @@ class MAppDriver(MobileDriver):
     def context(self):
         return self.webdriver.context
 
-    def _create_driver(self):
-        raise NotImplementedError
-
     def reset(self):
         self.webdriver.reset()
 
@@ -32,3 +35,15 @@ class MAppDriver(MobileDriver):
 
     def init(self):
         self._create_driver()
+
+    def _create_driver(self):
+        self._driver = WebDriver(command_executor=self._remote_url, desired_capabilities=self._desired_cap)
+
+    def _set_default_capabilities(self):
+        self._create_desired_capabilities()
+        self._desired_cap['fullReset'] = 'True'
+
+    @property
+    def webdriver(self):
+        # type: () -> WebDriver
+        return self._driver
