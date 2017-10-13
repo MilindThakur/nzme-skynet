@@ -54,6 +54,16 @@ class BrowserDriver(BaseDriver):
     def current_url(self):
         return self.webdriver.current_url
 
+    @property
+    def window_handles(self):
+        return self.webdriver.window_handles
+
+    def switch_to_newest_window(self):
+        return self.webdriver.switch_to.window(self.window_handles[len(self.window_handles) - 1])
+
+    def switch_to_oldest_window(self):
+        return self.webdriver.switch_to.window(self.window_handles[0])
+
     def maximize_window(self):
         self.webdriver.maximize_window()
 
