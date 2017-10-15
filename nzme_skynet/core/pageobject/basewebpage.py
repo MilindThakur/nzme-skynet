@@ -1,22 +1,18 @@
 # -*- coding: utf-8 -*-
 import logging
-from nzme_skynet.core.driver.web.browsers.webbrowser import Webbrowser
-from nzme_skynet.core.pageobject.ibasepage import IBasePage
+
+from nzme_skynet.core.driver.driverregistry import DriverRegistry
 
 
-class BaseWebPage(IBasePage):
+class BaseWebPage(object):
     page_url = None
 
-    def __init__(self, nzmedriver):
-        # type: (Webbrowser) -> None
-        if not isinstance(nzmedriver, Webbrowser):
-            raise TypeError('expect driver to be a Webbrowser type')
-        self.page = nzmedriver
+    def __init__(self):
         self.logger = logging.getLogger(__name__)
 
-    def goto(self, relative=True):
-        self.page.goto_url(self.page_url, relative)
+    def goto(self, absolute=False):
+        DriverRegistry.get_driver().goto_url(self.page_url, absolute)
 
     @property
-    def locate(self):
-        return self.page.action
+    def driver(self):
+        return DriverRegistry.get_driver()
