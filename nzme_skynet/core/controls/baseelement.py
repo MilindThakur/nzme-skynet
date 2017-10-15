@@ -16,7 +16,7 @@ class BaseElement(object):
 
     def find_sub_elements(self, by, locator):
         # TODO: return list of Element objects
-        self._find_element().find_elements(by, locator)
+        return self._find_element().find_elements(by, locator)
 
     @property
     def driver(self):
