@@ -11,7 +11,7 @@ def driver_setup(request):
     DriverRegistry.register_driver(driver_type=request.param, local=False)
     driver = DriverRegistry.get_driver()
     yield driver
-    driver.quit()
+    DriverRegistry.deregister_driver()
 
 
 def test_browser_setup(dsetup):
