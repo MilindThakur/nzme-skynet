@@ -3,17 +3,20 @@ import unittest
 
 from selenium.webdriver.common.by import By
 
-from nzme_skynet.core.driver.builder import build_docker_browser
+from nzme_skynet.core.controls.textinput import TextInput
+from nzme_skynet.core.controls.button import Button
+from nzme_skynet.core.controls.element import Element
+from nzme_skynet.core.driver.driverregistry import DriverRegistry
 from nzme_skynet.core.pageobject.basewebpage import BaseWebPage
 
 
 class GoogleHomePage(BaseWebPage):
     page_url = "https://www.google.co.nz/"
+    search_input = TextInput(By.NAME, 'q')
+    submit_search_btn = Button(By.NAME, 'btnK')
 
-    def __init__(self, driver):
-        super(GoogleHomePage, self).__init__(driver)
-        self.search_input = self.locate.textinput(By.NAME, 'q')
-        self.submit_search_btn = self.locate.button(By.NAME, 'btnK')
+    def __init__(self):
+        super(GoogleHomePage, self).__init__()
 
     def search(self, string):
         self.search_input.set_value(string)
@@ -21,34 +24,28 @@ class GoogleHomePage(BaseWebPage):
 
 
 class GoogleSearchResultPage(BaseWebPage):
+    search_result_container = Element(By.ID, 'rso')
 
-    def __init__(self, driver):
-        super(GoogleSearchResultPage, self).__init__(driver)
-        self.search_result_container = self.locate.element(By.ID, 'rso')
+    def __init__(self):
+        super(GoogleSearchResultPage, self).__init__()
 
     def get_result_url(self, index):
         return self.search_result_container.find_sub_elements(By.TAG_NAME, "cite")[index-1].text
 
 
 class POValidation(unittest.TestCase):
-    DOCKER_SELENIUM_URL = "http://localhost:4444/wd/hub"
+    # DOCKER_SELENIUM_URL = "http://localhost:4444/wd/hub"
 
     def setUp(self):
-        cap = {
-            "browserName": "chrome",
-            "platform": 'LINUX',
-            "version": '',
-            "javascriptEnabled": True
-        }
-        self.driver = build_docker_browser(self.DOCKER_SELENIUM_URL, cap)
+        DriverRegistry.register_driver("chrome")
 
-    def test_WebPOCreation(self):
-        ghomepage = GoogleHomePage(self.driver)
+    def test_web_page_object_creation(self):
+        ghomepage = GoogleHomePage()
         assert isinstance(ghomepage, BaseWebPage) is True
-        ghomepage.goto(relative=False)
-        assert "google.co.nz" in ghomepage.page.get_current_url(), "Failed to match browser url"
+        ghomepage.goto(absolute=True)
+        assert "google.co.nz"in ghomepage.driver.current_url, "Failed to match browser url"
         ghomepage.search('nzme')
-        gresultpage = GoogleSearchResultPage(self.driver)
+        gresultpage = GoogleSearchResultPage()
         assert isinstance(gresultpage, BaseWebPage) is True
         assert gresultpage.page_url is None
         gresultpage.search_result_container.will_be_visible()
@@ -56,7 +53,7 @@ class POValidation(unittest.TestCase):
         assert "www.nzme.co.nz/" in first_result_url, "Unexpected {0} found in first result".format(first_result_url)
 
     def tearDown(self):
-        self.driver.quit()
+        DriverRegistry.deregister_driver()
 
 
 if __name__ == "__main__":
