@@ -34,10 +34,9 @@ class GoogleSearchResultPage(BaseWebPage):
 
 
 class POValidation(unittest.TestCase):
-    # DOCKER_SELENIUM_URL = "http://localhost:4444/wd/hub"
 
     def setUp(self):
-        DriverRegistry.register_driver("chrome")
+        DriverRegistry.register_driver("chrome", local=False)
 
     def test_web_page_object_creation(self):
         ghomepage = GoogleHomePage()
