@@ -1,7 +1,7 @@
 # coding=utf-8
 import time
 
-from nzme_skynet.core.controls.controls.clickable import Clickable
+from nzme_skynet.core.controls.clickable import Clickable
 from nzme_skynet.core.controls.enums.timeouts import DefaultTimeouts
 
 

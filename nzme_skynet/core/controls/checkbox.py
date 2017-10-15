@@ -1,5 +1,5 @@
 # coding=utf-8
-from nzme_skynet.core.controls.controls.clickable import Clickable
+from nzme_skynet.core.controls.clickable import Clickable
 from nzme_skynet.core.controls.enums.checkboxstates import CheckboxState
 
 

@@ -1,5 +1,5 @@
 # coding=utf-8
-from nzme_skynet.core.controls.controls.button import Button
+from nzme_skynet.core.controls.button import Button
 
 
 class RadioButton(Button):
