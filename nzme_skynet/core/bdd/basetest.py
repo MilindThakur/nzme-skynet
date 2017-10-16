@@ -78,31 +78,33 @@ def before_scenario(context, scenario):
             if 'android' in tags or 'ios' in tags:
                 # Mobile tests
                 if 'android-browser' in tags:
-                    context.driver = DriverRegistry.register_driver(
+                    DriverRegistry.register_driver(
                         DriverTypes.ANDROIDWEB,
                         driver_options=Config.ANDROID_BROWSER_CAPABILITIES,
                         mbrowsername=context.config.userdata.get('androidBrowserName',
                                                                  Config.ANDROID_BROWSER_CAPABILITIES['browserName']))
                 elif 'ios-browser' in tags:
-                    context.driver = DriverRegistry.register_driver(
+                    DriverRegistry.register_driver(
                         DriverTypes.IOSWEB,
                         driver_options=Config.IOS_BROWSER_CAPABILITIES,
                         mbrowsername=context.config.userdata.get('iosBrowserName',
                                                                  Config.IOS_BROWSER_CAPABILITIES['browserName']))
                 elif 'android-app' in tags:
-                    context.driver = DriverRegistry.register_driver(
+                    DriverRegistry.register_driver(
                         DriverTypes.ANDROID,
                         driver_options=Config.ANDROID_APP_CAPABILITIES)
                 elif 'ios-app' in tags:
-                    context.driver = DriverRegistry.register_driver(
+                    DriverRegistry.register_driver(
                         DriverTypes.IOS,
                         driver_options=Config.IOS_APP_CAPABILITIES)
             else:
                 # Desktop browser tests
-                context.driver = DriverRegistry.register_driver(
+                DriverRegistry.register_driver(
                     driver_type=context.config.userdata.get("type", Config.DESKTOP_BROWSER_CAPABILITIES['browserName']),
                     driver_options=Config.DESKTOP_BROWSER_CAPABILITIES,
-                    local=context.config.userdata.getbool("local_run", Config.ENV_OPTIONS['local_run']))
+                    local=context.config.userdata.getbool("local", Config.ENV_OPTIONS['local']))
+                DriverRegistry.get_driver().baseurl = context.config.userdata.get("testurl", Config.ENV_OPTIONS['testurl'])
+                DriverRegistry.get_driver().goto_url(DriverRegistry.get_driver().baseurl, absolute=True)
     except Exception as e:
         logger.exception(e)
         raise Exception("Something broke creating a driver:" + str(e))
@@ -118,18 +120,18 @@ def after_scenario(context, scenario):
     """
     logger = logging.getLogger(__name__)
 
-    if context.driver is not None:
+    if DriverRegistry.get_driver() is not None:
 
         if scenario.status.lower == 'failed':
             _screenshot = '{}/{}_fail.png'.format(Config.LOG, scenario.name.replace(' ', '_'))
             # Take screen shot on a failure
             try:
-                context.driver.take_screenshot_current_window(_screenshot)
+                DriverRegistry.get_driver().take_screenshot_current_window(_screenshot)
             except Exception:
                 logger.error('Failed to take screenshot to: {}'.format(Config.LOG))
                 raise
 
-    if context.driver:
+    if DriverRegistry.get_driver():
         try:
             DriverRegistry.deregister_driver()
         except Exception:
@@ -167,9 +169,9 @@ def after_step(context, step):
 
     # Take screen shot
     # if step.status.lower == 'failed' or step.status.lower == 'skipped':
-    if context.app is not None:
+    if DriverRegistry.get_driver() is not None:
         try:
-            context.driver.take_screenshot_current_window(_screenshot)
+            DriverRegistry.get_driver().take_screenshot_current_window(_screenshot)
             context.picture_num += 1
         except Exception:
             logger.error('Failed to take screenshot to: {}'.format(Config.LOG))

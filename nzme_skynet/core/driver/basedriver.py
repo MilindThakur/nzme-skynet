@@ -2,6 +2,7 @@
 
 
 class BaseDriver(object):
+    baseurl = None
 
     def quit(self):
         self.webdriver.quit()

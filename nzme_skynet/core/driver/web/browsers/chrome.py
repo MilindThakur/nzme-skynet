@@ -7,8 +7,8 @@ from nzme_skynet.core.driver.web.browserdriver import BrowserDriver
 
 
 class Chrome(BrowserDriver):
-    def __init__(self, driver_options):
-        self._driver_options = driver_options
+    def __init__(self, driver_capabilities):
+        self.driver_capabilities = driver_capabilities
         self._options = Options()
         self._driver = None
 
@@ -25,9 +25,6 @@ class Chrome(BrowserDriver):
 
     def _set_options(self):
         self._create_default_chrome_options()
-        if self._driver_options:
-            for option in self._driver_options:
-                self.add_option(option)
 
     def add_option(self, option):
         self._options.add_argument(option)

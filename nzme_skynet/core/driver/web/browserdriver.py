@@ -23,7 +23,7 @@ class BrowserDriver(BaseDriver):
         if absolute:
             self.webdriver.get(url)
         else:
-            self.webdriver.get(url)
+            self.webdriver.get(self.baseurl+url)
 
     def _create_driver(self):
         raise NotImplementedError
