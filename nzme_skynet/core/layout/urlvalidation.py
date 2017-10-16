@@ -1,7 +1,6 @@
 # coding=utf-8
 import itertools
 import requests
-import signal
 
 from nzme_skynet.core.driver.driverregistry import DriverRegistry
 
