@@ -47,10 +47,9 @@ class DriverRegistry(object):
         Removes current driver from registry
         :return:
         """
-        if not get_driver():
-            raise Exception("No registered driver found")
-        DriverRegistry.get_webdriver().quit()
-        deregister_driver()
+        if get_driver():
+            DriverRegistry.get_webdriver().quit()
+            deregister_driver()
 
     @staticmethod
     def get_driver():
@@ -58,8 +57,6 @@ class DriverRegistry(object):
         """
         Returns Skynet driver from registry
         """
-        if not get_driver():
-            raise Exception("No registered driver found")
         return get_driver()
 
     @staticmethod

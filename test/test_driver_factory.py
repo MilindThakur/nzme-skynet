@@ -13,14 +13,10 @@ from nzme_skynet.core.driver.web.browserdriver import BrowserDriver
 class DriverFactoryTest(unittest.TestCase):
 
     def test_no_driver_registered_exception(self):
-        with self.assertRaises(Exception) as context:
-            DriverRegistry.get_driver()
-        self.assertTrue("No registered driver found" in context.exception.message)
+        self.assertIsNone(DriverRegistry.get_driver(), 'Error: Driver found without registration')
 
     def test_no_driver_deregistration_exception(self):
-        with self.assertRaises(Exception) as context:
-            DriverRegistry.deregister_driver()
-        self.assertTrue('No registered driver found' in context.exception)
+        self.assertIsNone(DriverRegistry.deregister_driver(), 'Error: Driver found without registration')
 
     # # Chrome browser does not run in CI without headless mode.
     # # Test should fail on CI but pass locally.
@@ -31,9 +27,7 @@ class DriverFactoryTest(unittest.TestCase):
         self.assertIsInstance(DriverRegistry.get_webdriver(), WebDriver)
         self.assertEqual(DriverRegistry.get_driver().name, DriverTypes.CHROME)
         DriverRegistry.deregister_driver()
-        with self.assertRaises(Exception) as context:
-            DriverRegistry.get_driver()
-        self.assertTrue('No registered driver found' in context.exception)
+        self.assertIsNone(DriverRegistry.get_driver(), 'Error: Driver found without registration')
 
     def test_registering_multiple_drivers(self):
         DriverRegistry.register_driver()
@@ -41,9 +35,7 @@ class DriverFactoryTest(unittest.TestCase):
             DriverRegistry.register_driver()
         self.assertTrue('Only one driver can be registered at a time' in context.exception)
         DriverRegistry.deregister_driver()
-        with self.assertRaises(Exception) as context:
-            DriverRegistry.get_driver()
-        self.assertTrue('No registered driver found' in context.exception)
+        self.assertIsNone(DriverRegistry.get_driver(), 'Error: Driver found without registration')
 
     def test_custom_local_driver_registration(self):
         DriverRegistry.register_driver(DriverTypes.PHANTOMJS)
@@ -51,9 +43,7 @@ class DriverFactoryTest(unittest.TestCase):
         self.assertIsInstance(DriverRegistry.get_webdriver(), WebDriver)
         self.assertEqual(DriverRegistry.get_driver().name, DriverTypes.PHANTOMJS)
         DriverRegistry.deregister_driver()
-        with self.assertRaises(Exception) as context:
-            DriverRegistry.get_driver()
-        self.assertTrue('No registered driver found' in context.exception)
+        self.assertIsNone(DriverRegistry.get_driver(), 'Error: Driver found without registration')
 
     def test_unsupported_local_driver_registration(self):
         with self.assertRaises(Exception) as context:
@@ -66,9 +56,7 @@ class DriverFactoryTest(unittest.TestCase):
         self.assertIsInstance(DriverRegistry.get_webdriver(), WebDriver)
         self.assertEqual(DriverRegistry.get_driver().name, DriverTypes.CHROME)
         DriverRegistry.deregister_driver()
-        with self.assertRaises(Exception) as context:
-            DriverRegistry.get_driver()
-        self.assertTrue('No registered driver found' in context.exception)
+        self.assertIsNone(DriverRegistry.get_driver(), 'Error: Driver found without registration')
 
     def test_custom_remote_driver_registration(self):
         DriverRegistry.register_driver(driver_type=DriverTypes.FIREFOX, local=False)
@@ -76,9 +64,7 @@ class DriverFactoryTest(unittest.TestCase):
         self.assertIsInstance(DriverRegistry.get_webdriver(), WebDriver)
         self.assertEqual(DriverRegistry.get_driver().name, DriverTypes.FIREFOX)
         DriverRegistry.deregister_driver()
-        with self.assertRaises(Exception) as context:
-            DriverRegistry.get_driver()
-        self.assertTrue('No registered driver found' in context.exception)
+        self.assertIsNone(DriverRegistry.get_driver(), 'Error: Driver found without registration')
 
     def test_unsupported_custom_remote_driver_registration(self):
         with self.assertRaises(Exception) as context:
@@ -98,6 +84,4 @@ class DriverFactoryTest(unittest.TestCase):
         self.assertIsInstance(DriverRegistry.get_webdriver(), WebDriver)
         self.assertEqual(DriverRegistry.get_driver().name, DriverTypes.CHROME)
         DriverRegistry.deregister_driver()
-        with self.assertRaises(Exception) as context:
-            DriverRegistry.get_driver()
-        self.assertTrue('No registered driver found' in context.exception)
+        self.assertIsNone(DriverRegistry.get_driver(), 'Error: Driver found without registration')
