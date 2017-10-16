@@ -4,10 +4,10 @@ from distutils.util import strtobool
 from nzme_skynet.core.controls.clickable import Clickable
 
 
-class MobElem(Clickable):
+class MElement(Clickable):
 
     def __init__(self, locator, by):
-        super(MobElem, self).__init__(locator, by)
+        super(MElement, self).__init__(locator, by)
 
     @property
     def text(self):
