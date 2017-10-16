@@ -64,13 +64,12 @@ def before_scenario(context, scenario):
     context.test_name = scenario.name
 
     # cleanup app state for new test
-    # if context.driver is not None:
-    #     try:
-    #         DriverRegistry.deregister_driver()
-    #     except Exception:
-    #         logger.error('Failed to stop browser instance')
-    #         raise
-    #     context.driver = None
+    if DriverRegistry.get_driver() is not None:
+        try:
+            DriverRegistry.deregister_driver()
+        except Exception:
+            logger.error('Failed to stop browser instance')
+            raise
 
     tags = str(context.scenario.tags)
     try:
@@ -107,7 +106,7 @@ def before_scenario(context, scenario):
                 DriverRegistry.get_driver().goto_url(DriverRegistry.get_driver().baseurl, absolute=True)
     except Exception as e:
         logger.exception(e)
-        raise Exception("Something broke creating a driver:" + str(e))
+        raise
 
     logger.info('Start of Scenario: {}'.format(scenario.name))
 
