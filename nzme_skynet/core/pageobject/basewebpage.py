@@ -1,18 +1,13 @@
 # -*- coding: utf-8 -*-
-import logging
-
 from nzme_skynet.core.driver.driverregistry import DriverRegistry
+from nzme_skynet.core.pageobject.basepage import BasePage
 
 
-class BaseWebPage(object):
+class BaseWebPage(BasePage):
     page_url = None
 
     def __init__(self):
-        self.logger = logging.getLogger(__name__)
+        super(BaseWebPage, self).__init__()
 
     def goto(self, absolute=False):
         DriverRegistry.get_driver().goto_url(self.page_url, absolute)
-
-    @property
-    def driver(self):
-        return DriverRegistry.get_driver()

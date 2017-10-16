@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-import logging
+from nzme_skynet.core.pageobject.basepage import BasePage
 
 
-class BaseMAppPage(object):
+class BaseMAppPage(BasePage):
 
     def __init__(self):
-        self.logger = logging.getLogger(__name__)
+        super(BaseMAppPage, self).__init__()
