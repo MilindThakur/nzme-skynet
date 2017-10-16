@@ -30,8 +30,8 @@ class LayoutScreenshot(object):
             self._folder = folder
         else:
             self._folder = self._SCREENSHOT_DIR_PATH
-        if not os.path.exists(folder):
-            os.makedirs(folder)
+        if not os.path.exists(self._folder):
+            os.makedirs(self._folder)
 
     def take_screenshot(self):
         DriverRegistry.register_driver(DriverTypes.PHANTOMJS)

@@ -1,20 +1,9 @@
 # coding=utf-8
 import itertools
 import requests
-from nzme_skynet.core.driver.web.builder.localbrowserbuilder import LocalBrowserBuilder
+import signal
 
-
-def create_webdriver_instance():
-    _CAP = {
-        "type": "phantomjs",
-        "platform": 'LINUX',
-        "version": '',
-        "javascriptEnabled": True,
-        "loggingPrefs": {'browser': 'ALL'}
-    }
-    lb = LocalBrowserBuilder(_CAP)
-    browser = lb.build()
-    return browser.driver
+from nzme_skynet.core.driver.driverregistry import DriverRegistry
 
 
 def validate_url(url, driver):
@@ -73,27 +62,34 @@ def _validate_js_error_on_url(url, driver, open_url=True):
 
 
 def validate_images(url):
-    driver = create_webdriver_instance()
-    return _validate_images_on_url(url, driver)
+    DriverRegistry.register_driver('phantomjs')
+    broken_images_list = _validate_images_on_url(url, DriverRegistry.get_webdriver())
+    DriverRegistry.deregister_driver()
+    return broken_images_list
 
 
 def validate_links(url):
-    driver = create_webdriver_instance()
-    return _validate_links_on_url(url, driver)
+    DriverRegistry.register_driver('phantomjs')
+    broken_links_list = _validate_links_on_url(url,  DriverRegistry.get_webdriver())
+    DriverRegistry.deregister_driver()
+    return broken_links_list
 
 
 def validate_js_error(url):
-    driver = create_webdriver_instance()
-    return _validate_js_error_on_url(url, driver)
+    DriverRegistry.register_driver('phantomjs')
+    js_errors = _validate_js_error_on_url(url, DriverRegistry.get_webdriver())
+    DriverRegistry.deregister_driver()
+    return js_errors
 
 
 def validate_all(urls):
-    driver = create_webdriver_instance()
+    DriverRegistry.register_driver('phantomjs')
     errors = []
     list_urls = urls.split(',')
     for url in list_urls:
-        driver.get(url)
-        errors.append(_validate_images_on_url(url, driver, open_url=False))
-        errors.append(_validate_links_on_url(url, driver, open_url=False))
-        errors.append(_validate_js_error_on_url(url, driver, open_url=False))
+        DriverRegistry.get_webdriver().get(url)
+        errors.append(_validate_images_on_url(url, DriverRegistry.get_webdriver(), open_url=False))
+        errors.append(_validate_links_on_url(url, DriverRegistry.get_webdriver(), open_url=False))
+        errors.append(_validate_js_error_on_url(url, DriverRegistry.get_webdriver(), open_url=False))
+    DriverRegistry.deregister_driver()
     return list(itertools.chain.from_iterable(errors))
