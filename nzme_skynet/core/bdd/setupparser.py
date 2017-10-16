@@ -51,7 +51,7 @@ def create_ios_app_capabilities(config):
 def get_environment_options(config):
     return {
             'testurl': config.get('ENVIRONMENT', 'testurl'),
-            'local_run': config.getboolean('ENVIRONMENT', 'local_run'),
+            'local': config.getboolean('ENVIRONMENT', 'local'),
             'grid_url': config.get('ENVIRONMENT', 'selenium_grid_hub')
     }
 
