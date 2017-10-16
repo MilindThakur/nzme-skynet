@@ -8,12 +8,11 @@ Ref: https://github.com/oleg-toporkov/python-bdd-selenium.git
 
 import logging
 import re
-
-from selenium.common.exceptions import WebDriverException
-
 from log import Logger
-from nzme_skynet.core.driver import builder
 from setupparser import Config
+
+from nzme_skynet.core.driver.driverregistry import DriverRegistry
+from nzme_skynet.core.driver.enums.drivertypes import DriverTypes
 
 
 def before_all(context):
@@ -23,15 +22,6 @@ def before_all(context):
     :param context: behave.runner.Context
     """
     Logger.configure_logging()
-
-    # These context variables can be overridden from command line
-    if context.config.userdata:
-        Config.BROWSER_OPTIONS['type'] = context.config.userdata.get("type", Config.BROWSER_OPTIONS['type'])
-        Config.BROWSER_OPTIONS['os'] = context.config.userdata.get("os", Config.BROWSER_OPTIONS['os'])
-        Config.BROWSER_OPTIONS['version'] = context.config.userdata.get("version", Config.BROWSER_OPTIONS['version'])
-        Config.BROWSER_OPTIONS['testurl'] = context.config.userdata.get("testurl", Config.BROWSER_OPTIONS['testurl'])
-
-        Config.ENV_OPTIONS['local_run'] = context.config.userdata.getbool("local_run", Config.ENV_OPTIONS['local_run'])
 
 
 def after_all(context):
@@ -74,50 +64,48 @@ def before_scenario(context, scenario):
     context.test_name = scenario.name
 
     # cleanup app state for new test
-    if context.app is not None:
+    if context.driver is not None:
         try:
-            context.app.quit()
+            DriverRegistry.deregister_driver()
         except Exception:
             logger.error('Failed to stop browser instance')
             raise
-        context.app = None
+        context.driver = None
 
-    # Build the app instancetry:
     tags = str(context.config.tags)
     try:
         if 'api' not in tags:
             if 'android' in tags or 'ios' in tags:
-                if 'mobile-android' in tags:
-                    context.app = builder.build_appium_driver(Config.MOBILE_ANDROID_OPTIONS)
-                if 'android-chrome' in tags:
-                    context.app = builder.build_mobile_browser(Config.ANDROID_CHROME_OPTIONS)
-                if 'mobile-ios' in tags:
-                    context.app = builder.build_appium_driver(Config.MOBILE_IOS_OPTIONS)
+                # Mobile tests
+                if 'android-browser' in tags:
+                    context.driver = DriverRegistry.register_driver(
+                        DriverTypes.ANDROIDWEB,
+                        driver_options=Config.ANDROID_BROWSER_CAPABILITIES,
+                        mbrowsername=context.config.userdata.get('androidbrowser',
+                                                                 Config.ANDROID_BROWSER_CAPABILITIES['androidbrowser']))
+                elif 'ios-browser' in tags:
+                    context.driver = DriverRegistry.register_driver(
+                        DriverTypes.IOSWEB,
+                        driver_options=Config.IOS_BROWSER_CAPABILITIES,
+                        mbrowsername=context.config.userdata.get('iosbrowser',
+                                                                 Config.IOS_BROWSER_CAPABILITIES['iosbrowser']))
+                elif 'android-app' in tags:
+                    context.driver = DriverRegistry.register_driver(
+                        DriverTypes.ANDROID,
+                        driver_options=Config.ANDROID_APP_CAPABILITIES)
+                elif 'ios-app' in tags:
+                    context.driver = DriverRegistry.register_driver(
+                        DriverTypes.IOS,
+                        driver_options=Config.IOS_APP_CAPABILITIES)
             else:
-                # this falls back into a generic browser as a default.
-                # todo - expand for browser types chrome, firefox, safari ect
-                if Config.ENV_OPTIONS['local_run']:
-                    context.app = builder.build_desktop_browser(Config.BROWSER_OPTIONS, Config.ENV_OPTIONS['test_url'])
-                else:
-                    # TODO - grab capabilities from a config
-                    # TODO - push this down into the docker_browser builder
-                    # Build capabilities
-                    cap = {"browserName": Config.BROWSER_OPTIONS['type'],
-                           "platform": Config.BROWSER_OPTIONS['os'],
-                           "version": '' if 'latest' in Config.BROWSER_OPTIONS['version'] else Config.BROWSER_OPTIONS[
-                               'version'],
-                           'group': context.test_group,
-                           'name': context.test_name}
-                    context.app = builder.build_docker_browser(Config.ENV_OPTIONS['grid_url'],
-                                                               cap,
-                                                               Config.BROWSER_OPTIONS['testurl'])
+                # Desktop browser tests
+                context.driver = DriverRegistry.register_driver(
+                    driver_type=context.config.userdata.get("type", Config.DESKTOP_BROWSER_CAPABILITIES['type']),
+                    driver_options=Config.DESKTOP_BROWSER_CAPABILITIES,
+                    local=context.config.userdata.getbool("local_run", Config.ENV_OPTIONS['local_run']))
     except Exception as e:
         logger.exception(e)
-        if e.__class__ is WebDriverException:
-            # Should we fail the test and swallow the exception?
-            raise Exception("Webdriver returned an exception: " + str(e))
-        else:
-            raise Exception("Something broke creating a driver:" + str(e))
+        raise Exception("Something broke creating a driver:" + str(e))
 
     logger.info('Start of Scenario: {}'.format(scenario.name))
 
@@ -130,22 +118,22 @@ def after_scenario(context, scenario):
     """
     logger = logging.getLogger(__name__)
 
-    if context.app is not None:
+    if context.driver is not None:
 
         if scenario.status.lower == 'failed':
             _screenshot = '{}/{}_fail.png'.format(Config.LOG, scenario.name.replace(' ', '_'))
             # Take screen shot on a failure
             try:
-                context.app.take_screenshot_current_window(_screenshot)
+                context.driver.take_screenshot_current_window(_screenshot)
             except Exception:
                 logger.error('Failed to take screenshot to: {}'.format(Config.LOG))
                 raise
 
-    if context.app:
+    if context.driver:
         try:
-            context.app.quit()
+            DriverRegistry.deregister_driver()
         except Exception:
-            logger.error('Failed to stop browser instance {}'.format(Config.BROWSER_OPTIONS['type']))
+            logger.error('Failed to stop driver instance')
             raise
         context.app = None
 
@@ -181,7 +169,7 @@ def after_step(context, step):
     # if step.status.lower == 'failed' or step.status.lower == 'skipped':
     if context.app is not None:
         try:
-            context.app.take_screenshot_current_window(_screenshot)
+            context.driver.take_screenshot_current_window(_screenshot)
             context.picture_num += 1
         except Exception:
             logger.error('Failed to take screenshot to: {}'.format(Config.LOG))

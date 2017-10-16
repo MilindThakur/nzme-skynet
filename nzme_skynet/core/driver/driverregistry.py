@@ -14,12 +14,13 @@ class DriverRegistry(object):
     """
 
     @staticmethod
-    def register_driver(driver_type='chrome', driver_options=None, local=True):
+    def register_driver(driver_type='chrome', driver_options=None, local=True, mbrowsername=DriverTypes.CHROME):
         """
         Build and register driver
         :param driver_type: DriverTypes
         :param driver_options: capabilities
         :param local: Local or Selenium Grid/Server
+        :param mbrowsername: mobile browser type, default chrome
         :return:
         """
         new_driver = None
@@ -33,7 +34,7 @@ class DriverRegistry(object):
                     new_driver = DriverFactory.build_remote_web_driver(driver_type, driver_options)
             elif driver_type in MOBILE_WEBBROWSER:
                 new_driver = DriverFactory.build_mobile_web_driver(driver_type, driver_options,
-                                                                   browsername=DriverTypes.CHROME)
+                                                                   browsername=mbrowsername)
             elif driver_type in MOBILE_APP:
                 new_driver = DriverFactory.build_mobile_app_driver(driver_type, driver_options)
             register_driver(new_driver)

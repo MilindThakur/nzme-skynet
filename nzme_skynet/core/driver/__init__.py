@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
 
 """
 A global register to keep track of driver created by the Driver Factory.
