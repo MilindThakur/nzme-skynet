@@ -4,6 +4,8 @@ from nzme_skynet.core.driver.enums.drivertypes import DESKTOP_WEBBROWSER, Driver
 from nzme_skynet.core.driver.driverfactory import DriverFactory
 from nzme_skynet.core.driver import register_driver, deregister_driver, get_driver
 from selenium.webdriver.remote.webdriver import WebDriver
+from selenium.webdriver.phantomjs.webdriver import WebDriver
+import signal
 
 
 class DriverRegistry(object):
@@ -48,6 +50,9 @@ class DriverRegistry(object):
         :return:
         """
         if get_driver():
+            # https://github.com/seleniumhq/selenium/issues/767
+            if isinstance(DriverRegistry.get_webdriver(), WebDriver):
+                DriverRegistry.get_webdriver().service.process.send_signal(signal.SIGTERM)
             DriverRegistry.get_webdriver().quit()
             deregister_driver()
 
