@@ -7,7 +7,8 @@ import os
 def create_desktop_browser_capabilities(config):
     desired_capabilities = {'browserName': config.get('BROWSER', 'type'),
                             'platform': config.get('BROWSER', 'os'),
-                            'version': config.get('BROWSER', 'version')
+                            'version': '' if 'latest' in config.get('BROWSER', 'version') else
+                            config.get('BROWSER', 'version')
                             }
     return desired_capabilities
 
