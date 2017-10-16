@@ -73,6 +73,7 @@ class DriverFactory(object):
                 raise Exception("Only supports Chrome and Firefox in remote mode when no capabilities passed")
         driver = Remote(driver_options)
         try:
-            return driver.init()
+            driver.init()
+            return driver
         except Exception:
             raise Exception("Failed to initialise remote web driver")
