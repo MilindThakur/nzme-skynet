@@ -14,6 +14,6 @@ def driver_setup(request):
     DriverRegistry.deregister_driver()
 
 
-def test_browser_setup(dsetup):
-    # assert dsetup.baseurl == TEST_URL
-    assert (TEST_URL in dsetup.current_url) is True
+def test_browser_setup(driver_setup):
+    driver_setup.goto_url(TEST_URL, absolute=True)
+    assert (TEST_URL in driver_setup.current_url) is True
