@@ -64,15 +64,15 @@ def before_scenario(context, scenario):
     context.test_name = scenario.name
 
     # cleanup app state for new test
-    if context.driver is not None:
-        try:
-            DriverRegistry.deregister_driver()
-        except Exception:
-            logger.error('Failed to stop browser instance')
-            raise
-        context.driver = None
+    # if context.driver is not None:
+    #     try:
+    #         DriverRegistry.deregister_driver()
+    #     except Exception:
+    #         logger.error('Failed to stop browser instance')
+    #         raise
+    #     context.driver = None
 
-    tags = str(context.config.tags)
+    tags = str(context.scenario.tags)
     try:
         if 'api' not in tags:
             if 'android' in tags or 'ios' in tags:
@@ -81,14 +81,14 @@ def before_scenario(context, scenario):
                     context.driver = DriverRegistry.register_driver(
                         DriverTypes.ANDROIDWEB,
                         driver_options=Config.ANDROID_BROWSER_CAPABILITIES,
-                        mbrowsername=context.config.userdata.get('androidbrowser',
-                                                                 Config.ANDROID_BROWSER_CAPABILITIES['androidbrowser']))
+                        mbrowsername=context.config.userdata.get('androidBrowserName',
+                                                                 Config.ANDROID_BROWSER_CAPABILITIES['browserName']))
                 elif 'ios-browser' in tags:
                     context.driver = DriverRegistry.register_driver(
                         DriverTypes.IOSWEB,
                         driver_options=Config.IOS_BROWSER_CAPABILITIES,
-                        mbrowsername=context.config.userdata.get('iosbrowser',
-                                                                 Config.IOS_BROWSER_CAPABILITIES['iosbrowser']))
+                        mbrowsername=context.config.userdata.get('iosBrowserName',
+                                                                 Config.IOS_BROWSER_CAPABILITIES['browserName']))
                 elif 'android-app' in tags:
                     context.driver = DriverRegistry.register_driver(
                         DriverTypes.ANDROID,
@@ -100,7 +100,7 @@ def before_scenario(context, scenario):
             else:
                 # Desktop browser tests
                 context.driver = DriverRegistry.register_driver(
-                    driver_type=context.config.userdata.get("type", Config.DESKTOP_BROWSER_CAPABILITIES['type']),
+                    driver_type=context.config.userdata.get("type", Config.DESKTOP_BROWSER_CAPABILITIES['browserName']),
                     driver_options=Config.DESKTOP_BROWSER_CAPABILITIES,
                     local=context.config.userdata.getbool("local_run", Config.ENV_OPTIONS['local_run']))
     except Exception as e:

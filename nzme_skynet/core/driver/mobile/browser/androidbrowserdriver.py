@@ -16,7 +16,7 @@ class AndroidBrowserDriver(MBrowserDriver):
             raise Exception("Only supports Chrome and native Browser on Android")
 
         self._desired_cap['browserName'] = self._browser
-        if "Chrome" in self._desired_cap:
+        if "Chrome" in self._desired_cap['browserName']:
             # To disable the welcome screen on launching chrome
             self.add_chrome_options('--no-first-run')
         self._desired_cap['platformName'] = 'Android'

@@ -37,6 +37,7 @@ class MAppDriver(MobileDriver):
         self._create_driver()
 
     def _create_driver(self):
+        self._set_default_capabilities()
         self._driver = WebDriver(command_executor=self._remote_url, desired_capabilities=self._desired_cap)
 
     def _set_default_capabilities(self):
