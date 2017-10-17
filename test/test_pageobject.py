@@ -15,9 +15,6 @@ class GoogleHomePage(BaseWebPage):
     search_input = TextInput(By.NAME, 'q')
     submit_search_btn = Button(By.NAME, 'btnK')
 
-    def __init__(self):
-        super(GoogleHomePage, self).__init__()
-
     def search(self, string):
         self.search_input.set_value(string)
         self.submit_search_btn.click()
@@ -25,9 +22,6 @@ class GoogleHomePage(BaseWebPage):
 
 class GoogleSearchResultPage(BaseWebPage):
     search_result_container = Element(By.ID, 'rso')
-
-    def __init__(self):
-        super(GoogleSearchResultPage, self).__init__()
 
     def get_result_url(self, index):
         return self.search_result_container.find_sub_elements(By.TAG_NAME, "cite")[index-1].text
