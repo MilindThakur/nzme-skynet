@@ -21,6 +21,8 @@ class DriverFactory(object):
     def build_local_web_driver(driver_type="chrome", driver_options=None):
         if driver_type == DriverTypes.CHROME:
             driver = Chrome(driver_options)
+        elif driver_type == DriverTypes.CHROMEHEADLESS:
+            driver = Chrome(driver_options, headless=True)
         elif driver_type == DriverTypes.FIREFOX:
             driver = FireFox(driver_options)
         elif driver_type == DriverTypes.PHANTOMJS:

@@ -5,6 +5,7 @@ class DriverTypes(object):
 
     FIREFOX = "firefox"
     CHROME = "chrome"
+    CHROMEHEADLESS = "chrome-headless"
     PHANTOMJS = "phantomjs"
     IE = "IE"
     SAFARI = "safari"
@@ -22,6 +23,7 @@ MOBILE_WEBBROWSER = [
 
 DESKTOP_WEBBROWSER = [
     DriverTypes.CHROME,
+    DriverTypes.CHROMEHEADLESS,
     DriverTypes.FIREFOX,
     DriverTypes.PHANTOMJS,
     DriverTypes.IE,

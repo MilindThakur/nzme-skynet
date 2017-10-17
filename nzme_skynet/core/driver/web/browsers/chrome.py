@@ -7,10 +7,11 @@ from nzme_skynet.core.driver.web.browserdriver import BrowserDriver
 
 
 class Chrome(BrowserDriver):
-    def __init__(self, driver_capabilities):
+    def __init__(self, driver_capabilities, headless=False):
         self.driver_capabilities = driver_capabilities
         self._options = Options()
         self._driver = None
+        self._headless = headless
 
     @staticmethod
     def get_default_capability():
@@ -22,6 +23,8 @@ class Chrome(BrowserDriver):
         self.add_option("--disable-notifications")
         self.add_option("-process-per-site")
         self.add_option("--dns-prefetch-disable")
+        if self._headless:
+            self.add_option("--headless")
 
     def _set_options(self):
         self._create_default_chrome_options()
