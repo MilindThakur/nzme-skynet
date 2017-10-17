@@ -20,10 +20,13 @@ class BrowserDriver(BaseDriver):
         :param absolute:
         :return:
         """
-        if absolute:
-            self.webdriver.get(url)
-        else:
-            self.webdriver.get(self.baseurl+url)
+        try:
+            if absolute:
+                self.webdriver.get(url)
+            else:
+                self.webdriver.get(self.baseurl+url)
+        except TimeoutException:
+            self.webdriver.execute_script('window.stop()')
 
     def _create_driver(self):
         raise NotImplementedError
