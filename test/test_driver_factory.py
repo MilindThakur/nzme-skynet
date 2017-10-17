@@ -30,9 +30,9 @@ class DriverFactoryTest(unittest.TestCase):
         self.assertIsNone(DriverRegistry.get_driver(), 'Error: Driver found without registration')
 
     def test_registering_multiple_drivers(self):
-        DriverRegistry.register_driver()
+        DriverRegistry.register_driver("phantomjs")
         with self.assertRaises(Exception) as context:
-            DriverRegistry.register_driver()
+            DriverRegistry.register_driver("phantomjs")
         self.assertTrue('Only one driver can be registered at a time' in context.exception)
         DriverRegistry.deregister_driver()
         self.assertIsNone(DriverRegistry.get_driver(), 'Error: Driver found without registration')
