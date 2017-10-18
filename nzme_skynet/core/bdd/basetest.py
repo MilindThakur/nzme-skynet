@@ -38,7 +38,7 @@ def before_feature(context, feature):
     :param context: behave.runner.Context
     :param feature: behave.model.Feature
     """
-    context.app = None
+    context.driver = None
     context.picture_num = 0
     context.test_group = feature.name
 
@@ -104,6 +104,7 @@ def before_scenario(context, scenario):
                     local=context.config.userdata.getbool("local", Config.ENV_OPTIONS['local']))
                 DriverRegistry.get_driver().baseurl = context.config.userdata.get("testurl", Config.ENV_OPTIONS['testurl'])
                 DriverRegistry.get_driver().goto_url(DriverRegistry.get_driver().baseurl, absolute=True)
+        context.driver = DriverRegistry.get_driver()
     except Exception as e:
         logger.exception(e)
         raise
@@ -136,7 +137,7 @@ def after_scenario(context, scenario):
         except Exception:
             logger.error('Failed to stop driver instance')
             raise
-        context.app = None
+        context.driver = None
 
     logger.info('End of test: {}. Status {} !!!\n\n\n'.format(scenario.name, scenario.status.upper()))
 
