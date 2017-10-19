@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from selenium.webdriver.remote.webdriver import WebDriver
 
 
 class BaseDriver(object):
@@ -12,6 +13,7 @@ class BaseDriver(object):
 
     @property
     def webdriver(self):
+        # type: () -> WebDriver
         raise NotImplementedError
 
     @property
