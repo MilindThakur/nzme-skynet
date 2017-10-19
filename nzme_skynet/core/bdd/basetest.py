@@ -98,6 +98,10 @@ def before_scenario(context, scenario):
                         driver_options=Config.IOS_APP_CAPABILITIES)
             else:
                 # Desktop browser tests
+                # Add Feature and Scenario name for grouping Zalenium Test Results
+                if not context.config.userdata.getbool("local", Config.ENV_OPTIONS['local']):
+                    Config.DESKTOP_BROWSER_CAPABILITIES['group'] = context.test_group
+                    Config.DESKTOP_BROWSER_CAPABILITIES['name'] = context.test_name
                 DriverRegistry.register_driver(
                     driver_type=context.config.userdata.get("type", Config.DESKTOP_BROWSER_CAPABILITIES['browserName']),
                     driver_options=Config.DESKTOP_BROWSER_CAPABILITIES,
