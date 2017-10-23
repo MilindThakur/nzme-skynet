@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from nzme_skynet.core.driver.driverregistry import DriverRegistry
 from nzme_skynet.core.pageobject.basepage import BasePage
 
 
@@ -10,4 +9,4 @@ class BaseWebPage(BasePage):
         super(BaseWebPage, self).__init__()
 
     def goto(self, absolute=False):
-        DriverRegistry.get_driver().goto_url(self.page_url, absolute)
+        self.driver.goto_url(self.page_url, absolute)
