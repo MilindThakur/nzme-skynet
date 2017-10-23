@@ -64,9 +64,10 @@ def before_scenario(context, scenario):
     context.test_name = scenario.name
 
     # cleanup app state for new test
-    if DriverRegistry.get_driver() is not None:
+    if context.driver is not None:
         try:
             DriverRegistry.deregister_driver()
+            context.driver = None
         except Exception:
             logger.error('Failed to stop browser instance')
             raise
@@ -77,23 +78,23 @@ def before_scenario(context, scenario):
             if 'android' in tags or 'ios' in tags:
                 # Mobile tests
                 if 'android-browser' in tags:
-                    DriverRegistry.register_driver(
+                    context.driver = DriverRegistry.register_driver(
                         DriverTypes.ANDROIDWEB,
                         driver_options=Config.ANDROID_BROWSER_CAPABILITIES,
                         mbrowsername=context.config.userdata.get('androidBrowserName',
                                                                  Config.ANDROID_BROWSER_CAPABILITIES['browserName']))
                 elif 'ios-browser' in tags:
-                    DriverRegistry.register_driver(
+                    context.driver = DriverRegistry.register_driver(
                         DriverTypes.IOSWEB,
                         driver_options=Config.IOS_BROWSER_CAPABILITIES,
                         mbrowsername=context.config.userdata.get('iosBrowserName',
                                                                  Config.IOS_BROWSER_CAPABILITIES['browserName']))
                 elif 'android-app' in tags:
-                    DriverRegistry.register_driver(
+                    context.driver = DriverRegistry.register_driver(
                         DriverTypes.ANDROID,
                         driver_options=Config.ANDROID_APP_CAPABILITIES)
                 elif 'ios-app' in tags:
-                    DriverRegistry.register_driver(
+                    context.driver = DriverRegistry.register_driver(
                         DriverTypes.IOS,
                         driver_options=Config.IOS_APP_CAPABILITIES)
             else:
@@ -102,13 +103,12 @@ def before_scenario(context, scenario):
                 if not context.config.userdata.getbool("local", Config.ENV_OPTIONS['local']):
                     Config.DESKTOP_BROWSER_CAPABILITIES['group'] = context.test_group
                     Config.DESKTOP_BROWSER_CAPABILITIES['name'] = context.test_name
-                DriverRegistry.register_driver(
+                context.driver = DriverRegistry.register_driver(
                     driver_type=context.config.userdata.get("type", Config.DESKTOP_BROWSER_CAPABILITIES['browserName']),
                     driver_options=Config.DESKTOP_BROWSER_CAPABILITIES,
                     local=context.config.userdata.getbool("local", Config.ENV_OPTIONS['local']))
-                DriverRegistry.get_driver().baseurl = context.config.userdata.get("testurl", Config.ENV_OPTIONS['testurl'])
-                DriverRegistry.get_driver().goto_url(DriverRegistry.get_driver().baseurl, absolute=True)
-        context.driver = DriverRegistry.get_driver()
+                context.driver.baseurl = context.config.userdata.get("testurl", Config.ENV_OPTIONS['testurl'])
+                context.driver.goto_url(context.driver.baseurl, absolute=True)
     except Exception as e:
         logger.exception(e)
         raise
@@ -124,24 +124,24 @@ def after_scenario(context, scenario):
     """
     logger = logging.getLogger(__name__)
 
-    if DriverRegistry.get_driver() is not None:
+    if context.driver is not None:
 
         if scenario.status.lower == 'failed':
             _screenshot = '{}/{}_fail.png'.format(Config.LOG, scenario.name.replace(' ', '_'))
             # Take screen shot on a failure
             try:
-                DriverRegistry.get_driver().take_screenshot_current_window(_screenshot)
+                context.driver.take_screenshot_current_window(_screenshot)
             except Exception:
                 logger.error('Failed to take screenshot to: {}'.format(Config.LOG))
                 raise
 
-    if DriverRegistry.get_driver():
+    if context.driver:
         try:
             DriverRegistry.deregister_driver()
+            context.driver = None
         except Exception:
             logger.error('Failed to stop driver instance')
             raise
-        context.driver = None
 
     logger.info('End of test: {}. Status {} !!!\n\n\n'.format(scenario.name, scenario.status.upper()))
 
@@ -173,9 +173,9 @@ def after_step(context, step):
 
     # Take screen shot
     # if step.status.lower == 'failed' or step.status.lower == 'skipped':
-    if DriverRegistry.get_driver() is not None:
+    if context.driver is not None:
         try:
-            DriverRegistry.get_driver().take_screenshot_current_window(_screenshot)
+            context.driver.take_screenshot_current_window(_screenshot)
             context.picture_num += 1
         except Exception:
             logger.error('Failed to take screenshot to: {}'.format(Config.LOG))
