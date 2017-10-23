@@ -40,6 +40,7 @@ class DriverRegistry(object):
             elif driver_type in MOBILE_APP:
                 new_driver = DriverFactory.build_mobile_app_driver(driver_type, driver_options)
             register_driver(new_driver)
+            return get_driver()
         except Exception:
             raise
 
