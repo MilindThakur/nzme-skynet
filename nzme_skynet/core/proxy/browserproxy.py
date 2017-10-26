@@ -20,6 +20,10 @@ class BrowserProxy(object):
         self.local_run = local_run
         self._grid_url = grid_url
 
+    @property
+    def driver(self):
+        return self._driver
+
     def start(self):
         if self.local_run:
             self._start_local_server_proxy()
@@ -58,7 +62,7 @@ class BrowserProxy(object):
         chrome_options.add_argument("--proxy-server={0}".format(self._proxy.proxy))
         chrome_options.add_argument('--ignore-certificate-errors')
         chrome_options.add_argument('--test-type')
-        chrome_options.add_argument('headless')
+        chrome_options.add_argument('--headless')
         self._driver = webdriver.Chrome(chrome_options=chrome_options)
 
     def _create_grid_browser_driver(self):

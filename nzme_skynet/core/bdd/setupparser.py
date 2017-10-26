@@ -4,66 +4,55 @@ import logging
 import os
 
 
-def get_browser_options(config):
-    browser_local_options = {'type': config.get('BROWSER', 'type'),
-                             'version': config.get('BROWSER', 'version'),
-                             'os': config.get('BROWSER', 'os'),
-                             'windowwidth': config.get('BROWSER', 'windowwidth'),
-                             'windowheight': config.get('BROWSER', 'windowheight')
-                             }
-    return browser_local_options
+def create_desktop_browser_capabilities(config):
+    desired_capabilities = {'browserName': config.get('BROWSER', 'type'),
+                            'platform': config.get('BROWSER', 'os'),
+                            'version': '' if 'latest' in config.get('BROWSER', 'version') else
+                            config.get('BROWSER', 'version')
+                            }
+    return desired_capabilities
 
 
-def get_mobile_andorid_options(config):
-    mobile_local_options = {'platform': config.get('ANDROID', 'platform'),
-                            # 'automationName': 'uiautomator2',
-                            'selenium_grid_hub': config.get('CLOUD', 'selenium_grid_hub'),
+def create_android_browser_capabilities(config):
+    desired_capabilities = {'browserName': config.get('ANDROID', 'androidBrowserName'),
                             'platformVersion': config.get('ANDROID', 'platformVersion'),
-                            'version': config.get('ANDROID', 'version'),
-                            'platformName': config.get('ANDROID', 'platformName'),
+                            'deviceName': config.get('ANDROID', 'deviceName')
+                            }
+    return desired_capabilities
+
+
+def create_android_app_capabilities(config):
+    desired_capabilities = {'platformVersion': config.get('ANDROID', 'platformVersion'),
                             'deviceName': config.get('ANDROID', 'deviceName'),
                             'app': config.get('ANDROID', 'app'),
                             'appPackage': config.get('ANDROID', 'appPackage'),
-                            'appActivity': config.get('ANDROID', 'appActivity'),
-                            'fullReset': config.get('ANDROID', 'fullReset'),
-                            'clearSystemFiles': config.get('ANDROID', 'clearSystemFiles'),
-                            'newCommandTimeout':'newCommandTimeout=120'
+                            'appActivity': config.get('ANDROID', 'appActivity')
                             }
-    return mobile_local_options
+    return desired_capabilities
 
 
-def get_mobile_ios_options(config):
-    mobile_local_options = {'platform': config.get('IOS', 'platform'),
-                            'selenium_grid_hub': config.get('CLOUD', 'selenium_grid_hub'),
-                            'platformName': config.get('IOS', 'platformName'),
+def create_ios_browser_capabilities(config):
+    desired_capabilities = {'browserName': config.get('IOS', 'iosBrowserName'),
                             'platformVersion': config.get('IOS', 'platformVersion'),
+                            'deviceName': config.get('IOS', 'deviceName')
+                            }
+    return desired_capabilities
+
+
+def create_ios_app_capabilities(config):
+    desired_capabilities = {'platformVersion': config.get('IOS', 'platformVersion'),
                             'deviceName': config.get('IOS', 'deviceName'),
                             'app': config.get('IOS', 'app'),
                             'bundleId': config.get('IOS', 'bundleId'),
-                            'appActivity': config.get('IOS', 'appActivity'),
-                            'fullReset': config.get('IOS', 'fullReset')
+                            'appActivity': config.get('IOS', 'appActivity')
                             }
-    return mobile_local_options
-
-
-def get_android_chrome_options(config):
-    mobile_local_options = {
-                            'selenium_grid_hub': config.get('CLOUD', 'selenium_grid_hub'),
-                            'platform': config.get('ANDROID', 'platform'),
-                            'platformName': config.get('ANDROID', 'platformName'),
-                            'deviceName': config.get('ANDROID', 'deviceName'),
-                            'browserName': config.get('ANDROID_CHROME', 'browser'),
-                            'version': config.get('ANDROID', 'version'),
-                            "chromeOptions": {'args': [config.get('ANDROID_CHROME', 'chromeoptions')]},
-                            "baseUrl": config.get('ENVIRONMENT', 'baseurl')
-                            }
-    return mobile_local_options
+    return desired_capabilities
 
 
 def get_environment_options(config):
     return {
-            'test_url': config.get('ENVIRONMENT', 'test_url'),
-            'local_run': config.getboolean('ENVIRONMENT', 'local_run'),
+            'testurl': config.get('ENVIRONMENT', 'testurl'),
+            'local': config.getboolean('ENVIRONMENT', 'local'),
             'grid_url': config.get('ENVIRONMENT', 'selenium_grid_hub')
     }
 
@@ -73,24 +62,13 @@ class Config(object):
     config.read('testsetup.ini')
     logger = logging.getLogger(__name__)
 
-    BROWSER_OPTIONS = get_browser_options(config)
-    if not BROWSER_OPTIONS['type']:
-        logger.warning("Setting Chrome as the default browser")
-        BROWSER_OPTIONS['type'] = 'chrome'
-
-    # TODO - build up mobile options.
-    if 'ANDROID' in config.sections():
-        MOBILE_ANDROID_OPTIONS = get_mobile_andorid_options(config)
-    if 'IOS' in config.sections():
-        MOBILE_IOS_OPTIONS = get_mobile_ios_options(config)
-    if 'ANDROID_CHROME' in config.sections():
-        ANDROID_CHROME_OPTIONS = get_android_chrome_options(config)
+    DESKTOP_BROWSER_CAPABILITIES = create_desktop_browser_capabilities(config)
+    ANDROID_APP_CAPABILITIES = create_android_app_capabilities(config)
+    ANDROID_BROWSER_CAPABILITIES = create_android_browser_capabilities(config)
+    IOS_APP_CAPABILITIES = create_ios_app_capabilities(config)
+    IOS_BROWSER_CAPABILITIES = create_ios_browser_capabilities(config)
 
     ENV_OPTIONS = get_environment_options(config)
 
-    # ENV_BASE_URL = config.get('ENVIRONMENT', 'baseurl')
-    # ENV_IS_LOCAL = config.getboolean('ENVIRONMENT', 'local')
-    #
-    # SEL_GRID_URL = config.get('CLOUD', 'selenium_grid_hub')
     LOG = os.path.abspath('logs')
 

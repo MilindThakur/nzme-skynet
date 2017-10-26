@@ -8,11 +8,11 @@ Ref: https://github.com/oleg-toporkov/python-bdd-selenium.git
 
 import logging
 import re
-
 from log import Logger
-from nzme_skynet.core.app import appbuilder
 from setupparser import Config
-from selenium.common.exceptions import WebDriverException
+
+from nzme_skynet.core.driver.driverregistry import DriverRegistry
+from nzme_skynet.core.driver.enums.drivertypes import DriverTypes
 
 
 def before_all(context):
@@ -22,15 +22,6 @@ def before_all(context):
     :param context: behave.runner.Context
     """
     Logger.configure_logging()
-
-    # These context variables can be overridden from command line
-    if context.config.userdata:
-        Config.BROWSER_OPTIONS['type'] = context.config.userdata.get("type", Config.BROWSER_OPTIONS['type'])
-        Config.BROWSER_OPTIONS['os'] = context.config.userdata.get("os", Config.BROWSER_OPTIONS['os'])
-        Config.BROWSER_OPTIONS['version'] = context.config.userdata.get("version", Config.BROWSER_OPTIONS['version'])
-        Config.BROWSER_OPTIONS['testurl'] = context.config.userdata.get("testurl", Config.BROWSER_OPTIONS['testurl'])
-
-        Config.ENV_OPTIONS['local_run'] = context.config.userdata.getbool("local_run", Config.ENV_OPTIONS['local_run'])
 
 
 def after_all(context):
@@ -47,7 +38,7 @@ def before_feature(context, feature):
     :param context: behave.runner.Context
     :param feature: behave.model.Feature
     """
-    context.app = None
+    context.driver = None
     context.picture_num = 0
     context.test_group = feature.name
 
@@ -73,50 +64,54 @@ def before_scenario(context, scenario):
     context.test_name = scenario.name
 
     # cleanup app state for new test
-    if context.app is not None:
+    if context.driver is not None:
         try:
-            context.app.quit()
+            DriverRegistry.deregister_driver()
+            context.driver = None
         except Exception:
             logger.error('Failed to stop browser instance')
             raise
-        context.app = None
 
-    # Build the app instancetry:
-    tags = str(context.config.tags)
+    tags = str(context.scenario.tags)
     try:
         if 'api' not in tags:
             if 'android' in tags or 'ios' in tags:
-                if 'mobile-android' in tags:
-                    context.app = appbuilder.build_appium_driver(Config.MOBILE_ANDROID_OPTIONS)
-                if 'android-chrome' in tags:
-                    context.app = appbuilder.build_mobile_browser(Config.ANDROID_CHROME_OPTIONS)
-                if 'mobile-ios' in tags:
-                    context.app = appbuilder.build_appium_driver(Config.MOBILE_IOS_OPTIONS)
+                # Mobile tests
+                if 'android-browser' in tags:
+                    context.driver = DriverRegistry.register_driver(
+                        DriverTypes.ANDROIDWEB,
+                        driver_options=Config.ANDROID_BROWSER_CAPABILITIES,
+                        mbrowsername=context.config.userdata.get('androidBrowserName',
+                                                                 Config.ANDROID_BROWSER_CAPABILITIES['browserName']))
+                elif 'ios-browser' in tags:
+                    context.driver = DriverRegistry.register_driver(
+                        DriverTypes.IOSWEB,
+                        driver_options=Config.IOS_BROWSER_CAPABILITIES,
+                        mbrowsername=context.config.userdata.get('iosBrowserName',
+                                                                 Config.IOS_BROWSER_CAPABILITIES['browserName']))
+                elif 'android-app' in tags:
+                    context.driver = DriverRegistry.register_driver(
+                        DriverTypes.ANDROID,
+                        driver_options=Config.ANDROID_APP_CAPABILITIES)
+                elif 'ios-app' in tags:
+                    context.driver = DriverRegistry.register_driver(
+                        DriverTypes.IOS,
+                        driver_options=Config.IOS_APP_CAPABILITIES)
             else:
-                # this falls back into a generic browser as a default.
-                # todo - expand for browser types chrome, firefox, safari ect
-                if Config.ENV_OPTIONS['local_run']:
-                    context.app = appbuilder.build_desktop_browser(Config.BROWSER_OPTIONS, Config.ENV_OPTIONS['test_url'])
-                else:
-                    # TODO - grab capabilities from a config
-                    # TODO - push this down into the docker_browser builder
-                    # Build capabilities
-                    cap = {"browserName": Config.BROWSER_OPTIONS['type'],
-                           "platform": Config.BROWSER_OPTIONS['os'],
-                           "version": '' if 'latest' in Config.BROWSER_OPTIONS['version'] else Config.BROWSER_OPTIONS[
-                               'version'],
-                           'group': context.test_group,
-                           'name': context.test_name}
-                    context.app = appbuilder.build_docker_browser(Config.ENV_OPTIONS['grid_url'],
-                                                                  cap,
-                                                                  Config.BROWSER_OPTIONS['testurl'])
+                # Desktop browser tests
+                # Add Feature and Scenario name for grouping Zalenium Test Results
+                if not context.config.userdata.getbool("local", Config.ENV_OPTIONS['local']):
+                    Config.DESKTOP_BROWSER_CAPABILITIES['group'] = context.test_group
+                    Config.DESKTOP_BROWSER_CAPABILITIES['name'] = context.test_name
+                context.driver = DriverRegistry.register_driver(
+                    driver_type=context.config.userdata.get("type", Config.DESKTOP_BROWSER_CAPABILITIES['browserName']),
+                    driver_options=Config.DESKTOP_BROWSER_CAPABILITIES,
+                    local=context.config.userdata.getbool("local", Config.ENV_OPTIONS['local']))
+                context.driver.baseurl = context.config.userdata.get("testurl", Config.ENV_OPTIONS['testurl'])
+                context.driver.goto_url(context.driver.baseurl, absolute=True)
     except Exception as e:
         logger.exception(e)
-        if e.__class__ is WebDriverException:
-            # Should we fail the test and swallow the exception?
-            raise Exception("Webdriver returned an exception: " + str(e))
-        else:
-            raise Exception("Something broke creating a driver:" + str(e))
+        raise
 
     logger.info('Start of Scenario: {}'.format(scenario.name))
 
@@ -129,24 +124,24 @@ def after_scenario(context, scenario):
     """
     logger = logging.getLogger(__name__)
 
-    if context.app is not None:
+    if context.driver is not None:
 
         if scenario.status.lower == 'failed':
             _screenshot = '{}/{}_fail.png'.format(Config.LOG, scenario.name.replace(' ', '_'))
             # Take screen shot on a failure
             try:
-                context.app.take_screenshot_current_window(_screenshot)
+                context.driver.take_screenshot_current_window(_screenshot)
             except Exception:
                 logger.error('Failed to take screenshot to: {}'.format(Config.LOG))
                 raise
 
-    if context.app:
+    if context.driver:
         try:
-            context.app.quit()
+            DriverRegistry.deregister_driver()
+            context.driver = None
         except Exception:
-            logger.error('Failed to stop browser instance {}'.format(Config.BROWSER_OPTIONS['type']))
+            logger.error('Failed to stop driver instance')
             raise
-        context.app = None
 
     logger.info('End of test: {}. Status {} !!!\n\n\n'.format(scenario.name, scenario.status.upper()))
 
@@ -178,9 +173,9 @@ def after_step(context, step):
 
     # Take screen shot
     # if step.status.lower == 'failed' or step.status.lower == 'skipped':
-    if context.app is not None:
+    if context.driver is not None:
         try:
-            context.app.take_screenshot_current_window(_screenshot)
+            context.driver.take_screenshot_current_window(_screenshot)
             context.picture_num += 1
         except Exception:
             logger.error('Failed to take screenshot to: {}'.format(Config.LOG))

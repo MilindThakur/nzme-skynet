@@ -17,8 +17,8 @@ services:
     ports:
       - 4444:4444
     command: >
-      start --chromeContainers 0
-            --firefoxContainers 0
+      start --chromeContainers 1
+            --firefoxContainers 1
             --maxDockerSeleniumContainers 10
             --screenWidth 1930 --screenHeight 1090
             --timeZone "Pacific/Auckland"
@@ -28,6 +28,7 @@ services:
             --testingBotEnabled false
             --startTunnel false
             --sendAnonymousUsageInfo false
+            --maxTestSessions 4
     environment:
       - SAUCE_USERNAME
       - SAUCE_ACCESS_KEY

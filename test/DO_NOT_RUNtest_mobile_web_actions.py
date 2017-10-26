@@ -1,6 +1,8 @@
 # coding=utf-8
 import unittest
-from nzme_skynet.core.app import appbuilder
+
+from nzme_skynet.core.driver import builder
+
 '''
 This cannot be run until the grid matcher in the zalenium image has been updated to match on multiple,
 opposed to match on any capability. This causes any request for 'chrome' to be matched to either desktop or mobile
@@ -25,7 +27,7 @@ class MobileActionsTestCase(unittest.TestCase):
                 'version': '7.1.1',
                 "chromeOptions": {"args": ["--no-first-run"]}
         }
-        cls.app = appbuilder.build_mobile_browser(cls.cap, TEST_URL)
+        cls.app = builder.build_mobile_browser(cls.cap, TEST_URL)
 
     def test_driver_type(self):
         self.assertEqual(str(self.app.get_driver_type()), self.cap['platform'])

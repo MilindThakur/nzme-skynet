@@ -1,5 +1,6 @@
 import pytest
-from nzme_skynet.core.app import appbuilder
+
+from nzme_skynet.core.driver.driverregistry import DriverRegistry
 
 TEST_URL = "https://www.google.co.nz"
 DOCKER_SELENIUM_URL = "http://localhost:4444/wd/hub"
@@ -7,21 +8,12 @@ DOCKER_SELENIUM_URL = "http://localhost:4444/wd/hub"
 
 @pytest.fixture(scope='module', params=["chrome", "firefox"])
 def driver_setup(request):
-    cap = {
-        "browserName": request.param,
-        "platform": 'LINUX',
-        "version": '',
-        "javascriptEnabled": True
-    }
-    try:
-        app = appbuilder.build_docker_browser(DOCKER_SELENIUM_URL, cap, TEST_URL)
-        yield app
-    except Exception:
-        raise
-    app.quit()
+    DriverRegistry.register_driver(driver_type=request.param, local=False)
+    driver = DriverRegistry.get_driver()
+    yield driver
+    DriverRegistry.deregister_driver()
 
 
 def test_browser_setup(driver_setup):
-    assert driver_setup.baseurl == TEST_URL
-    assert (TEST_URL in driver_setup.get_current_url()) is True
-
+    driver_setup.goto_url(TEST_URL, absolute=True)
+    assert (TEST_URL in driver_setup.current_url) is True
