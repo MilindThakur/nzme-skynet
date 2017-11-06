@@ -6,8 +6,8 @@ from nzme_skynet.core.controls.clickable import Clickable
 
 class MElement(Clickable):
 
-    def __init__(self, locator, by):
-        super(MElement, self).__init__(locator, by)
+    def __init__(self, by, locator):
+        super(MElement, self).__init__(by, locator)
 
     @property
     def text(self):
