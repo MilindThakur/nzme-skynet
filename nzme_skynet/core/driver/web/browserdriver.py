@@ -26,7 +26,7 @@ class BrowserDriver(BaseDriver):
             else:
                 self.webdriver.get(self.baseurl+url)
         except TimeoutException:
-            self.webdriver.execute_script('window.stop()')
+            self.webdriver.execute_script('window.stop();')
 
     def _create_driver(self):
         raise NotImplementedError

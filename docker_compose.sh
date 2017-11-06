@@ -65,7 +65,14 @@ StartUp()
     DOCKER_SELENIUM_IMAGE_COUNT=$(docker images | grep "elgalu/selenium" | wc -l)
     if [ ${DOCKER_SELENIUM_IMAGE_COUNT} -eq 0 ]; then
         echo "Seems that docker-selenium's image has not been downloaded yet, lets get it."
-        docker pull elgalu/selenium
+        docker pull elgalu/selenium:3.7.0-p2
+    fi
+
+    # dosel/zalenium is mandatory requirement
+    DOCKER_SELENIUM_IMAGE_COUNT=$(docker images | grep "dosel/zalenium" | wc -l)
+    if [ ${DOCKER_SELENIUM_IMAGE_COUNT} -eq 0 ]; then
+        echo "Seems that zalenium image has not been downloaded yet, lets get it."
+        docker pull dosel/zalenium:3.7.0a
     fi
 
     # Ensure we have a clean environment

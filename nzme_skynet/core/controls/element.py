@@ -6,5 +6,5 @@ from nzme_skynet.core.controls.baseelement import BaseElement
 
 class Element(BaseElement):
 
-    def __init__(self, locator, by=By.CSS_SELECTOR):
-        super(Element, self).__init__(locator, by)
+    def __init__(self, by, locator):
+        super(Element, self).__init__(by, locator)

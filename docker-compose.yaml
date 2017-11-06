@@ -7,7 +7,7 @@ version: '2.1'
 services:
   #--------------#
   zalenium:
-    image: "dosel/zalenium"
+    image: "dosel/zalenium:3.7.0a"
     container_name: zalenium
     hostname: zalenium
     tty: true
@@ -27,6 +27,7 @@ services:
             --browserStackEnabled false
             --testingBotEnabled false
             --startTunnel false
+            --seleniumImageName "elgalu/selenium:3.7.0-p2"
             --sendAnonymousUsageInfo false
             --maxTestSessions 4
     environment:
