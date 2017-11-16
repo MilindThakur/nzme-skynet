@@ -135,5 +135,9 @@ class BrowserDriver(BaseDriver):
 
     def init(self):
         self._create_driver()
-        self.webdriver.maximize_window()
+        # Changed from maximize_window to set_window_size as per
+        # https://github.com/SeleniumHQ/docker-selenium/issues/559
+        # Bug is not browser specific.
+        # self.webdriver.maximize_window()
+        self.webdriver.set_window_size(1930, 1080)
         self.webdriver.set_page_load_timeout(DefaultTimeouts.PAGE_LOAD_TIMEOUT)

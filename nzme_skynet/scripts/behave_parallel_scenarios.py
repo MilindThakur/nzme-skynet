@@ -104,7 +104,8 @@ def main():
     run_feature = partial(_run_feature, tags=args.tags, userdata=args.define)
     logger.info("--------------------------------------------------------------------------")
     output = 0
-    for feature, scenario, status in pool.map(run_feature, features_and_scenarios):
+    # https://stackoverflow.com/questions/1408356/keyboard-interrupts-with-pythons-multiprocessing-p
+    for feature, scenario, status in pool.map_async(run_feature, features_and_scenarios).get(9999):
         if status != 'OK':
             if output == 0:
                 if status == "FAILED":
@@ -117,3 +118,7 @@ def main():
     logger.info("Duration: {}".format(format(end_time - start_time)))
 
     sys.exit(output)
+
+
+if __name__ == '__main__':
+    main()
