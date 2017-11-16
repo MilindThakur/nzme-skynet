@@ -119,6 +119,3 @@ def main():
 
     sys.exit(output)
 
-
-if __name__ == '__main__':
-    main()
