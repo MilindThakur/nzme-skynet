@@ -77,5 +77,5 @@ class DriverFactory(object):
         try:
             driver.init()
             return driver
-        except Exception as e:
-            raise Exception("Failed to initialise remote web driver: {0}".format(e.message))
+        except Exception:
+            raise
