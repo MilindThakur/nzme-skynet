@@ -106,7 +106,8 @@ def before_scenario(context, scenario):
                 context.driver = DriverRegistry.register_driver(
                     driver_type=context.config.userdata.get("type", Config.DESKTOP_BROWSER_CAPABILITIES['browserName']),
                     driver_options=Config.DESKTOP_BROWSER_CAPABILITIES,
-                    local=context.config.userdata.getbool("local", Config.ENV_OPTIONS['local']))
+                    local=context.config.userdata.getbool("local", Config.ENV_OPTIONS['local']),
+                    grid_url=Config.ENV_OPTIONS['grid_url'])
                 context.driver.baseurl = context.config.userdata.get("testurl", Config.ENV_OPTIONS['testurl'])
                 context.driver.goto_url(context.driver.baseurl, absolute=True)
     except Exception as e:
