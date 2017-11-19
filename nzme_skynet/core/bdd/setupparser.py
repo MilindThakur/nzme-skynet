@@ -53,7 +53,7 @@ def get_environment_options(config):
     return {
             'testurl': config.get('ENVIRONMENT', 'testurl'),
             'local': config.getboolean('ENVIRONMENT', 'local'),
-            'grid_url': config.get('ENVIRONMENT', 'selenium_grid_hub')
+            'selenium_grid_hub': config.get('ENVIRONMENT', 'selenium_grid_hub')
     }
 
 
