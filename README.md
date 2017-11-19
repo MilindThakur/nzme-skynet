@@ -181,6 +181,7 @@ $ nzme-behave-parallel -p 4 -t prod -D local=false -D type=firefox
 
 # Change Log
 ```bash
+0.3.4   Fix parsing a custom selenium grid url
 0.3.3   Fixes for parallel tests, maximise window and expose driver exception
 0.3.2   Upgrade selenium to 3.7.0
 0.3.1   Revert importing elements from controls package

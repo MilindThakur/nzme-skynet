@@ -65,7 +65,7 @@ class DriverFactory(object):
             raise Exception("Failed to initialise mobile browser driver")
 
     @staticmethod
-    def build_remote_web_driver(driver_type="chrome", driver_options=None):
+    def build_remote_web_driver(driver_type="chrome", driver_options=None, grid_url="http://127.0.0.1:4444/wd/hub"):
         if not driver_options:
             if driver_type == DriverTypes.CHROME:
                 driver_options = Chrome.get_default_capability()
@@ -73,7 +73,7 @@ class DriverFactory(object):
                 driver_options = FireFox.get_default_capability()
             else:
                 raise Exception("Only supports Chrome and Firefox in remote mode when no capabilities passed")
-        driver = Remote(driver_options)
+        driver = Remote(driver_options, remote_url=grid_url)
         try:
             driver.init()
             return driver
