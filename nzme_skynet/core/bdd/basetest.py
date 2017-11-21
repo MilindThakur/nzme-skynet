@@ -62,6 +62,8 @@ def before_scenario(context, scenario):
     Logger.create_test_folder(scenario.name)
 
     context.test_name = scenario.name
+    context.is_zalenium = context.config.userdata.getbool('zalenium', Config.ENV_OPTIONS['zalenium'])
+    context.is_local = context.config.userdata.getbool("local", Config.ENV_OPTIONS['local'])
 
     # cleanup app state for new test
     if context.driver is not None:
@@ -99,14 +101,15 @@ def before_scenario(context, scenario):
                         driver_options=Config.IOS_APP_CAPABILITIES)
             else:
                 # Desktop browser tests
-                # Add Feature and Scenario name for grouping Zalenium Test Results
-                if not context.config.userdata.getbool("local", Config.ENV_OPTIONS['local']):
+                # Add Feature and Scenario name for grouping Zalenium Test
+                # https://github.com/zalando/zalenium/blob/master/docs/usage_examples.md#test-name
+                if not context.is_local and context.is_zalenium:
                     Config.DESKTOP_BROWSER_CAPABILITIES['group'] = context.test_group
                     Config.DESKTOP_BROWSER_CAPABILITIES['name'] = context.test_name
                 context.driver = DriverRegistry.register_driver(
                     driver_type=context.config.userdata.get("type", Config.DESKTOP_BROWSER_CAPABILITIES['browserName']),
                     driver_options=Config.DESKTOP_BROWSER_CAPABILITIES,
-                    local=context.config.userdata.getbool("local", Config.ENV_OPTIONS['local']),
+                    local=context.is_local,
                     grid_url=context.config.userdata.get('selenium_grid_hub', Config.ENV_OPTIONS['selenium_grid_hub']))
                 context.driver.baseurl = context.config.userdata.get("testurl", Config.ENV_OPTIONS['testurl'])
                 context.driver.goto_url(context.driver.baseurl, absolute=True)
@@ -127,13 +130,34 @@ def after_scenario(context, scenario):
 
     if context.driver is not None:
 
-        if scenario.status.lower == 'failed':
+        if scenario.status == 'failed':
             _screenshot = '{}/{}_fail.png'.format(Config.LOG, scenario.name.replace(' ', '_'))
             # Take screen shot on a failure
             try:
                 context.driver.take_screenshot_current_window(_screenshot)
             except Exception:
                 logger.error('Failed to take screenshot to: {}'.format(Config.LOG))
+                raise
+            # https://github.com/zalando/zalenium/blob/master/docs/usage_examples.md#marking-the-test-as-passed-or-failed
+            if context.is_zalenium:
+                try:
+                    context.driver.add_cookie({
+                        'name': 'zaleniumTestPassed',
+                        'value': 'false'
+                    })
+                except Exception:
+                    logger.error('Failed to set failed cookie for scenario in Zalenium')
+                    raise
+
+        # https://github.com/zalando/zalenium/blob/master/docs/usage_examples.md#marking-the-test-as-passed-or-failed
+        if scenario.status == 'passed' and context.is_zalenium:
+            try:
+                context.driver.add_cookie({
+                    'name': 'zaleniumTestPassed',
+                    'value': 'true'
+                })
+            except Exception:
+                logger.error('Failed to set passed cookie for scenario in Zalenium')
                 raise
 
     if context.driver:
@@ -154,7 +178,16 @@ def before_step(context, step):
     :param step: behave.model.Step
 
     """
-    pass
+    logger = logging.getLogger(__name__)
+    if context.driver is not None and context.config.userdata.getbool('zalenium', Config.ENV_OPTIONS['zalenium']):
+        try:
+            context.driver.add_cookie({
+                'name': 'zaleniumMessage',
+                'value': step.name.replace(' ', '_')
+            })
+        except Exception:
+            logger.error('Failed to set cookie for test step in Zalenium')
+            raise
 
 
 def after_step(context, step):
