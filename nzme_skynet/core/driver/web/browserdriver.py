@@ -85,6 +85,9 @@ class BrowserDriver(BaseDriver):
     def forward(self):
         self.webdriver.forward()
 
+    def add_cookie(self, cookie_dict):
+        self.webdriver.add_cookie(cookie_dict)
+
     def take_screenshot_current_window(self, filename):
         self.webdriver.get_screenshot_as_file(filename)
 
