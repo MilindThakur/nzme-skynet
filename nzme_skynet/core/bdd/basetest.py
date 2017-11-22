@@ -104,7 +104,8 @@ def before_scenario(context, scenario):
                 # Add Feature and Scenario name for grouping Zalenium Test
                 # https://github.com/zalando/zalenium/blob/master/docs/usage_examples.md#test-name
                 if not context.is_local and context.is_zalenium:
-                    Config.DESKTOP_BROWSER_CAPABILITIES['group'] = context.test_group
+                    if 'build' in context.config.userdata.keys():
+                        Config.DESKTOP_BROWSER_CAPABILITIES['build'] = context.config.userdata['build']
                     Config.DESKTOP_BROWSER_CAPABILITIES['name'] = context.test_name
                 context.driver = DriverRegistry.register_driver(
                     driver_type=context.config.userdata.get("type", Config.DESKTOP_BROWSER_CAPABILITIES['browserName']),
