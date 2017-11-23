@@ -118,6 +118,3 @@ def main():
     logger.info("Duration: {}".format(format(end_time - start_time)))
 
     sys.exit(output)
-
-if __name__ == '__main__':
-    main()
