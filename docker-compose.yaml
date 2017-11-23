@@ -7,7 +7,7 @@ version: '2.1'
 services:
   #--------------#
   zalenium:
-    image: "dosel/zalenium:3.7.0a"
+    image: "dosel/zalenium"
     container_name: zalenium
     hostname: zalenium
     tty: true
@@ -18,8 +18,7 @@ services:
     ports:
       - 4444:4444
     command: >
-      start --chromeContainers 1
-            --firefoxContainers 1
+      start --desiredContainers 4
             --maxDockerSeleniumContainers 10
             --screenWidth 1930 --screenHeight 1090
             --timeZone "Pacific/Auckland"
@@ -28,9 +27,9 @@ services:
             --browserStackEnabled false
             --testingBotEnabled false
             --startTunnel false
-            --seleniumImageName "elgalu/selenium:3.7.0-p2"
+            --seleniumImageName "elgalu/selenium"
             --sendAnonymousUsageInfo false
-            --maxTestSessions 4
+            --maxTestSessions 5
             --keepOnlyFailedTests true
             --debugEnabled false
     environment:
