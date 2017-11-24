@@ -13,6 +13,7 @@ class ClickableText(Clickable):
 
     @property
     def text(self):
+        self._highlight()
         return self._find_element().text
 
     def currently_has_text(self, text):

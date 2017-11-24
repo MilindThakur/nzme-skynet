@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from nzme_skynet.core.controls.enums.timeouts import DefaultTimeouts
 from nzme_skynet.core.driver.driverregistry import DriverRegistry
+from nzme_skynet.core.controls import highlight_state
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.ui import WebDriverWait
 import time
@@ -39,16 +40,17 @@ class BaseElement(object):
             return False
 
     def _highlight(self):
-        elem = self.will_be_visible()
-        self.scroll_to_element()
+        if highlight_state():
+            elem = self.will_be_visible()
+            self.scroll_to_element()
 
-        def apply_style(style):
-            self.driver.execute_script("arguments[0].setAttribute('style', arguments[1]);",
-                                       elem, style)
-        previous_style = self.get_attribute('style')
-        apply_style("background: yellow; border: 2px solid red;")
-        time.sleep(0.3)
-        apply_style(previous_style)
+            def apply_style(style):
+                self.driver.execute_script("arguments[0].setAttribute('style', arguments[1]);",
+                                           elem, style)
+            previous_style = self.get_attribute('style')
+            apply_style("background: yellow; border: 2px solid red;")
+            time.sleep(0.3)
+            apply_style(previous_style)
 
     def get_attribute(self, attribute):
         return self._find_element().get_attribute(attribute)
