@@ -2,6 +2,7 @@
 from nzme_skynet.core.driver.basedriver import BaseDriver
 from nzme_skynet.core.driver.enums.drivertypes import DESKTOP_WEBBROWSER, DriverTypes, MOBILE_WEBBROWSER, MOBILE_APP
 from nzme_skynet.core.driver.driverfactory import DriverFactory
+from nzme_skynet.core.controls import set_highlight, highlight_state
 from nzme_skynet.core.driver import register_driver, deregister_driver, get_driver
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.phantomjs.webdriver import WebDriver
@@ -30,6 +31,7 @@ class DriverRegistry(object):
         new_driver = None
         if get_driver():
             raise Exception("Only one driver can be registered at a time")
+        set_highlight(driver_options['highlight'])
         try:
             if driver_type in DESKTOP_WEBBROWSER:
                 if local:
@@ -58,6 +60,7 @@ class DriverRegistry(object):
                 DriverRegistry.get_webdriver().service.process.send_signal(signal.SIGTERM)
             DriverRegistry.get_webdriver().quit()
             deregister_driver()
+            set_highlight(False)
 
     @staticmethod
     def get_driver():

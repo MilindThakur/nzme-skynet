@@ -12,6 +12,7 @@ class Image(Clickable):
 
     @property
     def src(self):
+        self._highlight()
         return self.get_attribute("src")
 
     def get_filename(self):

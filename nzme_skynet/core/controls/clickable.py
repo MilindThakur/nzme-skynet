@@ -9,6 +9,7 @@ class Clickable(BaseElement):
 
     def click(self):
         self.is_ready_to_interact()
+        self._highlight()
         self._find_element().click()
 
     def clickjs(self):
