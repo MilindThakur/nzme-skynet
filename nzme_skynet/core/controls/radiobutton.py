@@ -8,4 +8,5 @@ class RadioButton(Button):
         super(RadioButton, self).__init__(by, locator)
 
     def is_selected(self):
+        self._highlight()
         return self._find_element().is_selected()

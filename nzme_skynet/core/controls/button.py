@@ -8,4 +8,5 @@ class Button(ClickableText):
         super(Button, self).__init__(by, locator)
 
     def get_status(self):
+        self._highlight()
         self.get_attribute("value")

@@ -11,10 +11,12 @@ class TextInput(Text):
         raise NotImplementedError
 
     def clear(self):
+        self._highlight()
         self._find_element().clear()
 
     @property
     def value(self):
+        self._highlight()
         return self.get_attribute("value")
 
     def set_value(self, value):

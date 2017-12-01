@@ -51,15 +51,15 @@ def _run_feature(feature_scenario, tags=None, userdata=None):
     :return: Feature/scenario and status
     """
     execution_elements = feature_scenario.split(delimiter)
-    logger.info("Processing feature: {} and scenario {}".format(execution_elements[0], execution_elements[1]))
+    logger.info("Processing feature: {} ".format(execution_elements[0]))
     if not userdata:
         params = "-t {0} --no-capture".format(' -t '.join(tags))
     else:
         params = "-t {0} -D {1} --no-capture".format(' -t '.join(tags), ' -D '.join(userdata))
-    cmd = "behave --no-summary -k --junit -f plain {0} -i {1} --name \"{2}\" -o \"./reports/{1}/{2}.out\"".format(
-           params, execution_elements[0], execution_elements[1])
+    cmd = "behave --no-summary -k --junit -f plain {0} -i {1}".format(
+           params, execution_elements[0])
     r = call(cmd, shell=True)
-    status = 'OK' if r == 0 else 'FAILED'
+    status = 'PASSED' if r == 0 else 'FAILED'
     logger.info("{0:50}: {1} --> {2}".format(execution_elements[0], execution_elements[1], status))
     return execution_elements[0], execution_elements[1], status
 
@@ -95,9 +95,9 @@ def main():
 
     logger.info("Found {} features".format(len(features)))
     logger.info("Found {} scenarios".format(len(features_and_scenarios)))
-    if args.processes > len(features_and_scenarios):
-        logger.info("You have defined {} and Will execute only necessary {} parallel process ".format(args.processes,
-                                                                                        len(features_and_scenarios)))
+    if args.processes > len(features):
+        logger.info("You have defined {} and will execute only necessary {} parallel process ".format(args.processes,
+                                                                                        len(features)))
     else:
         logger.info("Will execute {} parallel process".format(args.processes))
 
@@ -118,4 +118,3 @@ def main():
     logger.info("Duration: {}".format(format(end_time - start_time)))
 
     sys.exit(output)
-
