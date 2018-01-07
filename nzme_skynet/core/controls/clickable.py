@@ -18,3 +18,6 @@ class Clickable(BaseElement):
     def scroll_and_click(self):
         self.scroll_to_element()
         self.click()
+
+    def click_parent(self):
+        self._find_element().find_element_by_xpath('..').click()
