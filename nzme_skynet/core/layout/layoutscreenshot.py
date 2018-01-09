@@ -28,7 +28,7 @@ class LayoutScreenshot(object):
             os.makedirs(self._folder)
 
     def take_screenshot(self):
-        DriverRegistry.register_driver(DriverTypes.CHROMEHEADLESS)
+        DriverRegistry.register_driver(DriverTypes.CHROMEHEADLESS, local=False)
         driver = DriverRegistry.get_driver()
         for url in self.urls_json["urls"]:
             driver.goto_url(url["url"], absolute=True)
