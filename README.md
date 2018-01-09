@@ -181,6 +181,7 @@ $ nzme-behave-parallel -p 4 -t prod -D local=false -D type=firefox
 
 # Change Log
 ```bash
+0.3.9   Upgrade selenium to 3.8.1
 0.3.8   Turn element highlighting using a config flag
 0.3.7   Run one thread per feature when running tests in parallel, better reporting
 0.3.6   Ability to include build no for debugging in CI using zalenium
