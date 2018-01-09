@@ -14,7 +14,10 @@ class BaseElement(object):
         self._locator = locator
 
     def _find_element(self):
-        return self.driver.find_element(by=self._by, value=self._locator)
+        try:
+            return WebDriverWait(self.driver, DefaultTimeouts.LARGE_TIMEOUT).until(ec.presence_of_element_located((self._by, self._locator)))
+        except Exception:
+            raise
 
     def find_sub_elements(self, by, locator):
         # TODO: return list of Element objects
@@ -42,7 +45,6 @@ class BaseElement(object):
     def _highlight(self):
         if highlight_state():
             elem = self.will_be_visible()
-            self.scroll_to_element()
 
             def apply_style(style):
                 self.driver.execute_script("arguments[0].setAttribute('style', arguments[1]);",
@@ -106,4 +108,7 @@ class BaseElement(object):
             return False
 
     def hover_over(self):
+        raise NotImplementedError
+
+    def focus(self):
         raise NotImplementedError

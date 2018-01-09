@@ -34,7 +34,7 @@ class GoogleSearchResultPage(BaseWebPage):
 class POValidation(unittest.TestCase):
 
     def setUp(self):
-        DriverRegistry.register_driver("chrome", local=False)
+        DriverRegistry.register_driver(local=False)
 
     def test_web_page_object_creation(self):
         ghomepage = GoogleHomePage()

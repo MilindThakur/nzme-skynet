@@ -31,7 +31,7 @@ class DriverRegistry(object):
         new_driver = None
         if get_driver():
             raise Exception("Only one driver can be registered at a time")
-        set_highlight(driver_options['highlight'])
+        set_highlight(driver_options['highlight'] if driver_options and 'highlight' in driver_options else False)
         try:
             if driver_type in DESKTOP_WEBBROWSER:
                 if local:

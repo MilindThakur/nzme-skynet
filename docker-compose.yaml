@@ -2,7 +2,7 @@
 #
 # Usage:
 #   docker-compose up --force-recreate
-version: '2.1'
+version: '3.2'
 
 services:
   #--------------#
@@ -10,6 +10,8 @@ services:
     image: "dosel/zalenium"
     container_name: zalenium
     hostname: zalenium
+    privileged: true
+    network_mode: "host"
     tty: true
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock

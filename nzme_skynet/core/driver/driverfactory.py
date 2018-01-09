@@ -67,7 +67,7 @@ class DriverFactory(object):
     @staticmethod
     def build_remote_web_driver(driver_type="chrome", driver_options=None, grid_url="http://127.0.0.1:4444/wd/hub"):
         if not driver_options:
-            if driver_type == DriverTypes.CHROME:
+            if driver_type == DriverTypes.CHROME or driver_type == DriverTypes.CHROMEHEADLESS:
                 driver_options = Chrome.get_default_capability()
             elif driver_type == DriverTypes.FIREFOX:
                 driver_options = FireFox.get_default_capability()

@@ -10,12 +10,6 @@ from nzme_skynet.core.driver.enums.drivertypes import DriverTypes
 class LayoutScreenshot(object):
     _SCREENSHOT_DIR_NAME = "screenshot"
     _SCREENSHOT_DIR_PATH = os.path.abspath('.') + "/%s" % _SCREENSHOT_DIR_NAME
-    _CAP = {
-        "type": "phantomjs",
-        "platform": 'LINUX',
-        "version": '',
-        "javascriptEnabled": True
-    }
 
     def __init__(self, urls_path, device_list=None, folder=None):
         with open(urls_path, 'r') as url:
@@ -34,7 +28,7 @@ class LayoutScreenshot(object):
             os.makedirs(self._folder)
 
     def take_screenshot(self):
-        DriverRegistry.register_driver(DriverTypes.PHANTOMJS)
+        DriverRegistry.register_driver(DriverTypes.CHROMEHEADLESS)
         driver = DriverRegistry.get_driver()
         for url in self.urls_json["urls"]:
             driver.goto_url(url["url"], absolute=True)
