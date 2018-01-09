@@ -14,7 +14,10 @@ class BaseElement(object):
         self._locator = locator
 
     def _find_element(self):
-        return self.driver.find_element(by=self._by, value=self._locator)
+        try:
+            return WebDriverWait(self.driver, DefaultTimeouts.LARGE_TIMEOUT).until(ec.presence_of_element_located((self._by, self._locator)))
+        except Exception:
+            raise
 
     def find_sub_elements(self, by, locator):
         # TODO: return list of Element objects
@@ -105,4 +108,7 @@ class BaseElement(object):
             return False
 
     def hover_over(self):
+        raise NotImplementedError
+
+    def focus(self):
         raise NotImplementedError

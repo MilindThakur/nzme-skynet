@@ -22,12 +22,12 @@ class ActionsTestCase(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        DriverRegistry.register_driver(DriverTypes.PHANTOMJS)
+        DriverRegistry.register_driver(DriverTypes.CHROMEHEADLESS, local=False)
         cls.driver = DriverRegistry.get_driver()
         cls.driver.goto_url(cls.TEST_URL, absolute=True)
 
     def test_browser_type(self):
-        self.assertEqual(self.driver.name, DriverTypes.PHANTOMJS)
+        self.assertEqual(self.driver.name, DriverTypes.CHROME)
         # self.assertEqual(self.app.baseurl, self.TEST_URL)
 
     def test_get_window_handles(self):

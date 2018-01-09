@@ -3,6 +3,7 @@ import itertools
 import requests
 
 from nzme_skynet.core.driver.driverregistry import DriverRegistry
+from nzme_skynet.core.driver.enums.drivertypes import DriverTypes
 
 
 def validate_url(url, driver):
@@ -61,28 +62,28 @@ def _validate_js_error_on_url(url, driver, open_url=True):
 
 
 def validate_images(url):
-    DriverRegistry.register_driver('phantomjs')
+    DriverRegistry.register_driver(DriverTypes.CHROMEHEADLESS, local=False)
     broken_images_list = _validate_images_on_url(url, DriverRegistry.get_webdriver())
     DriverRegistry.deregister_driver()
     return broken_images_list
 
 
 def validate_links(url):
-    DriverRegistry.register_driver('phantomjs')
+    DriverRegistry.register_driver(DriverTypes.CHROMEHEADLESS, local=False)
     broken_links_list = _validate_links_on_url(url,  DriverRegistry.get_webdriver())
     DriverRegistry.deregister_driver()
     return broken_links_list
 
 
 def validate_js_error(url):
-    DriverRegistry.register_driver('phantomjs')
+    DriverRegistry.register_driver(DriverTypes.CHROMEHEADLESS, local=False)
     js_errors = _validate_js_error_on_url(url, DriverRegistry.get_webdriver())
     DriverRegistry.deregister_driver()
     return js_errors
 
 
 def validate_all(urls):
-    DriverRegistry.register_driver('phantomjs')
+    DriverRegistry.register_driver(DriverTypes.CHROMEHEADLESS, local=False)
     errors = []
     list_urls = urls.split(',')
     for url in list_urls:

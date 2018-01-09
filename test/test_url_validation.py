@@ -23,11 +23,11 @@ class UrlValidationTestCase(unittest.TestCase):
 
     def test_javascript_validation(self):
         js_errors = v.validate_js_error(self.TEST_URL)
-        self.assertEqual(len(js_errors), 1, "Expected 1 js error, found: " + str(len(js_errors)))
+        self.assertEqual(len(js_errors), 3, "Expected 3 js error, found: " + str(len(js_errors)))
 
     def test_all_validation(self):
         errors = v.validate_all(self.TEST_URL)
-        self.assertEqual(len(errors), 3, "Expected 3 errors, found: " + str(errors))
+        self.assertEqual(len(errors), 5, "Expected 5 errors, found: " + str(len(errors)))
 
 
 if __name__ == "__main__":
