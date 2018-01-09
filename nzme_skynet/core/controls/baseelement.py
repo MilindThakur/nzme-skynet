@@ -42,7 +42,6 @@ class BaseElement(object):
     def _highlight(self):
         if highlight_state():
             elem = self.will_be_visible()
-            self.scroll_to_element()
 
             def apply_style(style):
                 self.driver.execute_script("arguments[0].setAttribute('style', arguments[1]);",
