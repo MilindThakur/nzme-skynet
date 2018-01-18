@@ -11,9 +11,11 @@ import re
 from log import Logger
 from setupparser import Config
 
+
+
 from nzme_skynet.core.driver.driverregistry import DriverRegistry
 from nzme_skynet.core.driver.enums.drivertypes import DriverTypes
-
+logger = logging.getLogger(__name__)
 
 def before_all(context):
     """
@@ -21,6 +23,8 @@ def before_all(context):
     Executed one in the beginning of entire test run
     :param context: behave.runner.Context
     """
+    logger.info('Entered before all')
+    logger.debug('Entered before all')
     Logger.configure_logging()
 
 
@@ -58,7 +62,6 @@ def before_scenario(context, scenario):
     :param context: behave.runner.Context
     :param scenario: behave.model.Scenario
     """
-    logger = logging.getLogger(__name__)
     Logger.create_test_folder(scenario.name)
 
     context.test_name = scenario.name
@@ -76,6 +79,7 @@ def before_scenario(context, scenario):
 
     tags = str(context.scenario.tags)
     try:
+        logger.debug("Building up driver")
         if 'api' not in tags:
             if 'android' in tags or 'ios' in tags:
                 # Mobile tests
@@ -99,6 +103,9 @@ def before_scenario(context, scenario):
                     context.driver = DriverRegistry.register_driver(
                         DriverTypes.IOS,
                         driver_options=Config.IOS_APP_CAPABILITIES)
+                else:
+                    logger.exception("Only supports tags android-app, android-browser, ios-app, ios-browser")
+                    raise Exception("Only supports tags android-app, android-browser, ios-app, ios-browser")
             else:
                 # Desktop browser tests
                 # Add Feature and Scenario name for grouping Zalenium Test
