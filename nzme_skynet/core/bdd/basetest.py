@@ -12,10 +12,10 @@ from log import Logger
 from setupparser import Config
 
 
-
 from nzme_skynet.core.driver.driverregistry import DriverRegistry
 from nzme_skynet.core.driver.enums.drivertypes import DriverTypes
 logger = logging.getLogger(__name__)
+
 
 def before_all(context):
     """
@@ -23,8 +23,6 @@ def before_all(context):
     Executed one in the beginning of entire test run
     :param context: behave.runner.Context
     """
-    logger.info('Entered before all')
-    logger.debug('Entered before all')
     Logger.configure_logging()
 
 
