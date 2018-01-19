@@ -8,7 +8,7 @@ Ref: https://github.com/oleg-toporkov/python-bdd-selenium.git
 
 import logging
 import re
-from log import Logger
+from nzme_skynet.core.utils.log import Logger
 from setupparser import Config
 
 
@@ -132,8 +132,6 @@ def after_scenario(context, scenario):
     :param context: behave.runner.Context
     :param scenario: behave.model.Scenario
     """
-    logger = logging.getLogger(__name__)
-
     if context.driver is not None:
 
         if scenario.status == 'failed':
@@ -153,7 +151,7 @@ def after_scenario(context, scenario):
                     })
                 except Exception:
                     logger.error('Failed to set failed cookie for scenario in Zalenium')
-                    raise
+                    pass
 
         # https://github.com/zalando/zalenium/blob/master/docs/usage_examples.md#marking-the-test-as-passed-or-failed
         if scenario.status == 'passed' and context.is_zalenium:
@@ -164,7 +162,7 @@ def after_scenario(context, scenario):
                 })
             except Exception:
                 logger.error('Failed to set passed cookie for scenario in Zalenium')
-                raise
+                pass
 
     if context.driver:
         try:
@@ -193,7 +191,7 @@ def before_step(context, step):
             })
         except Exception:
             logger.error('Failed to set cookie for test step in Zalenium')
-            raise
+            pass
 
 
 def after_step(context, step):
@@ -202,7 +200,6 @@ def after_step(context, step):
     :param context: behave.runner.Context
     :param step: behave.model.Step
     """
-    logger = logging.getLogger(__name__)
     step_name = re.sub('[^A-Za-z0-9]+', '_', step.name)
 
     # TODO: Create screenshot filename
@@ -219,7 +216,6 @@ def after_step(context, step):
             context.picture_num += 1
         except Exception:
             logger.error('Failed to take screenshot to: {}'.format(Config.LOG))
-            logger.error('Screenshot name: {}'.format(step_name))
             raise
 
     # Add stacktrace to allure reporting on failure

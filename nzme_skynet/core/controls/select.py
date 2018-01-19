@@ -9,7 +9,6 @@ class SelectElem(BaseElement):
     def __init__(self, by, locator):
         super(SelectElem, self).__init__(by, locator)
         self.select = None
-        self._select_init()
 
     def _select_init(self):
         try:

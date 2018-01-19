@@ -31,11 +31,13 @@ class DriverFactoryTest(unittest.TestCase):
 
     def test_registering_multiple_drivers(self):
         DriverRegistry.register_driver(DriverTypes.CHROMEHEADLESS, local=False)
-        with self.assertRaises(Exception) as context:
-            DriverRegistry.register_driver(DriverTypes.CHROMEHEADLESS)
-        self.assertTrue('Only one driver can be registered at a time' in context.exception)
+        current_driver = DriverRegistry.get_driver()
+        new_driver = DriverRegistry.register_driver(DriverTypes.CHROMEHEADLESS)
+        self.assertIsNotNone(new_driver, "Error: Should return previously registered driver")
+        self.assertEqual(current_driver, new_driver, "Error: Shoulld return same driver instance created before")
         DriverRegistry.deregister_driver()
         self.assertIsNone(DriverRegistry.get_driver(), 'Error: Driver found without registration')
+        self.assertIsNone(DriverRegistry.get_webdriver(), 'Error: Webdriver found without registration')
 
     # Chrome browser does not run in CI without headless mode.
     # Test should fail on CI but pass locally.

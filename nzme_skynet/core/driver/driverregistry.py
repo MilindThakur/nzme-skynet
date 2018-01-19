@@ -7,6 +7,12 @@ from nzme_skynet.core.driver import register_driver, deregister_driver, get_driv
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.phantomjs.webdriver import WebDriver
 import signal
+import logging
+from nzme_skynet.core.utils.log import Logger
+
+
+Logger.configure_logging()
+logger = logging.getLogger(__file__)
 
 
 class DriverRegistry(object):
@@ -30,7 +36,8 @@ class DriverRegistry(object):
         """
         new_driver = None
         if get_driver():
-            raise Exception("Only one driver can be registered at a time")
+            logger.warning("Driver already registered. Only one driver can be registered at a time")
+            return get_driver()
         set_highlight(driver_options['highlight'] if driver_options and 'highlight' in driver_options else False)
         try:
             if driver_type in DESKTOP_WEBBROWSER:
@@ -45,7 +52,8 @@ class DriverRegistry(object):
                 new_driver = DriverFactory.build_mobile_app_driver(driver_type, driver_options)
             register_driver(new_driver)
             return get_driver()
-        except Exception:
+        except Exception as e:
+            logger.exception("Failed to register driver: {0}".format(e.message))
             raise
 
     @staticmethod
@@ -60,6 +68,7 @@ class DriverRegistry(object):
                 DriverRegistry.get_webdriver().service.process.send_signal(signal.SIGTERM)
             DriverRegistry.get_webdriver().quit()
             deregister_driver()
+            logger.debug("Successfully deregistered driver")
             set_highlight(False)
 
     @staticmethod
@@ -72,12 +81,12 @@ class DriverRegistry(object):
 
     @staticmethod
     def get_webdriver():
-        # type: () -> WebDriver
+        # type: () -> [WebDriver, None]
         """
         Returns Selenium Webdriver from registry
         :return:
         """
-        if not get_driver():
-            raise Exception("No registered driver found")
-        return get_driver().webdriver
-
+        if get_driver():
+            return get_driver().webdriver
+        logger.warning("No registered driver found")
+        return None
