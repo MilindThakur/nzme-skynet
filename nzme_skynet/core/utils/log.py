@@ -1,28 +1,31 @@
 # coding=utf-8
 import os
-# from nzme_skynet.core.bdd.setupparser import Config
 import logging.config
 from datetime import datetime
 import logging
 import sys
+from behave.log_capture import LoggingCapture
 
 
 class Logger(object):
 
     log = os.path.abspath('logs')
+    behave = False
 
     @staticmethod
     def configure_logging():
+        # Get the root logger
         rl = logging.getLogger('')
-        current_handlers = [n.name for n in rl.handlers]
-        # Add custom handler for framework debugging using behave runner
-        if not ['skynet_fh', 'skynet_sh'] in current_handlers:
-            lf = '%(asctime)s [%(levelname)5s] [%(name)s]  %(message)s'
-            rl.addHandler(Logger._file_handler(lf, rl.level))
-            rl.addHandler(Logger._console_handler(lf, rl.level))
 
-            for handler in rl.handlers:
-                handler.addFilter(FilerOutSeleniumLogger())
+        for log_handler in rl.handlers:
+            lf = '%(asctime)s [%(levelname)5s] [%(name)s]  %(message)s'
+            # Set the file and console handler for behave tests
+            # The behave log level is read from behave.ini or overridden at cli
+            if isinstance(log_handler, LoggingCapture):
+                rl.addHandler(Logger._file_handler(lf, rl.level))
+                rl.addHandler(Logger._console_handler(lf, rl.level))
+                for handler in rl.handlers:
+                    handler.addFilter(FilerOutSeleniumLogger())
 
     @staticmethod
     def create_test_folder(id):
@@ -53,6 +56,8 @@ class Logger(object):
         return sh
 
 
+# Filter out the selenium level logs, retain only the tests and FW level logs
+# TODO: expose selenium logging in a separate log file
 class FilerOutSeleniumLogger(logging.Filter):
     def filter(self, record):
         return not'selenium' in record.name
