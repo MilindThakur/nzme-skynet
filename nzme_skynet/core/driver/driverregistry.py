@@ -12,7 +12,7 @@ from nzme_skynet.core.utils.log import Logger
 
 
 Logger.configure_logging()
-logger = logging.getLogger(__file__)
+logger = logging.getLogger(__name__)
 
 
 class DriverRegistry(object):

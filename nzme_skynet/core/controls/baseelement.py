@@ -16,7 +16,6 @@ class BaseElement(object):
         self._locator = locator
 
     def _find_element(self):
-        logger.info('Base element _find_element info')
         logger.debug('_finding_element: {}  {}'.format(self._by, self._locator))
         try:
             return WebDriverWait(self.driver, DefaultTimeouts.LARGE_TIMEOUT).until(ec.presence_of_element_located((self._by, self._locator)))

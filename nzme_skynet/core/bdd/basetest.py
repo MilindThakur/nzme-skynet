@@ -77,7 +77,7 @@ def before_scenario(context, scenario):
 
     tags = str(context.scenario.tags)
     try:
-        logger.debug("Building up driver")
+        logger.debug("Building driver..")
         if 'api' not in tags:
             if 'android' in tags or 'ios' in tags:
                 # Mobile tests
@@ -119,6 +119,7 @@ def before_scenario(context, scenario):
                     grid_url=context.config.userdata.get('selenium_grid_hub', Config.ENV_OPTIONS['selenium_grid_hub']))
                 context.driver.baseurl = context.config.userdata.get("testurl", Config.ENV_OPTIONS['testurl'])
                 context.driver.goto_url(context.driver.baseurl, absolute=True)
+                logger.debug("Built driver successfully")
     except Exception as e:
         logger.exception(e)
         raise
@@ -182,7 +183,6 @@ def before_step(context, step):
     :param step: behave.model.Step
 
     """
-    logger = logging.getLogger(__name__)
     if context.driver is not None and context.config.userdata.getbool('zalenium', Config.ENV_OPTIONS['zalenium']):
         try:
             context.driver.add_cookie({
