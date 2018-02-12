@@ -1,19 +1,22 @@
 # -*- coding: utf-8 -*-
+import logging
+
 from nzme_skynet.core.controls.enums.timeouts import DefaultTimeouts
 from nzme_skynet.core.driver.driverregistry import DriverRegistry
 from nzme_skynet.core.controls import highlight_state
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.ui import WebDriverWait
 import time
+logger = logging.getLogger(__name__)
 
 
 class BaseElement(object):
-
     def __init__(self, by, locator):
         self._by = by
         self._locator = locator
 
     def _find_element(self):
+        logger.debug('_finding_element: {}  {}'.format(self._by, self._locator))
         try:
             return WebDriverWait(self.driver, DefaultTimeouts.LARGE_TIMEOUT).until(ec.presence_of_element_located((self._by, self._locator)))
         except Exception:

@@ -25,12 +25,27 @@ class Chrome(BrowserDriver):
         self.add_option("--dns-prefetch-disable")
         if self._headless:
             self.add_option("--headless")
+        if self.driver_capabilities and 'viewport' in self.driver_capabilities:
+            # check for known list of devices and set appropriate device name.
+
+            # match found
+            # use this to consume the known device name
+            # mobile_emulation = {"deviceName" = > "Nexus 5"}
+            # self.add_experimental_option("mobileEmulation", mobile_emulation)
+
+            # No match found
+            # if no name is returned then set width x height
+
+            pass
 
     def _set_options(self):
         self._create_default_chrome_options()
 
     def add_option(self, option):
         self._options.add_argument(option)
+
+    def add_experimental_option(self, option):
+        self._options.add_experimental_option(option)
 
     def add_extension(self, extension):
         self._options.add_extension(extension)

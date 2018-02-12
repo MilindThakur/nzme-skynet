@@ -46,6 +46,5 @@ def setup_logging(filename):
 
 
 def log(log_entry):
-    print log_entry
     if len(logging.root.handlers) > 1:
         logging.info(log_entry)

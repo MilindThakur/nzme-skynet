@@ -1,13 +1,17 @@
 # coding=utf-8
 from distutils.util import strtobool
+from nzme_skynet.core.controls.baseelement import BaseElement
 
-from nzme_skynet.core.controls.clickable import Clickable
 
-
-class MElement(Clickable):
+class MElement(BaseElement):
 
     def __init__(self, by, locator):
         super(MElement, self).__init__(by, locator)
+
+    def click(self):
+        self.is_ready_to_interact()
+        # Highlight here, This needs to be implemented for mobile
+        self._find_element().click()
 
     @property
     def text(self):

@@ -8,11 +8,13 @@ Ref: https://github.com/oleg-toporkov/python-bdd-selenium.git
 
 import logging
 import re
-from log import Logger
+from nzme_skynet.core.utils.log import Logger
 from setupparser import Config
+
 
 from nzme_skynet.core.driver.driverregistry import DriverRegistry
 from nzme_skynet.core.driver.enums.drivertypes import DriverTypes
+logger = logging.getLogger(__name__)
 
 
 def before_all(context):
@@ -58,7 +60,6 @@ def before_scenario(context, scenario):
     :param context: behave.runner.Context
     :param scenario: behave.model.Scenario
     """
-    logger = logging.getLogger(__name__)
     Logger.create_test_folder(scenario.name)
 
     context.test_name = scenario.name
@@ -76,6 +77,7 @@ def before_scenario(context, scenario):
 
     tags = str(context.scenario.tags)
     try:
+        logger.debug("Building driver..")
         if 'api' not in tags:
             if 'android' in tags or 'ios' in tags:
                 # Mobile tests
@@ -99,6 +101,9 @@ def before_scenario(context, scenario):
                     context.driver = DriverRegistry.register_driver(
                         DriverTypes.IOS,
                         driver_options=Config.IOS_APP_CAPABILITIES)
+                else:
+                    logger.exception("Only supports tags android-app, android-browser, ios-app, ios-browser")
+                    raise Exception("Only supports tags android-app, android-browser, ios-app, ios-browser")
             else:
                 # Desktop browser tests
                 # Add Feature and Scenario name for grouping Zalenium Test
@@ -114,6 +119,7 @@ def before_scenario(context, scenario):
                     grid_url=context.config.userdata.get('selenium_grid_hub', Config.ENV_OPTIONS['selenium_grid_hub']))
                 context.driver.baseurl = context.config.userdata.get("testurl", Config.ENV_OPTIONS['testurl'])
                 context.driver.goto_url(context.driver.baseurl, absolute=True)
+                logger.debug("Built driver successfully")
     except Exception as e:
         logger.exception(e)
         raise
@@ -127,8 +133,6 @@ def after_scenario(context, scenario):
     :param context: behave.runner.Context
     :param scenario: behave.model.Scenario
     """
-    logger = logging.getLogger(__name__)
-
     if context.driver is not None:
 
         if scenario.status == 'failed':
@@ -148,7 +152,7 @@ def after_scenario(context, scenario):
                     })
                 except Exception:
                     logger.error('Failed to set failed cookie for scenario in Zalenium')
-                    raise
+                    pass
 
         # https://github.com/zalando/zalenium/blob/master/docs/usage_examples.md#marking-the-test-as-passed-or-failed
         if scenario.status == 'passed' and context.is_zalenium:
@@ -159,7 +163,7 @@ def after_scenario(context, scenario):
                 })
             except Exception:
                 logger.error('Failed to set passed cookie for scenario in Zalenium')
-                raise
+                pass
 
     if context.driver:
         try:
@@ -179,7 +183,6 @@ def before_step(context, step):
     :param step: behave.model.Step
 
     """
-    logger = logging.getLogger(__name__)
     if context.driver is not None and context.config.userdata.getbool('zalenium', Config.ENV_OPTIONS['zalenium']):
         try:
             context.driver.add_cookie({
@@ -188,7 +191,7 @@ def before_step(context, step):
             })
         except Exception:
             logger.error('Failed to set cookie for test step in Zalenium')
-            raise
+            pass
 
 
 def after_step(context, step):
@@ -197,7 +200,6 @@ def after_step(context, step):
     :param context: behave.runner.Context
     :param step: behave.model.Step
     """
-    logger = logging.getLogger(__name__)
     step_name = re.sub('[^A-Za-z0-9]+', '_', step.name)
 
     # TODO: Create screenshot filename
@@ -214,7 +216,6 @@ def after_step(context, step):
             context.picture_num += 1
         except Exception:
             logger.error('Failed to take screenshot to: {}'.format(Config.LOG))
-            logger.error('Screenshot name: {}'.format(step_name))
             raise
 
     # Add stacktrace to allure reporting on failure

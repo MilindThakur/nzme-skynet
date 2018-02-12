@@ -24,3 +24,7 @@ class AndroidAppDriver(MAppDriver):
         if not self._desired_cap['deviceName']:
             # Run tests on Android emulator by default
             self._desired_cap['deviceName'] = 'Android Emulator'
+
+
+    def take_screenshot_current_window(self, filename):
+        self.webdriver.get_screenshot_as_file(filename)

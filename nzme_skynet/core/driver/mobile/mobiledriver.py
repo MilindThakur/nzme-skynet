@@ -12,3 +12,7 @@ class MobileDriver(BaseDriver):
 
     def scroll(self):
         raise NotImplementedError
+
+    @property
+    def page_source(self):
+        return self.webdriver.page_source
