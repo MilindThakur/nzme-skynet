@@ -25,6 +25,8 @@ class Chrome(BrowserDriver):
         self.add_option("--dns-prefetch-disable")
         if self._headless:
             self.add_option("--headless")
+
+        # TODO - Implement this
         if self.driver_capabilities and 'viewport' in self.driver_capabilities:
             # check for known list of devices and set appropriate device name.
 

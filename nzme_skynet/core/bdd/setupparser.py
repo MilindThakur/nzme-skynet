@@ -45,7 +45,6 @@ def create_ios_app_capabilities(config):
                             'deviceName': config.get('IOS', 'deviceName'),
                             'app': config.get('IOS', 'app'),
                             'bundleId': config.get('IOS', 'bundleId'),
-                            'appActivity': config.get('IOS', 'appActivity')
                             }
     return desired_capabilities
 

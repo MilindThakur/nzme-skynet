@@ -17,7 +17,7 @@ class MBrowserDriver(MobileDriver, BrowserDriver):
         self._driver = WebDriver(command_executor=self._remote_url, desired_capabilities=self._desired_cap)
 
     def _set_default_capabilities(self):
-        self._create_desired_capabilities()
+        # self._create_desired_capabilities()
         self._desired_cap['fullReset'] = 'True'
 
     def _create_desired_capabilities(self):
