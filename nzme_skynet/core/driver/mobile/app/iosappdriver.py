@@ -1,8 +1,9 @@
 # coding=utf-8
 from nzme_skynet.core.driver.mobile.app.mappdriver import MAppDriver
 from appium.webdriver.webdriver import WebDriver
-import  logging
+import logging
 logger = logging.getLogger(__name__)
+
 
 class IOSAppDriver(MAppDriver):
     def __init__(self, desired_capabilities, remote_url):
@@ -46,3 +47,14 @@ class IOSAppDriver(MAppDriver):
     def webdriver(self):
         # type: () -> WebDriver
         return self._driver
+
+    def accept_location_popup(self):
+        WebDriverWait(self._driver, 5).until(EC.alert_is_present(),
+                                        'Timed out waiting for Location Services ' +
+                                        'confirmation popup to appear.')
+        try:
+            logger.debug("Attempting to accept Location Popup")
+            alert = self._driver.switch_to_alert()
+            alert.accept()
+        except Exception as e:
+            logger.debug("Failed to accept alert: {}".format(e.message))

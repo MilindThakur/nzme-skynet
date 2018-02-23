@@ -1,11 +1,26 @@
 # coding=utf-8
 from nzme_skynet.core.driver.mobile.app.mappdriver import MAppDriver
+from appium.webdriver.webdriver import WebDriver
+import logging
+logger = logging.getLogger(__name__)
 
 
 class AndroidAppDriver(MAppDriver):
+    def __init__(self, desired_capabilities, remote_url):
+        self._desired_cap = desired_capabilities
+        self._driver = None
+        self._remote_url = remote_url
 
-    def __init__(self, desired_capabilities, remote_url='http://127.0.0.1:4444/wd/hub'):
-        super(AndroidAppDriver, self).__init__(desired_capabilities, remote_url)
+    def init(self):
+        self._create_driver()
+
+    def _create_driver(self):
+        logger.debug("Creating iOS App driver")
+        self._set_default_capabilities()
+        self._driver = WebDriver(command_executor=self._remote_url, desired_capabilities=self._desired_cap)
+
+    def _set_default_capabilities(self):
+        self._create_desired_capabilities()
 
     def _create_desired_capabilities(self):
         if not self._desired_cap:
@@ -25,6 +40,8 @@ class AndroidAppDriver(MAppDriver):
             # Run tests on Android emulator by default
             self._desired_cap['deviceName'] = 'Android Emulator'
 
+    @property
+    def webdriver(self):
+        # type: () -> WebDriver
+        return self._driver
 
-    def take_screenshot_current_window(self, filename):
-        self.webdriver.get_screenshot_as_file(filename)

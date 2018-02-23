@@ -6,6 +6,7 @@ from selenium.webdriver.support import expected_conditions as EC
 import logging
 logger = logging.getLogger(__name__)
 
+
 class MAppDriver(MobileDriver):
 
     def __init__(self, desired_capabilities, remote_url='http://127.0.0.1:4444/wd/hub'):
@@ -15,15 +16,7 @@ class MAppDriver(MobileDriver):
 
 
     def accept_location_popup(self):
-        WebDriverWait(self._driver, 5).until(EC.alert_is_present(),
-                                        'Timed out waiting for Location Services ' +
-                                        'confirmation popup to appear.')
-        try:
-            logger.debug("Attempting to accept Location Popup")
-            alert = self._driver.switch_to_alert()
-            alert.accept()
-        except Exception as e:
-            logger.debug("Failed to accept alert: {}".format(e.message))
+        raise NotImplementedError
 
     def close_app(self):
         self.webdriver.close_app()
