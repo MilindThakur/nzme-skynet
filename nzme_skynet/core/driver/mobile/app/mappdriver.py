@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
 from nzme_skynet.core.driver.mobile.mobiledriver import MobileDriver
-from appium.webdriver.webdriver import WebDriver
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 import logging
 logger = logging.getLogger(__name__)
 
@@ -13,7 +10,6 @@ class MAppDriver(MobileDriver):
         self._desired_cap = desired_capabilities
         self._remote_url = remote_url
         self._driver = None
-
 
     def accept_location_popup(self):
         raise NotImplementedError

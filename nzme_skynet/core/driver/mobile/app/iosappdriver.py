@@ -1,6 +1,8 @@
 # coding=utf-8
 from nzme_skynet.core.driver.mobile.app.mappdriver import MAppDriver
 from appium.webdriver.webdriver import WebDriver
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 import logging
 logger = logging.getLogger(__name__)
 
