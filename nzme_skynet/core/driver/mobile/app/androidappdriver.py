@@ -43,4 +43,3 @@ class AndroidAppDriver(MAppDriver):
     def webdriver(self):
         # type: () -> WebDriver
         return self._driver
-
