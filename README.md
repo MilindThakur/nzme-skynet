@@ -194,6 +194,7 @@ Specifying a single one of these tag's either in command line or debug params. I
 
 # Change Log
 ```bash
+0.3.11  Add support iOS and Android mobile app testing
 0.3.10  Better logging for behave tests
 0.3.9   Upgrade selenium to 3.8.1
 0.3.8   Turn element highlighting using a config flag
