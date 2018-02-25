@@ -75,7 +75,7 @@ def before_scenario(context, scenario):
             logger.error('Failed to stop browser instance')
             raise
 
-    tags = str(context.scenario.tags)
+    tags = str(context.config.tags)
     try:
         logger.debug("Building driver..")
         if 'api' not in tags:
@@ -86,21 +86,25 @@ def before_scenario(context, scenario):
                         DriverTypes.ANDROIDWEB,
                         driver_options=Config.ANDROID_BROWSER_CAPABILITIES,
                         mbrowsername=context.config.userdata.get('androidBrowserName',
-                                                                 Config.ANDROID_BROWSER_CAPABILITIES['browserName']))
+                                                                 Config.ANDROID_BROWSER_CAPABILITIES['browserName']),
+                        grid_url=Config.ENV_OPTIONS['selenium_grid_hub'])
                 elif 'ios-browser' in tags:
                     context.driver = DriverRegistry.register_driver(
                         DriverTypes.IOSWEB,
                         driver_options=Config.IOS_BROWSER_CAPABILITIES,
                         mbrowsername=context.config.userdata.get('iosBrowserName',
-                                                                 Config.IOS_BROWSER_CAPABILITIES['browserName']))
+                                                                 Config.IOS_BROWSER_CAPABILITIES['browserName']),
+                        grid_url=Config.ENV_OPTIONS['selenium_grid_hub'])
                 elif 'android-app' in tags:
                     context.driver = DriverRegistry.register_driver(
                         DriverTypes.ANDROID,
-                        driver_options=Config.ANDROID_APP_CAPABILITIES)
+                        driver_options=Config.ANDROID_APP_CAPABILITIES,
+                        grid_url=Config.ENV_OPTIONS['selenium_grid_hub'])
                 elif 'ios-app' in tags:
                     context.driver = DriverRegistry.register_driver(
                         DriverTypes.IOS,
-                        driver_options=Config.IOS_APP_CAPABILITIES)
+                        driver_options=Config.IOS_APP_CAPABILITIES,
+                        grid_url=Config.ENV_OPTIONS['selenium_grid_hub'])
                 else:
                     logger.exception("Only supports tags android-app, android-browser, ios-app, ios-browser")
                     raise Exception("Only supports tags android-app, android-browser, ios-app, ios-browser")

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from nzme_skynet.core.driver.mobile.mobiledriver import MobileDriver
-from appium.webdriver.webdriver import WebDriver
+import logging
+logger = logging.getLogger(__name__)
 
 
 class MAppDriver(MobileDriver):
@@ -10,11 +11,11 @@ class MAppDriver(MobileDriver):
         self._remote_url = remote_url
         self._driver = None
 
+    def accept_location_popup(self):
+        raise NotImplementedError
+
     def close_app(self):
         self.webdriver.close_app()
-
-    def is_app_installed(self):
-        return self.webdriver.is_app_installed(self.desired_capabilities['appPackage'])
 
     def _create_desired_capabilities(self):
         raise NotImplementedError
@@ -30,21 +31,14 @@ class MAppDriver(MobileDriver):
     def current_running_activity(self):
         return self.webdriver.current_activity
 
-    def wait_for_android_activity(self, activity_name, timeout):
-        self.webdriver.wait_activity(activity=activity_name, timeout=timeout)
-
     def init(self):
-        self._create_driver()
+        raise NotImplementedError
 
     def _create_driver(self):
-        self._set_default_capabilities()
-        self._driver = WebDriver(command_executor=self._remote_url, desired_capabilities=self._desired_cap)
+        raise NotImplementedError
 
     def _set_default_capabilities(self):
-        self._create_desired_capabilities()
-        self._desired_cap['fullReset'] = 'True'
+        raise NotImplementedError
 
-    @property
-    def webdriver(self):
-        # type: () -> WebDriver
-        return self._driver
+    def take_screenshot_current_window(self, filename):
+        self.webdriver.get_screenshot_as_file(filename)

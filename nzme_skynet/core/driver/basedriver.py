@@ -108,9 +108,6 @@ class BaseDriver(object):
 
     # Device App Specific Interfaces
 
-    def is_app_installed(self):
-        raise NotImplementedError
-
     def close_app(self):
         raise NotImplementedError
 

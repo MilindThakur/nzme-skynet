@@ -178,6 +178,19 @@ E.g. to run 4 scenarios in parallel based on tags and override test configuratio
 $ nzme-behave-parallel -p 4 -t prod -D local=false -D type=firefox
 ```
 
+### **Supported Tags for use with Behave**
+We use Behave as our BDD Runner, while skynet does not require you to use it, it does have some extra support built in.
+We supported the following tags to specify what platform you want for the given test.
+Specifying a single one of these tag's either in command line or debug params. If no platform tag is specified, then the default platform of web is used.
+```
+@api
+@android-app
+@android-browser
+@ios-app
+@ios-browser
+   
+```
+
 
 # Change Log
 ```bash

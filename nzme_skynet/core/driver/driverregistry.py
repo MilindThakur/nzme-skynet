@@ -49,7 +49,7 @@ class DriverRegistry(object):
                 new_driver = DriverFactory.build_mobile_web_driver(driver_type, driver_options,
                                                                    browsername=mbrowsername)
             elif driver_type in MOBILE_APP:
-                new_driver = DriverFactory.build_mobile_app_driver(driver_type, driver_options)
+                new_driver = DriverFactory.build_mobile_app_driver(driver_type, driver_options,grid_url)
             register_driver(new_driver)
             return get_driver()
         except Exception as e:
