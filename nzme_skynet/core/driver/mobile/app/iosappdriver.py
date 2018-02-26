@@ -53,12 +53,12 @@ class IOSAppDriver(MAppDriver):
         return self._driver
 
     def accept_location_popup(self, secondstowait=DefaultTimeouts.DEFAULT_TIMEOUT):
-        WebDriverWait(self._driver, secondstowait).until(EC.alert_is_present(),
+        logger.debug("Attempting to accept Location Popup")
+        try:
+            alert = WebDriverWait(self._driver, secondstowait).until(EC.alert_is_present(),
                                         'Timed out waiting for Location Services ' +
                                         'confirmation popup to appear.')
-        try:
-            logger.debug("Attempting to accept Location Popup")
-            alert = self._driver.switch_to_alert()
             alert.accept()
         except Exception as e:
             logger.debug("Failed to accept alert: {}".format(e.message))
+            raise
