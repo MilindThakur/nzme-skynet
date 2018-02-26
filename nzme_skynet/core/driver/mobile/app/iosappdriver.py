@@ -50,8 +50,8 @@ class IOSAppDriver(MAppDriver):
         # type: () -> WebDriver
         return self._driver
 
-    def accept_location_popup(self):
-        WebDriverWait(self._driver, 5).until(EC.alert_is_present(),
+    def accept_location_popup(self, secondstowait=5):
+        WebDriverWait(self._driver, secondstowait).until(EC.alert_is_present(),
                                         'Timed out waiting for Location Services ' +
                                         'confirmation popup to appear.')
         try:
