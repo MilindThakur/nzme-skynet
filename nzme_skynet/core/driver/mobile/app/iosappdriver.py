@@ -1,4 +1,6 @@
 # coding=utf-8
+from nzme_skynet.core.actions.enums.timeouts import DefaultTimeouts
+
 from nzme_skynet.core.driver.mobile.app.mappdriver import MAppDriver
 from appium.webdriver.webdriver import WebDriver
 from selenium.webdriver.support.ui import WebDriverWait
@@ -50,13 +52,13 @@ class IOSAppDriver(MAppDriver):
         # type: () -> WebDriver
         return self._driver
 
-    def accept_location_popup(self):
-        WebDriverWait(self._driver, 5).until(EC.alert_is_present(),
+    def accept_location_popup(self, secondstowait=DefaultTimeouts.DEFAULT_TIMEOUT):
+        logger.debug("Attempting to accept Location Popup")
+        try:
+            alert = WebDriverWait(self._driver, secondstowait).until(EC.alert_is_present(),
                                         'Timed out waiting for Location Services ' +
                                         'confirmation popup to appear.')
-        try:
-            logger.debug("Attempting to accept Location Popup")
-            alert = self._driver.switch_to_alert()
             alert.accept()
         except Exception as e:
             logger.debug("Failed to accept alert: {}".format(e.message))
+            raise
