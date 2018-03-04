@@ -1,6 +1,5 @@
 # coding=utf-8
-from nzme_skynet.core.actions.enums.timeouts import DefaultTimeouts
-
+from nzme_skynet.core.controls.enums.timeouts import DefaultTimeouts
 from nzme_skynet.core.driver.mobile.app.mappdriver import MAppDriver
 from appium.webdriver.webdriver import WebDriver
 from selenium.webdriver.support.ui import WebDriverWait
