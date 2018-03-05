@@ -194,6 +194,7 @@ Specifying a single one of these tag's either in command line or debug params. I
 
 # Change Log
 ```bash
+0.3.15  Remove redundant allure error logging
 0.3.14  Implement behave v1.2.6 API change, update selenium to 3.10.0
 0.3.13  iOS mobile app driver - Corrected bad import path for default timouts 
 0.3.12  iOS mobile app driver - Exposing timeout for accepting location services.
