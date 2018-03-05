@@ -10,6 +10,7 @@ import logging
 import re
 from nzme_skynet.core.utils.log import Logger
 from setupparser import Config
+from behave.model_core import Status
 
 
 from nzme_skynet.core.driver.driverregistry import DriverRegistry
@@ -139,7 +140,7 @@ def after_scenario(context, scenario):
     """
     if context.driver is not None:
 
-        if scenario.status == 'failed':
+        if scenario.status == Status.failed:
             _screenshot = '{}/{}_fail.png'.format(Config.LOG, scenario.name.replace(' ', '_'))
             # Take screen shot on a failure
             try:
@@ -159,7 +160,7 @@ def after_scenario(context, scenario):
                     pass
 
         # https://github.com/zalando/zalenium/blob/master/docs/usage_examples.md#marking-the-test-as-passed-or-failed
-        if scenario.status == 'passed' and context.is_zalenium:
+        if scenario.status == Status.passed and context.is_zalenium:
             try:
                 context.driver.add_cookie({
                     'name': 'zaleniumTestPassed',
@@ -177,7 +178,7 @@ def after_scenario(context, scenario):
             logger.error('Failed to stop driver instance')
             raise
 
-    logger.info('End of test: {}. Status {} !!!\n\n\n'.format(scenario.name, scenario.status.upper()))
+    logger.info('End of test: {}. Status {} !!!\n\n\n'.format(scenario.name, scenario.status.name.upper()))
 
 
 def before_step(context, step):
@@ -213,7 +214,7 @@ def after_step(context, step):
                                               step_name)
 
     # Take screen shot
-    # if step.status.lower == 'failed' or step.status.lower == 'skipped':
+    # if step.status == Status.failed or step.status == Status.skipped:
     if context.driver is not None:
         try:
             context.driver.take_screenshot_current_window(_screenshot)
@@ -223,7 +224,7 @@ def after_step(context, step):
             raise
 
     # Add stacktrace to allure reporting on failure
-    if step.status.lower == 'failed':
+    if step.status == Status.failed:
         context.last_traceback = step.error_message
         try:
             context.last_error_message = step.error_message.split('ERROR:')[1]
