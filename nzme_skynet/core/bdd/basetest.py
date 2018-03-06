@@ -222,11 +222,3 @@ def after_step(context, step):
         except Exception:
             logger.error('Failed to take screenshot to: {}'.format(Config.LOG))
             raise
-
-    # Add stacktrace to allure reporting on failure
-    if step.status == Status.failed:
-        context.last_traceback = step.error_message
-        try:
-            context.last_error_message = step.error_message.split('ERROR:')[1]
-        except IndexError:
-            context.last_error_message = step.error_message
