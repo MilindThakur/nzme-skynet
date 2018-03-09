@@ -81,20 +81,22 @@ def main():
         j = json.loads(out.decode())
     except ValueError:
         j = []
+    # Identify all the feature files that have the tags
     features = [e['location'].replace(r'features/', '')[:-2] for e in j]
 
-    # features dictionary with scenarios
-    features_scenarios = [[e['location'].replace(r'features/', '')[:-2] + delimiter + i['name']
-                                for i in e['elements']
-                                    if i['keyword'].upper() in ["scenario".upper(), "scenario outline".upper()]]
-                            for e in j]
-
-    features_and_scenarios = []
-    for elto in features_scenarios:
-        features_and_scenarios = features_and_scenarios + elto
+    features_scenarios = []
+    for scenario_elements in j:
+        # Check if a feature file is reported with no matching scenario, if so skip it
+        if 'elements' in scenario_elements:
+            for i in scenario_elements['elements']:
+                if i['keyword'].upper() in ["scenario".upper(), "scenario outline".upper()]:
+                    # Build a list of filepaths for valid scenarios
+                    features_scenarios.append(scenario_elements['location'].replace(r'features/', '')[:-2] + delimiter
+                                              + i['name'])
 
     logger.info("Found {} features".format(len(features)))
-    logger.info("Found {} scenarios".format(len(features_and_scenarios)))
+    logger.info("Found {} scenarios".format(len(features_scenarios)))
+
     if args.processes > len(features):
         logger.info("You have defined {} and will execute only necessary {} parallel process ".format(args.processes,
                                                                                         len(features)))
@@ -105,7 +107,7 @@ def main():
     logger.info("--------------------------------------------------------------------------")
     output = 0
     # https://stackoverflow.com/questions/1408356/keyboard-interrupts-with-pythons-multiprocessing-p
-    for feature, scenario, status in pool.map_async(run_feature, features_and_scenarios).get(9999):
+    for feature, scenario, status in pool.map_async(run_feature, features_scenarios).get(9999):
         if status != 'OK':
             if output == 0:
                 if status == "FAILED":
