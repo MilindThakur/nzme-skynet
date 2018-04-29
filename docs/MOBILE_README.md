@@ -63,7 +63,7 @@ iOS is a special case because Apple made it so. This can only be done on a mac.
     appium-doctor
     ```
 
-* Install Appium Doctor
+* Install Appium
     ```
     npm install -g appium
     ```
@@ -77,10 +77,7 @@ iOS is a special case because Apple made it so. This can only be done on a mac.
     --session-override is to override the current test session with a new one, Usefull during debug if you stop your test mid run.
     ```
 
-
-
 ### **Android - Linux install**
-iOS is a special case because Apple made it so. This can only be done on a mac.
 
 * Install java
     ```
@@ -118,7 +115,7 @@ iOS is a special case because Apple made it so. This can only be done on a mac.
     appium-doctor
     ```
 
-* Install Appium Doctor
+* Install Appium
     ```
     npm install -g appium
     ```
@@ -131,9 +128,19 @@ iOS is a special case because Apple made it so. This can only be done on a mac.
     -p is to specify the port
     --session-override is to override the current test session with a new one, Usefull during debug if you stop your test mid run.
     ```
+    
+### How to run tests on Android and iOS devices
 
+Start the appium server as per the command above.
+Edit the testsetup.ini file, present at the root of the project, such that the selenium server is (set by default)
+       
+       selenium_grid_hub=http://localhost:4444/wd/hub
+       
+Tag the tests with:
 
-
+        @android-app
+        @android-browser
+        @ios-app
 
 
 ### **Install scripts (Deprecated but can be used at your own risk. Original made for a fresh machine with nothing pre installed)**
