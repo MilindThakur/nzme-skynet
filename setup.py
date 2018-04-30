@@ -7,8 +7,6 @@ import os
 import codecs
 import re
 
-from pip.download import PipSession
-from pip.req import parse_requirements
 from setuptools import setup, find_packages
 
 
@@ -28,10 +26,6 @@ def find_version(*file_paths):
     if version_match:
         return version_match.group(1)
     raise RuntimeError("Unable to find version string.")
-
-
-def requirements():
-    return [str(ir.req) for ir in parse_requirements('requirements.txt', session=PipSession()) if ir.match_markers()]
 
 
 setup(
@@ -54,7 +48,18 @@ setup(
     packages=find_packages(exclude=["test"]),
     include_package_data=True,
     test_suite='nzme_skynet.test',
-    install_requires=requirements(),
+    install_requires=[
+        'behave',
+        'pytest',
+        'pytest-xdist',
+        'requests',
+        'selenium==3.10.0',
+        'faker',
+        'browsermob-proxy',
+        'haralyzer',
+        'Appium-Python-Client',
+        'faker'
+    ],
     classifiers=[
         "Development Status :: ",
         "Environment :: Web/mobile Environment",
