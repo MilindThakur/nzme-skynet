@@ -1,6 +1,7 @@
 # **Skynet - Test Automation Library @ NZME - Changelog**
 
 ```bash
+0.3.17  Upgrade to selenium 3.11.0
 0.3.16  Fix behave parallel issue. Now handles any tag at any scenario/feature level
 0.3.15  Remove redundant allure error logging
 0.3.14  Implement behave v1.2.6 API change, update selenium to 3.10.0
