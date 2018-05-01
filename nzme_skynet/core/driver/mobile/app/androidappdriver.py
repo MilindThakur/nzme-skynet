@@ -36,6 +36,8 @@ class AndroidAppDriver(MAppDriver):
         if 'deviceName' not in self._desired_cap:
             # Run tests on Android emulator by default
             self._desired_cap['deviceName'] = 'Android Emulator'
+        if 'fullReset' not in self._desired_cap:
+            self._desired_cap['fullReset'] = 'True'
         self._desired_cap['platformName'] = 'Android'
         self._desired_cap['platform'] = 'ANDROID'
 
