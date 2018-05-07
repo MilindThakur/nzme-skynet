@@ -4,8 +4,8 @@ from nzme_skynet.core.driver.mobile.browser.mbrowserdriver import MBrowserDriver
 
 class AndroidBrowserDriver(MBrowserDriver):
 
-    def __init__(self, desired_capabilities, browsername="Chrome", remote_url='http://127.0.0.1:4444/wd/hub'):
-        super(AndroidBrowserDriver, self).__init__(desired_capabilities, browsername, remote_url)
+    def __init__(self, desired_capabilities, remote_url):
+        super(AndroidBrowserDriver, self).__init__(desired_capabilities, remote_url)
 
     def _create_desired_capabilities(self):
         if not self._desired_cap:

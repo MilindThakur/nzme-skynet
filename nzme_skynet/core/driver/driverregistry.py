@@ -23,14 +23,12 @@ class DriverRegistry(object):
     """
 
     @staticmethod
-    def register_driver(driver_type='chrome', driver_options=None, local=True, mbrowsername=DriverTypes.CHROME,
-                        grid_url="http://127.0.0.1:4444/wd/hub"):
+    def register_driver(driver_type='chrome', driver_options=None, local=True, grid_url="http://127.0.0.1:4444/wd/hub"):
         """
         Build and register driver
         :param driver_type: DriverTypes
         :param driver_options: capabilities
         :param local: Local or Selenium Grid/Server
-        :param mbrowsername: mobile browser type, default chrome
         :param grid_url: Selenium grid url
         :return:
         """
@@ -46,10 +44,9 @@ class DriverRegistry(object):
                 else:
                     new_driver = DriverFactory.build_remote_web_driver(driver_type, driver_options, grid_url)
             elif driver_type in MOBILE_WEBBROWSER:
-                new_driver = DriverFactory.build_mobile_web_driver(driver_type, driver_options,
-                                                                   browsername=mbrowsername)
+                new_driver = DriverFactory.build_mobile_web_driver(driver_type, driver_options, grid_url)
             elif driver_type in MOBILE_APP:
-                new_driver = DriverFactory.build_mobile_app_driver(driver_type, driver_options,grid_url)
+                new_driver = DriverFactory.build_mobile_app_driver(driver_type, driver_options, grid_url)
             register_driver(new_driver)
             return get_driver()
         except Exception as e:

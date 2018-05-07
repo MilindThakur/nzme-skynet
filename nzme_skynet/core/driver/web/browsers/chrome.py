@@ -23,6 +23,8 @@ class Chrome(BrowserDriver):
         self.add_option("--disable-notifications")
         self.add_option("-process-per-site")
         self.add_option("--dns-prefetch-disable")
+        # Load pages without Images
+        # self._options.add_experimental_option('prefs', {'profile.managed_default_content_settings.images': 2})
         if self._headless:
             self.add_option("--headless")
 
@@ -45,9 +47,6 @@ class Chrome(BrowserDriver):
 
     def add_option(self, option):
         self._options.add_argument(option)
-
-    def add_experimental_option(self, option):
-        self._options.add_experimental_option(option)
 
     def add_extension(self, extension):
         self._options.add_extension(extension)

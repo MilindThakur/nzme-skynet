@@ -6,9 +6,9 @@ from appium.webdriver.webdriver import WebDriver
 
 class MBrowserDriver(MobileDriver, BrowserDriver):
 
-    def __init__(self, desired_capabilities, browsername="Safari", remote_url='http://127.0.0.1:4444/wd/hub'):
+    def __init__(self, desired_capabilities, remote_url='http://127.0.0.1:4444/wd/hub'):
         self._desired_cap = desired_capabilities
-        self._browser = browsername
+        self._browser = self._desired_cap['browserName']
         self._remote_url = remote_url
         self._driver = None
 

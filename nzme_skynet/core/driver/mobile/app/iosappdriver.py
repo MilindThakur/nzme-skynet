@@ -9,10 +9,6 @@ logger = logging.getLogger(__name__)
 
 
 class IOSAppDriver(MAppDriver):
-    def __init__(self, desired_capabilities, remote_url):
-        self._desired_cap = desired_capabilities
-        self._driver = None
-        self._remote_url = remote_url
 
     def init(self):
         self._create_driver()
@@ -40,11 +36,9 @@ class IOSAppDriver(MAppDriver):
         if 'automation' not in self._desired_cap:
             self._desired_cap['automation'] = 'XCUITest'
         if 'fullReset' not in self._desired_cap:
-            self._desired_cap['fullReset'] = 'True'
+            self._desired_cap['fullReset'] = 'true'
         if 'platformName' not in self._desired_cap:
             self._desired_cap['platformName'] = 'iOS'
-        if 'platform' not in self._desired_cap:
-            self._desired_cap['platform'] = 'iOS'
 
     @property
     def webdriver(self):
