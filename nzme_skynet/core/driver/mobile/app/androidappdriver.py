@@ -35,7 +35,7 @@ class AndroidAppDriver(MAppDriver):
         if 'fullReset' not in self._desired_cap:
             self._desired_cap['fullReset'] = 'true'
         self._desired_cap['platformName'] = 'Android'
-        self._desired_cap['platform'] = 'ANDROID'
+
 
     @property
     def webdriver(self):
