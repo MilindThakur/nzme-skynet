@@ -85,25 +85,21 @@ def before_scenario(context, scenario):
                 if 'android-browser' in tags:
                     context.driver = DriverRegistry.register_driver(
                         DriverTypes.ANDROIDWEB,
-                        # driver_options=Config.ANDROID_BROWSER_CAPABILITIES,
                         driver_options=Config.ANDROID_CAPABILITIES,
                         grid_url=Config.ENV_OPTIONS['selenium_grid_hub'])
                 elif 'ios-browser' in tags:
                     context.driver = DriverRegistry.register_driver(
                         DriverTypes.IOSWEB,
-                        # driver_options=Config.IOS_BROWSER_CAPABILITIES,
                         driver_options=Config.IOS_CAPABILITIES,
                         grid_url=Config.ENV_OPTIONS['selenium_grid_hub'])
                 elif 'android-app' in tags:
                     context.driver = DriverRegistry.register_driver(
                         DriverTypes.ANDROID,
-                        # driver_options=Config.ANDROID_APP_CAPABILITIES,
                         driver_options=Config.ANDROID_CAPABILITIES,
                         grid_url=Config.ENV_OPTIONS['selenium_grid_hub'])
                 elif 'ios-app' in tags:
                     context.driver = DriverRegistry.register_driver(
                         DriverTypes.IOS,
-                        # driver_options=Config.IOS_APP_CAPABILITIES,
                         driver_options=Config.IOS_CAPABILITIES,
                         grid_url=Config.ENV_OPTIONS['selenium_grid_hub'])
                 else:
