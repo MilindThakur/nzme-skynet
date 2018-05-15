@@ -33,8 +33,8 @@ class ApiConnection(object):
     def patch(self, uri, json, headers=None):
         return self._request(uri, "PATCH", json=json, headers=headers)
 
-    def delete(self, uri):
-        return self._request(uri, "DELETE")
+    def delete(self, uri, json=None, headers=None):
+        return self._request(uri, "DELETE", json=json, headers=headers)
 
     def _request(self, uri, method, params=None, json=None, data=None, headers=None, auth=None):
         h = self._create_connection_url()
