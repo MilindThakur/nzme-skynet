@@ -49,7 +49,7 @@ class BaseDriver(object):
 
     @property
     def page_source(self):
-        raise NotImplementedError
+        return self.webdriver.page_source
 
     def maximize_window(self):
         raise NotImplementedError
@@ -109,10 +109,6 @@ class BaseDriver(object):
     # Device App Specific Interfaces
 
     def close_app(self):
-        raise NotImplementedError
-
-    @property
-    def context(self):
         raise NotImplementedError
 
     def reset(self):
