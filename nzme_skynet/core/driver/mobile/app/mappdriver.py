@@ -24,10 +24,6 @@ class MAppDriver(MobileDriver):
     def _create_desired_capabilities(self):
         raise NotImplementedError
 
-    @property
-    def context(self):
-        return self.webdriver.context
-
     def reset(self):
         self.webdriver.reset()
 
