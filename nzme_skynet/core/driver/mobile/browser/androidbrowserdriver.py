@@ -10,13 +10,12 @@ class AndroidBrowserDriver(MBrowserDriver):
     def _create_desired_capabilities(self):
         if not self._desired_cap:
             raise Exception("No capabilities provided to init Appium driver")
-        if not self._desired_cap['platformVersion']:
+        if not self._desired_cap['version']:
             raise Exception("Please provide platformVersion to test app against")
-        if self._browser not in ['Chrome', 'Browser']:
+        if self._browser not in ['chrome', 'Browser']:
             raise Exception("Only supports Chrome and native Browser on Android")
 
-        self._desired_cap['browserName'] = self._browser
-        if "Chrome" in self._desired_cap['browserName']:
+        if "chrome" in self._desired_cap['browserName']:
             # To disable the welcome screen on launching chrome
             self.add_chrome_options('--no-first-run')
         self._desired_cap['platformName'] = 'Android'
