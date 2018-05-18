@@ -13,15 +13,11 @@ class MBrowserDriver(MobileDriver, BrowserDriver):
         self._driver = None
 
     def _create_driver(self):
-        self._set_default_capabilities()
+        self._create_desired_capabilities()
         self._driver = WebDriver(command_executor=self._remote_url, desired_capabilities=self._desired_cap)
 
-    def _set_default_capabilities(self):
-        # self._create_desired_capabilities()
-        self._desired_cap['fullReset'] = 'True'
-
     def _create_desired_capabilities(self):
-       raise NotImplementedError
+        raise NotImplementedError
 
     @property
     def webdriver(self):
@@ -29,4 +25,5 @@ class MBrowserDriver(MobileDriver, BrowserDriver):
         return self._driver
 
     def init(self):
-        self._create_driver()
+        if not self._driver:
+            self._create_driver()
