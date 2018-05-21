@@ -51,7 +51,7 @@ class MAppDriver(MobileDriver):
             self.webdriver.switch_to.context(self._cache_context)
 
     @property
-    def current_running_activity(self):
+    def current_activity(self):
         return self.webdriver.current_activity
 
     def init(self):
