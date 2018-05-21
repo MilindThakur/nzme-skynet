@@ -1,5 +1,4 @@
 # coding=utf-8
-import time
 import unittest
 
 from appium.webdriver.common.mobileby import MobileBy
@@ -10,10 +9,10 @@ from nzme_skynet.core.driver.driverregistry import DriverRegistry
 from nzme_skynet.core.driver.enums.drivertypes import DriverTypes
 from nzme_skynet.core.driver.mobile.app.androidappdriver import AndroidAppDriver
 
-DOCKER_SELENIUM_URL = "http://localhost:4723/wd/hub"  # Appium server
+DOCKER_SELENIUM_URL = "http://localhost:4444/wd/hub"  # Appium server
 
 
-class MobileActionsTestCase(unittest.TestCase):
+class MobileAppActionsTestCase(unittest.TestCase):
 
     # app path for docker is /root/tmp/app-debug.apk
     # if running locally target ./test/mobile/testapps/app-debug.apk
@@ -23,7 +22,7 @@ class MobileActionsTestCase(unittest.TestCase):
             'platformName': 'Android',
             'platformVersion': '7.1.1',
             'platform': 'Android',
-            'deviceName': 'samsung_galaxy_s6_7.1.1',
+            'deviceName': 'nexus_5_7.1.1',
             'app': '/root/tmp/app-debug.apk',
             "fullReset": "true",
             "appPackage": "nzme.test.skynettestapp",
@@ -40,7 +39,7 @@ class MobileActionsTestCase(unittest.TestCase):
         assert isinstance(self.driver.webdriver, AppiumDriver)
         self.assertIsNotNone(self.driver.webdriver.session_id)
         self.assertEqual(self.driver.context, 'NATIVE_APP')
-        self.assertEqual(self.driver.webdriver.desired_capabilities['platform'], 'Android')
+        self.assertEqual(self.driver.webdriver.desired_capabilities['platform'].lower(), 'android')
         self.assertIsNotNone(self.driver.webdriver.desired_capabilities['deviceUDID'])
         self.assertEqual(self.driver.current_activity, '.MainActivity')
         self.assertEqual(self.driver.webdriver.current_package, 'nzme.test.skynettestapp')

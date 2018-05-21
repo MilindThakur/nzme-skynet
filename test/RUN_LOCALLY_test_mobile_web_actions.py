@@ -11,10 +11,10 @@ from nzme_skynet.core.driver.enums.drivertypes import DriverTypes
 from nzme_skynet.core.driver.mobile.browser.androidbrowserdriver import AndroidBrowserDriver
 
 TEST_URL = "https://www.google.co.nz"
-DOCKER_SELENIUM_URL = "http://localhost:4723/wd/hub"  # Appium server
+DOCKER_SELENIUM_URL = "http://localhost:4444/wd/hub"  # Appium server
 
 
-class MobileActionsTestCase(unittest.TestCase):
+class MobileWebActionsTestCase(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
