@@ -1,64 +1,56 @@
 # coding=utf-8
-import time
 import unittest
 
 from appium.webdriver.common.mobileby import MobileBy
+from appium.webdriver.webdriver import WebDriver as AppiumDriver
 
-from nzme_skynet.core.driver import builder
+from nzme_skynet.core.controls.melement import MElement
+from nzme_skynet.core.driver.driverregistry import DriverRegistry
+from nzme_skynet.core.driver.enums.drivertypes import DriverTypes
+from nzme_skynet.core.driver.mobile.app.androidappdriver import AndroidAppDriver
+
+DOCKER_SELENIUM_URL = "http://localhost:4444/wd/hub"  # Appium server
 
 
-class MobileActionsTestCase(unittest.TestCase):
+class MobileAppActionsTestCase(unittest.TestCase):
 
     # app path for docker is /root/tmp/app-debug.apk
     # if running locally target ./test/mobile/testapps/app-debug.apk
     @classmethod
     def setUpClass(cls):
-        time.sleep(20)
-        cls.cap = {"deviceName": "Android Emulator",
-               "selenium_grid_hub": "http://localhost:4444/wd/hub",
-               "platform": "android",
-               "platformName": "Android",
-               "app": "/root/tmp/app-debug.apk",
-               "fullReset": "true",
-               "appPackage": "nzme.test.skynettestapp",
-               "appActivity": ".MainActivity"}
-        cls.app = builder.build_appium_driver(cls.cap)
+        cap = {
+            'platformName': 'Android',
+            'platformVersion': '7.1.1',
+            'platform': 'Android',
+            'deviceName': 'nexus_5_7.1.1',
+            'app': '/root/tmp/app-debug.apk',
+            "fullReset": "true",
+            "appPackage": "nzme.test.skynettestapp",
+            "appActivity": ".MainActivity"
+        }
+
+        cls.driver = DriverRegistry.register_driver(
+            DriverTypes.ANDROID,
+            driver_options=cap,
+            grid_url=DOCKER_SELENIUM_URL)
 
     def test_driver_type(self):
-        self.assertEqual(str(self.app.get_driver_type()), self.cap['platform'])
-
-    def test_driver_can_get_session(self):
-        assert self.app.get_driver().session_id is not None
-
-    def test_can_install_app(self):
-        self.assertTrue(self.app.is_app_installed())
-
-    def can_get_element(self):
-        self.assertNotEquals(None, self.app.get_actions().mobelement(MobileBy.ID, "navigation_dashboard"))
-
-    def test_can_tap_on_element(self):
-        initial_page_source = self.app.get_page_source()
-        self.app.get_actions().mobelement(MobileBy.ID, "navigation_dashboard").click()
-        self.assertNotEquals(initial_page_source, self.app.get_page_source(), "Page source did not change after "
-                                                                              "element was clicked")
-
-    def test_can_get_attributes(self):
-        checkbox = self.app.get_actions().mobelement(MobileBy.ID, "checkBox_test")
-        self.assertFalse(checkbox.is_checked())
+        assert isinstance(self.driver, AndroidAppDriver)
+        assert isinstance(self.driver.webdriver, AppiumDriver)
+        self.assertIsNotNone(self.driver.webdriver.session_id)
+        self.assertEqual(self.driver.context, 'NATIVE_APP')
+        self.assertEqual(self.driver.webdriver.desired_capabilities['platform'].lower(), 'android')
+        self.assertIsNotNone(self.driver.webdriver.desired_capabilities['deviceUDID'])
+        self.assertEqual(self.driver.current_activity, '.MainActivity')
+        self.assertEqual(self.driver.webdriver.current_package, 'nzme.test.skynettestapp')
 
     def test_action_textinput(self):
-        txt_input = self.app.get_actions().mobelement(MobileBy.ID, "entertext_name_test")
-        txt_input.set_text("")
-        self.assertEqual(txt_input.get_text(), "")
-        txt_input.set_value("something")
-        self.assertEqual(txt_input.get_text(), "something")
-
-    def test_action_button(self):
-        submit_btn = self.app.get_actions().mobelement(MobileBy.ID, "toggleButton_test")
-        self.assertEqual(submit_btn.get_text().lower(), "off")
+        name_input = MElement(MobileBy.ID, "entertext_name_test")
+        name_input.set_text("something")
+        self.assertEqual(name_input.text, "something")
 
     def test_action_checkbox(self):
-        agree_chk = self.app.get_actions().mobelement(MobileBy.ID, "checkBox_test")
+        agree_chk = MElement(MobileBy.ID, "checkBox_test")
         self.assertFalse(agree_chk.is_checked())
         agree_chk.click()
         self.assertTrue(agree_chk.is_checked())
@@ -67,7 +59,7 @@ class MobileActionsTestCase(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        cls.app.quit()
+        DriverRegistry.deregister_driver()
 
 
 if __name__ == "__main__":

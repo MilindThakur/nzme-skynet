@@ -1,6 +1,7 @@
 # **Skynet - Test Automation Library @ NZME - Changelog**
 
 ```bash
+0.3.20  Refactor mobile driver creation to accept capabilities from ini 
 0.3.19  Add additional params for delete request
 0.3.18  Add default capability of fullReset to android driver
 0.3.17  Upgrade to selenium 3.11.0

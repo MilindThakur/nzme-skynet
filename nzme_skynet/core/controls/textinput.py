@@ -7,9 +7,6 @@ class TextInput(Text):
     def __init__(self, by, locator):
         super(TextInput, self).__init__(by, locator)
 
-    def focus(self):
-        raise NotImplementedError
-
     def clear(self):
         self._highlight()
         self._find_element().clear()
@@ -20,5 +17,6 @@ class TextInput(Text):
         return self.get_attribute("value")
 
     def set_value(self, value):
+        self.is_currently_visible()
         self.clear()
         self._find_element().send_keys(value)

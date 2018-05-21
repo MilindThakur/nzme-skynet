@@ -50,10 +50,6 @@ class BrowserDriver(BaseDriver):
         return self.webdriver.title
 
     @property
-    def page_source(self):
-        return self.webdriver.page_source
-
-    @property
     def current_url(self):
         return self.webdriver.current_url
 

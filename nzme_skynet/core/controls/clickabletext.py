@@ -16,7 +16,7 @@ class ClickableText(Clickable):
         self._highlight()
         return self._find_element().text
 
-    def currently_has_text(self, text):
+    def has_text(self, text):
         return self.will_have_text(text, time=DefaultTimeouts.SHORT_TIMEOUT)
 
     def will_have_text(self, text, time=DefaultTimeouts.LARGE_TIMEOUT):
@@ -25,9 +25,3 @@ class ClickableText(Clickable):
                                                                                            text))
         except Exception:
             return False
-
-    def contains(self, text):
-        return self.text.contains(text)
-
-    def matches(self, regex):
-        return self.text.matches(regex)

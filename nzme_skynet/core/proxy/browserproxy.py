@@ -62,6 +62,8 @@ class BrowserProxy(object):
         chrome_options.add_argument("--proxy-server={0}".format(self._proxy.proxy))
         chrome_options.add_argument('--ignore-certificate-errors')
         chrome_options.add_argument('--test-type')
+        # Disable loading images
+        chrome_options.add_experimental_option('prefs', {'profile.managed_default_content_settings.images': 2})
         chrome_options.add_argument('--headless')
         self._driver = webdriver.Chrome(chrome_options=chrome_options)
 

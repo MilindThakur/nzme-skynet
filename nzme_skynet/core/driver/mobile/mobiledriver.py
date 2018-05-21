@@ -14,5 +14,6 @@ class MobileDriver(BaseDriver):
         raise NotImplementedError
 
     @property
-    def page_source(self):
-        return self.webdriver.page_source
+    def context(self):
+        return self.webdriver.context
+

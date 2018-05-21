@@ -61,11 +61,11 @@ class DriverFactory(object):
             raise Exception("Failed to initialise mobile app driver")
 
     @staticmethod
-    def build_mobile_web_driver(driver_type, driver_capabilities, browsername, remote_url):
+    def build_mobile_web_driver(driver_type, driver_capabilities, remote_url):
         if driver_type == DriverTypes.IOSWEB:
-            driver = IOSBrowserDriver(desired_capabilities=driver_capabilities, browsername=browsername, remote_url=remote_url)
+            driver = IOSBrowserDriver(desired_capabilities=driver_capabilities, remote_url=remote_url)
         elif driver_type == DriverTypes.ANDROIDWEB:
-            driver = AndroidBrowserDriver(desired_capabilities=driver_capabilities, browsername=browsername, remote_url=remote_url)
+            driver = AndroidBrowserDriver(desired_capabilities=driver_capabilities, remote_url=remote_url)
         else:
             logger.exception("Only supports Android and IOS browser drivers")
             raise Exception("Only supports Android and IOS browser drivers")
