@@ -6,6 +6,12 @@ from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.wait import WebDriverWait
 from nzme_skynet.core.utils import js_wait
 from nzme_skynet.core.controls.enums.timeouts import DefaultTimeouts
+import logging
+from nzme_skynet.core.utils.log import Logger
+
+
+Logger.configure_logging()
+logger = logging.getLogger(__name__)
 
 
 class BrowserDriver(BaseDriver):
@@ -26,6 +32,7 @@ class BrowserDriver(BaseDriver):
             else:
                 self.webdriver.get(self.baseurl+url)
         except TimeoutException:
+            logger.info("Browser timeout, stopping the window load using js..")
             self.webdriver.execute_script('window.stop();')
 
     def _create_driver(self):
