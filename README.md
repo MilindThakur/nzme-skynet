@@ -6,7 +6,7 @@
 * Out of box integration with cloud testing (e.g. Sauce Labs)
 * Plugins to query database, run REST api calls and load tests
 * Support for BDD
-* Support for Mobile app testing, see [Mobile app readme](docs/MOBILE_README.md)
+* Support for Mobile app testing, see [Mobile app readme](docs/howto_mobile_tests.md)
 
 ## **Setup instructions**
 
