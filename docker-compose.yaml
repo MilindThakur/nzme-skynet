@@ -7,7 +7,7 @@ version: '2.1'
 services:
   #--------------#
       zalenium:
-        image: "dosel/zalenium"
+        image: "dosel/zalenium:3.11.0e" # --net=host broken >3.11.0e
         container_name: zalenium
         hostname: zalenium
         privileged: true
@@ -29,7 +29,7 @@ services:
                 --browserStackEnabled false
                 --testingBotEnabled false
                 --startTunnel false
-                --seleniumImageName "elgalu/selenium"
+                --seleniumImageName "elgalu/selenium:3.11.0-p15"
                 --sendAnonymousUsageInfo false
                 --maxTestSessions 5
                 --keepOnlyFailedTests true
