@@ -5,7 +5,7 @@ class DriverTypes(object):
 
     FIREFOX = "firefox"
     CHROME = "chrome"
-    CHROMEHEADLESS = "chrome-headless"
+    CHROMEHEADLESS = "chromeheadless"
     PHANTOMJS = "phantomjs"
     IE = "IE"
     SAFARI = "safari"

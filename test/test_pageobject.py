@@ -10,6 +10,7 @@ from nzme_skynet.core.controls.button import Button
 from nzme_skynet.core.controls.element import Element
 from nzme_skynet.core.driver.driverregistry import DriverRegistry
 from nzme_skynet.core.pageobject.basewebpage import BaseWebPage
+from nzme_skynet.core.driver.enums.drivertypes import DriverTypes
 
 
 class GoogleHomePage(BaseWebPage):
@@ -34,7 +35,7 @@ class GoogleSearchResultPage(BaseWebPage):
 class POValidation(unittest.TestCase):
 
     def setUp(self):
-        DriverRegistry.register_driver(local=False)
+        DriverRegistry.register_driver(driver_type=DriverTypes.CHROMEHEADLESS, local=False)
 
     def test_web_page_object_creation(self):
         ghomepage = GoogleHomePage()

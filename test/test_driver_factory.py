@@ -64,10 +64,10 @@ class DriverFactoryTest(unittest.TestCase):
         self.assertIsNone(DriverRegistry.get_driver(), 'Error: Driver found without registration')
 
     def test_custom_remote_driver_registration(self):
-        DriverRegistry.register_driver(driver_type=DriverTypes.FIREFOX, local=False)
+        DriverRegistry.register_driver(driver_type=DriverTypes.CHROMEHEADLESS, local=False)
         self.assertIsInstance(DriverRegistry.get_driver(), BrowserDriver)
         self.assertIsInstance(DriverRegistry.get_webdriver(), WebDriver)
-        self.assertEqual(DriverRegistry.get_driver().name, DriverTypes.FIREFOX)
+        self.assertEqual(DriverRegistry.get_driver().name, DriverTypes.CHROME)
         DriverRegistry.deregister_driver()
         self.assertIsNone(DriverRegistry.get_driver(), 'Error: Driver found without registration')
 

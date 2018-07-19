@@ -14,8 +14,16 @@ class Chrome(BrowserDriver):
         self._headless = headless
 
     @staticmethod
-    def get_default_capability():
-        return DesiredCapabilities.CHROME.copy()
+    def get_default_capability(headless=False):
+        options = Options()
+        options.add_argument("--start-maximized")
+        options.add_argument("--test-type")
+        options.add_argument("--disable-notifications")
+        options.add_argument("-process-per-site")
+        options.add_argument("--dns-prefetch-disable")
+        if headless:
+            options.headless = True
+        return options.to_capabilities()
 
     def _create_default_chrome_options(self):
         self.add_option("--start-maximized")
