@@ -21,6 +21,6 @@ class RandomUser(object):
         self.EMAIL = mail
         self.PASSWORD = self.fake.password()
         birthday = self._profile['birthdate']
-        self.BIRTHYEAR = birthday.split('-')[0]
+        self.BIRTHYEAR = str(self._profile['birthdate'].year)
         self.POSTCODE = self.fake.postcode()
         self.GENDER = self._profile['sex']

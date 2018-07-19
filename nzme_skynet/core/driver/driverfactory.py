@@ -40,8 +40,8 @@ class DriverFactory(object):
             logger.debug("Successfully initialised local web driver {0}".format(driver_type))
             return driver
         except Exception as e:
-            logger.exception("Failed to initialise local web driver: {0}".format(e.message))
-            raise Exception("Failed to initialise local web driver")
+            logger.exception("Failed to initialise local web driver")
+            raise
 
     @staticmethod
     def build_mobile_app_driver(driver_type, driver_capabilities, remote_url):
@@ -57,8 +57,8 @@ class DriverFactory(object):
             logger.debug("Successfully initialised mobile app driver {0}".format(driver_type))
             return driver
         except Exception as e:
-            logger.exception("Failed to initialise mobile app driver: {0}".format(e.message))
-            raise Exception("Failed to initialise mobile app driver")
+            logger.exception("Failed to initialise mobile app driver")
+            raise
 
     @staticmethod
     def build_mobile_web_driver(driver_type, driver_capabilities, remote_url):
@@ -71,11 +71,11 @@ class DriverFactory(object):
             raise Exception("Only supports Android and IOS browser drivers")
         try:
             driver.init()
-            logger.debug("Successfully initialised mobile web driver {0}".format(driver_type))
+            logger.debug("Successfully initialised mobile web driver")
             return driver
         except Exception as e:
-            logger.exception("Failed to initialise mobile browser driver: {0}".format(e.message))
-            raise Exception("Failed to initialise mobile browser driver")
+            logger.exception("Failed to initialise mobile browser driver")
+            raise
 
     @staticmethod
     def build_remote_web_driver(driver_type="chrome", driver_options=None, grid_url="http://127.0.0.1:4444/wd/hub"):
@@ -90,8 +90,8 @@ class DriverFactory(object):
         driver = Remote(driver_options, remote_url=grid_url)
         try:
             driver.init()
-            logger.debug("Successfully initialised remote web driver {0}".format(driver_type))
+            logger.debug("Successfully initialised remote web driver".format(driver_type))
             return driver
         except Exception as e:
-            logger.exception("Failed to initialise remote web driver: {0}".format(e.message))
-            raise Exception("Failed to initialise remote web driver")
+            logger.exception("Failed to initialise remote web driver")
+            raise

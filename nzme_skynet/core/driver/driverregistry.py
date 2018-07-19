@@ -50,7 +50,7 @@ class DriverRegistry(object):
             register_driver(new_driver)
             return get_driver()
         except Exception as e:
-            logger.exception("Failed to register driver: {0}".format(e.message))
+            logger.exception("Failed to register driver")
             raise
 
     @staticmethod
@@ -85,5 +85,5 @@ class DriverRegistry(object):
         """
         if get_driver():
             return get_driver().webdriver
-        logger.warning("No registered driver found")
+        logger.error("No registered driver found")
         return None

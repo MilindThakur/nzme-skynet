@@ -120,9 +120,8 @@ def before_scenario(context, scenario):
                     grid_url=context.config.userdata.get('selenium_grid_hub', Config.ENV_OPTIONS['selenium_grid_hub']))
                 context.driver.baseurl = context.config.userdata.get("testurl", Config.ENV_OPTIONS['testurl'])
                 context.driver.goto_url(context.driver.baseurl, absolute=True)
-                logger.debug("Built driver successfully")
     except Exception as e:
-        logger.exception(e)
+        logger.exception("Failed building the driver")
         raise
 
     logger.info('Start of Scenario: {}'.format(scenario.name))

@@ -53,7 +53,7 @@ setup(
         'pytest',
         'pytest-xdist',
         'requests',
-        'selenium==3.11.0',
+        'selenium==3.13.0',
         'faker',
         'browsermob-proxy',
         'haralyzer',
