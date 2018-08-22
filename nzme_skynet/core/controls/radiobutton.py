@@ -8,5 +8,10 @@ class RadioButton(Button):
         super(RadioButton, self).__init__(by, locator)
 
     def is_selected(self):
+        """
+        An expectation for checking that an element is present on the DOM of a
+        page and highlight them. Checks whether the element/ radiobutton is selected
+        :return:
+        """
         self._highlight()
         return self._find_element().is_selected()
