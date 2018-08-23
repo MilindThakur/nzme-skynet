@@ -15,18 +15,26 @@ logger = logging.getLogger(__name__)
 
 
 class BaseElement(object):
+    """
+    BaseElement class contains those methods that could be used in conjunction with other other methods in this
+    framework or independently.
+    This class contains methods that wraps and uses some pre-existing selenium methods/ objects with some additional
+    capabilities to make them more user friendly
+
+    :param by: type of locator
+    :param locator: locator value
+    """
     def __init__(self, by, locator):
         self._by = by
         self._locator = locator
 
     def _find_element(self):
         """
-        An expectation for checking that an element is present on the DOM
-        of a page with a conditional wait.
-        _locator - used to find the element with locator value
-        _by - type of locator
-        Returns the web element once it is located
-        :return:
+        This methods validates the presence (but not visibility) of the element on the DOM within a DEFAULT_TIMEOUT
+        period of 5 seconds. This method returns the web-element in successful case and logs an exception when
+        failing to find the presence web-element.
+
+        :return: web element
         """
         try:
             return WebDriverWait(self.driver, DefaultTimeouts.DEFAULT_TIMEOUT).until(ec.presence_of_element_located((self._by, self._locator)))
@@ -37,46 +45,46 @@ class BaseElement(object):
     def find_sub_elements(self, by, locator):
         """
         TODO: return list of Element objects
-        Find elements given a By strategy and locator. Prefer the find_elements_by_* methods when
-        possible.
+        A wrapper around Selenium's find_elements()
+        to return the sub element from a list of identified web elements.
 
-        :rtype: list of WebElement
         :param by: type of locator
-        :param locator: used to find the element with locator value
-        Returns the list of Element objects
-        :return:
+        :param locator: uocator value
+        :return: web element or an exception
         """
         return self._find_element().find_elements(by, locator)
 
     @property
     def driver(self):
         """
-        Returns Selenium Webdriver from registry
-        :return:
+        This method calls Selenium's DriverFactory to build driver and returns the driver to be used in the tests
+        :return: driver
         """
         return DriverRegistry.get_webdriver()
 
     @property
     def location(self):
         """
-        Returns the location of the web element in the renderable canvas.
-        :return:
+        This method identifies the web element and returns the location coordinates of the web element if the
+        web element is found. Otherwise, logs an exception.
+        :return: location coordinates
         """
         return self._find_element().location
 
     @property
     def size(self):
         """
-        Returns the size of the web element.
-        :return:
+        This method identifies the web element and returns the size (height and width) of the web element if the
+        web element is found. Otherwise, logs an exception.
+        :return: A dictionary with height and width
         """
         return self._find_element().size
 
     def exists(self):
         """
-        Check if the web element exists in the DOM using ._find_element function
-        Returns true on successful existence of the element and false on failure
-        :return:
+        This method can be used to validate the existence of the web element. Returns true if the web element exists and
+        false with a debug log when the web element doesn't exists.
+        :return: boolean
         """
         try:
             self._find_element()
@@ -87,9 +95,9 @@ class BaseElement(object):
 
     def _highlight(self):
         """
-        An expectation for checking that an element is present on the DOM of a
-        page and synchronously executes the javascript to highlight the element that is visible
-        :return:
+        If the highlight_state() is True and the element is visible, it synchronously executes the javascript to
+        highlight the element that is visible.
+        If the highlight_state() is False, no action is performed.
         """
         if highlight_state():
             elem = self.will_be_visible()
@@ -112,16 +120,17 @@ class BaseElement(object):
         that name, ``None`` is returned.
 
         :param attribute: Name of the attribute/property to retrieve.
-        :return:
+        :return: attributeValue
         """
         return self._find_element().get_attribute(attribute)
 
     def has_attribute(self, attribute):
         """
-        Returns the attribute or property of the element if the element is present
-        otherwise, returns False
+        This method helps to validate if the element and it's attribute value is present.
+        Returns the attribute value if the element and it's attribute value is present and returns False otherwise.
+
         :param attribute: Name of the attribute/property to retrieve.
-        :return:
+        :return: attributeValue or False
         """
         try:
             return self.get_attribute(attribute)
@@ -131,16 +140,16 @@ class BaseElement(object):
 
     def get_css_property(self, css_property):
         """
-        Gets the value of a CSS property
+        This method helps in retrieving the value of a CSS property.
+
         :param css_property: property name
-        :return:
+        :return: property value
         """
         return self._find_element().value_of_css_property(css_property)
 
     def scroll_to_element(self, offset=200):
         """
          Synchronously Executes JavaScript to scroll to the element in the current window/frame.
-        :return:
         """
         self.driver.execute_script("window.scrollBy(0," + str(self.location['y'] - offset) + ");")
 
@@ -148,23 +157,23 @@ class BaseElement(object):
 
     def is_currently_visible(self, time=DefaultTimeouts.SHORT_TIMEOUT):
         """
-         An expectation for checking that an element is present on the DOM of a
-         page and visible. Visibility means that the element is not only displayed
-         but also has a height and width that is greater than 0.
-         returns the WebElement once it is located and visible
-         :param time: time that the driver would wait
-         :return:
+        This method will instantly (1 second) validate if the web element is is not only displayed but also has a
+        height and width that is greater than 0. Returns the element if it is present. Returns False and
+        logs a debug message if the element is not present.
+
+        :param time: defaulted to LARGE_TIMEOUT of 10 second
+        :return: element or False
          """
         return self.will_be_visible(time=time)
 
     def will_be_visible(self, time=DefaultTimeouts.LARGE_TIMEOUT):
         """
-        An expectation for checking that an element is present on the DOM of a
-        page and visible. Visibility means that the element is not only displayed
-        but also has a height and width that is greater than 0.
-        returns the WebElement once it is located and visible
-        :param time: time that the driver would wait
-        :return:
+        This method will wait for 10 seconds to validate if the web element is is not only displayed but also has a
+        height and width that is greater than 0. Returns the element if it is present. Returns False and
+        logs a debug message if the element is not present.
+
+        :param time: defaulted to LARGE_TIMEOUT of 10 second
+        :return: element or False
         """
         try:
             return WebDriverWait(self.driver, time).until(ec.visibility_of_element_located((self._by, self._locator)))
@@ -174,21 +183,23 @@ class BaseElement(object):
 
     def is_currently_present(self, time=DefaultTimeouts.SHORT_TIMEOUT):
         """
-        An expectation for checking that an element is present on the DOM
-        of a page. This does not necessarily mean that the element is visible.
-        returns the WebElement once it is located
-        :param time: time that the driver would wait
-        :return:
+        This method will instantly (1 second) validate if the web element is present on the DOM of a page. This does
+        not guarantee the visibility of the element though. Returns the element if it is present. Returns False and
+        logs a debug message if the element is not present.
+
+        :param time: defaulted to SHORT_TIMEOUT of 1 second
+        :return: element or False
         """
         return self.will_be_present(time=time)
 
     def will_be_present(self, time=DefaultTimeouts.LARGE_TIMEOUT):
         """
-        An expectation for checking that an element is present on the DOM
-        of a page. This does not necessarily mean that the element is visible.
-        returns the WebElement once it is located
-        :param time: time that the driver would wait
-        :return:
+        This method will wait for 10 seconds to validate if the web element is present on the DOM of a page. This does
+        not guarantee the visibility of the element though. Returns the element if it is present. Returns False and
+        logs a debug message if the element is not present.
+
+        :param time: defaulted to LARGE_TIMEOUT of 10 second
+        :return: element or False
         """
         try:
             return WebDriverWait(self.driver, time).until(ec.presence_of_element_located((self._by, self._locator)))
@@ -198,19 +209,21 @@ class BaseElement(object):
 
     def is_not_displayed(self, time=DefaultTimeouts.SHORT_TIMEOUT):
         """
-        An Expectation for checking that an element is either invisible or not
-        present on the DOM.
-        :param time: time that the driver would wait
-        :return:
+        This method will instantly (1 second) look for a web element that is either invisible or not
+        present on the DOM. Returns True if the element is invisible and False when visible.
+
+        :param time: defaulted to SHORT_TIMEOUT of 1 second
+        :return: boolean
         """
         return self.will_not_be_displayed(time=time)
 
     def will_not_be_displayed(self, time=DefaultTimeouts.LARGE_TIMEOUT):
         """
-        An Expectation for checking that an element is either invisible or not
-        present on the DOM.
-        :param time: time that the driver would wait
-        :return:
+        This method will wait for 10 seconds to validate if the web element is either invisible or not
+        present on the DOM. Returns True if the element is invisible and False when visible.
+
+        :param time: defaulted to LARGE_TIMEOUT of 10 second
+        :return: boolean
         """
         try:
             return WebDriverWait(self.driver, time).until(ec.invisibility_of_element_located((self._by, self._locator)))
@@ -220,21 +233,28 @@ class BaseElement(object):
 
     def is_ready_to_interact(self, time=DefaultTimeouts.SHORT_TIMEOUT):
         """
-        An Expectation for checking an element is visible and enabled within a wait time such that
-        you can click it.
-        :param time: time that the driver would wait
-        Returns the web element
-        :return:
+        This method will instantly (1 second) look for a web element to enabled and be visible.
+
+        If the element is enabled and visible within 1 seconds returns the web element for further action.
+        If the web element is not enabled and visible within 10 seconds within 10 seconds, returns False and logs a
+        debug message.
+
+        :param time: defaulted to SHORT_TIMEOUT of 1 second
+        :return: Web-element or False
         """
         return self.will_be_ready_to_interact(time=time)
 
+
     def will_be_ready_to_interact(self, time=DefaultTimeouts.LARGE_TIMEOUT):
         """
-        An Expectation for checking an element is visible and enabled within a wait time such that
-        you can click it.
-        :param time: time that the driver would wait
-        Returns the web element
-        :return:
+        This method will wait for a web element to enabled and be visible within 10 seconds.
+
+        If the element is enabled and visible within 10 seconds, returns the web element for further action.
+        If the web element is not enabled and visible within 10 seconds within 10 seconds, returns False and
+        logs a debug message.
+
+        :param time: defaulted to LARGE_TIMEOUT period of 10 seconds
+        :return: Web-element or False
         """
         try:
             return WebDriverWait(self.driver, time).until(ec.element_to_be_clickable((self._by, self._locator)))
@@ -245,7 +265,6 @@ class BaseElement(object):
     def hover_over(self):
         """
         This method helps in performing mouse hover over action using ActionChains, move_to_element and perform methods
-        :return:
         """
         hover = ActionChains(self.driver).move_to_element(self._find_element())
         hover.perform()
