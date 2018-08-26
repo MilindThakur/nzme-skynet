@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 from nzme_skynet.core.driver.mobile.browser.mbrowserdriver import MBrowserDriver
-
+import logging
+logger = logging.getLogger(__name__)
 
 class IOSBrowserDriver(MBrowserDriver):
-
-    def __init__(self, desired_capabilities, remote_url):
-        super(IOSBrowserDriver, self).__init__(desired_capabilities, remote_url)
 
     def _create_desired_capabilities(self):
         if not self._desired_cap:
@@ -21,3 +19,4 @@ class IOSBrowserDriver(MBrowserDriver):
         if not self._desired_cap['deviceName']:
             # Run tests on Android emulator by default
             self._desired_cap['deviceName'] = 'iPhone Simulator'
+        logger.debug("iOS capability for creating driver {0}".format(self._desired_cap))
