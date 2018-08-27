@@ -3,6 +3,12 @@ from nzme_skynet.core.controls.clickabletext import ClickableText
 
 
 class TextLink(ClickableText):
+    """
+    This class extends ClickableText class and contains methods to return href, title value of the element
+
+    :param by: type of locator
+    :param locator: locator value
+    """
 
     def __init_(self, by, locator):
         super(TextLink, self).__init__(by, locator)
@@ -10,9 +16,10 @@ class TextLink(ClickableText):
     @property
     def href(self):
         """
-        Validates the DOM for the tooltip, highlights when the tooltip is present and
-        gets/ returns the attribute/href of the element.
-        :return:
+        This method validates DOM for visibility of the element, highlights the same when present and
+        returns the attribute/href of the element.
+
+        :return: href or False
         """
         self._highlight()
         return self.get_attribute("href")
@@ -20,9 +27,10 @@ class TextLink(ClickableText):
     @property
     def tootltip(self):
         """
-        Validates the DOM for the tooltip, highlights when the tooltip is present and
-        gets/ returns the attribute/title of the element.
-        :return:
+        This method validates DOM for visibility of the element, highlights the same when present and
+        returns the attribute/title of the element.
+
+        :return: title or False
         """
         self._highlight()
         return self.get_attribute('title')

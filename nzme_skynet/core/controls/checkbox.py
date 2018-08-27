@@ -10,7 +10,10 @@ logger = logging.getLogger(__name__)
 
 class Checkbox(Clickable):
     """
-    This class extends Clickable class and contains methods that help in performing actions with Checkbox
+    This class extends Clickable class and contains methods that help in performing different actions with Checkbox
+
+    :param by: type of locator
+    :param locator: locator value
     """
 
     def __init__(self, by, locator):

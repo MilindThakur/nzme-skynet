@@ -49,7 +49,7 @@ class BaseElement(object):
         to return the sub element from a list of identified web elements.
 
         :param by: type of locator
-        :param locator: uocator value
+        :param locator: locator value
         :return: web element or an exception
         """
         return self._find_element().find_elements(by, locator)
@@ -98,6 +98,8 @@ class BaseElement(object):
         If the highlight_state() is True and the element is visible, it synchronously executes the javascript to
         highlight the element that is visible.
         If the highlight_state() is False, no action is performed.
+
+        :return: element or False
         """
         if highlight_state():
             elem = self.will_be_visible()

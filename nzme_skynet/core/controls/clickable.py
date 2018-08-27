@@ -24,6 +24,7 @@ class Clickable(BaseElement):
         """
         This method highlights and performs click action on the web element when it is present and visible.
         Returns False with a debug log when the element is not present.
+
         :return: perform click action or False
         """
         self.is_ready_to_interact()
@@ -35,6 +36,7 @@ class Clickable(BaseElement):
         This method synchronously executes the JavaScript to perform click action when the element is present and
         returns False with a debug log when the element is not present.
         action
+
         :return: perform click action or False
         """
         try:
@@ -47,6 +49,7 @@ class Clickable(BaseElement):
         """
         This method invokes the JavaScript to scroll to the element and then perform click action when the element is
         present. Returns False with a debug log when the element is not present.
+
         :return: perform click action or False
         """
         try:
