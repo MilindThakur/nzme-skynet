@@ -64,8 +64,15 @@ def before_scenario(context, scenario):
     Logger.create_test_folder(scenario.name)
 
     context.test_name = scenario.name
-    context.is_zalenium = context.config.userdata.getbool('zalenium', Config.ENV_OPTIONS['zalenium'])
+
+    # Accommodate for overriding config settings in CLI
+    context.browser_name = context.config.userdata.get('browserName', Config.BROWSER_CAPABILITIES['browserName'])
+    context.test_url = context.config.userdata.get('testurl', Config.ENV_OPTIONS['testurl'])
     context.is_local = context.config.userdata.getbool("local", Config.ENV_OPTIONS['local'])
+    context.grid_url = context.config.userdata.get('selenium_grid_hub', Config.ENV_OPTIONS['selenium_grid_hub'])
+    context.is_zalenium = context.config.userdata.getbool('zalenium', Config.ENV_OPTIONS['zalenium'])
+    if 'build' in context.config.userdata.keys():
+        Config.BROWSER_CAPABILITIES['build'] = context.config.userdata['build']
 
     # cleanup app state for new test
     if context.driver is not None:
@@ -85,22 +92,22 @@ def before_scenario(context, scenario):
                 if 'android-browser' in tags:
                     context.driver = DriverRegistry.register_driver(
                         DriverTypes.ANDROIDWEB,
-                        driver_options=Config.ANDROID_CAPABILITIES,
+                        capabilities=Config.ANDROID_CAPABILITIES,
                         grid_url=Config.ENV_OPTIONS['selenium_grid_hub'])
                 elif 'ios-browser' in tags:
                     context.driver = DriverRegistry.register_driver(
                         DriverTypes.IOSWEB,
-                        driver_options=Config.IOS_CAPABILITIES,
+                        capabilities=Config.IOS_CAPABILITIES,
                         grid_url=Config.ENV_OPTIONS['selenium_grid_hub'])
                 elif 'android-app' in tags:
                     context.driver = DriverRegistry.register_driver(
                         DriverTypes.ANDROID,
-                        driver_options=Config.ANDROID_CAPABILITIES,
+                        capabilities=Config.ANDROID_CAPABILITIES,
                         grid_url=Config.ENV_OPTIONS['selenium_grid_hub'])
                 elif 'ios-app' in tags:
                     context.driver = DriverRegistry.register_driver(
                         DriverTypes.IOS,
-                        driver_options=Config.IOS_CAPABILITIES,
+                        capabilities=Config.IOS_CAPABILITIES,
                         grid_url=Config.ENV_OPTIONS['selenium_grid_hub'])
                 else:
                     logger.exception("Only supports tags android-app, android-browser, ios-app, ios-browser")
@@ -110,16 +117,13 @@ def before_scenario(context, scenario):
                 # Add Feature and Scenario name for grouping Zalenium Test
                 # https://github.com/zalando/zalenium/blob/master/docs/usage_examples.md#test-name
                 if not context.is_local and context.is_zalenium:
-                    if 'build' in context.config.userdata.keys():
-                        Config.DESKTOP_BROWSER_CAPABILITIES['build'] = context.config.userdata['build']
-                    Config.DESKTOP_BROWSER_CAPABILITIES['name'] = context.test_name
+                    Config.BROWSER_CAPABILITIES['name'] = context.test_name
                 context.driver = DriverRegistry.register_driver(
-                    driver_type=context.config.userdata.get("type", Config.DESKTOP_BROWSER_CAPABILITIES['browserName']),
-                    driver_options=Config.DESKTOP_BROWSER_CAPABILITIES,
+                    driver_type=context.browser_name,
+                    capabilities=Config.BROWSER_CAPABILITIES,
                     local=context.is_local,
-                    grid_url=context.config.userdata.get('selenium_grid_hub', Config.ENV_OPTIONS['selenium_grid_hub']))
-                context.driver.baseurl = context.config.userdata.get("testurl", Config.ENV_OPTIONS['testurl'])
-                context.driver.goto_url(context.driver.baseurl, absolute=True)
+                    grid_url=context.grid_url)
+            context.driver.baseurl = context.test_url
     except Exception as e:
         logger.exception("Failed building the driver")
         raise
