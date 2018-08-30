@@ -3,16 +3,6 @@ import ConfigParser
 import os
 
 
-def create_desktop_browser_capabilities(config):
-    desired_capabilities = {'browserName': config.get('BROWSER', 'type'),
-                            'platform': config.get('BROWSER', 'os'),
-                            'version': '' if 'latest' in config.get('BROWSER', 'version') else
-                            config.get('BROWSER', 'version'),
-                            'highlight': config.getboolean('BROWSER', 'highlight')
-                            }
-    return desired_capabilities
-
-
 def get_environment_options(config):
     return {
             'testurl': config.get('ENVIRONMENT', 'testurl'),
@@ -28,7 +18,7 @@ class Config(object):
     config.optionxform = str
     config.read('testsetup.ini')
 
-    DESKTOP_BROWSER_CAPABILITIES = create_desktop_browser_capabilities(config)
+    BROWSER_CAPABILITIES = dict(config.items('BROWSER'))
 
     ANDROID_CAPABILITIES = dict(config.items('ANDROID'))
 
