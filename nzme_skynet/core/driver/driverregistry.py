@@ -23,7 +23,7 @@ class DriverRegistry(object):
     """
 
     @staticmethod
-    def register_driver(driver_type, capabilities=None, local=True, grid_url="http://127.0.0.1:4444/wd/hub"):
+    def register_driver(driver_type='chrome', capabilities=None, local=True, grid_url="http://127.0.0.1:4444/wd/hub"):
         """
         Build and register driver
         :param driver_type: DriverTypes
@@ -40,7 +40,7 @@ class DriverRegistry(object):
         try:
             if local:
                 if driver_type in DESKTOP_WEBBROWSER:
-                    new_driver = DriverFactory.build_local_web_driver(capabilities['browserName'], capabilities)
+                    new_driver = DriverFactory.build_local_web_driver(driver_type, capabilities)
                 elif driver_type in MOBILE_WEBBROWSER:
                     new_driver = DriverFactory.build_mobile_web_driver(driver_type, capabilities, grid_url)
                 elif driver_type in MOBILE_APP:
