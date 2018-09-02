@@ -146,7 +146,7 @@ def after_scenario(context, scenario):
                 context.driver.take_screenshot_current_window(_screenshot)
             except Exception:
                 logger.error('Failed to take screenshot to: {}'.format(Config.LOG))
-                raise
+                pass
             # https://github.com/zalando/zalenium/blob/master/docs/usage_examples.md#marking-the-test-as-passed-or-failed
             if context.is_zalenium:
                 try:
@@ -220,4 +220,4 @@ def after_step(context, step):
             context.picture_num += 1
         except Exception:
             logger.error('Failed to take screenshot to: {}'.format(Config.LOG))
-            raise
+            pass
