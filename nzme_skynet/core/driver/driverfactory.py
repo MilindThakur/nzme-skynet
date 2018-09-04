@@ -23,32 +23,32 @@ class DriverFactory(object):
     """
 
     @staticmethod
-    def build_local_web_driver(driver_type="chrome", driver_options=None):
-        if driver_type == DriverTypes.CHROME:
-            driver = Chrome(driver_options)
-        elif driver_type == DriverTypes.CHROMEHEADLESS:
-            driver = Chrome(driver_options, headless=True)
-        elif driver_type == DriverTypes.FIREFOX:
-            driver = FireFox(driver_options)
-        elif driver_type == DriverTypes.PHANTOMJS:
-            driver = PhantomJS(driver_options)
+    def build_local_web_driver(browser=DriverTypes.CHROME, capabilities=None):
+        if browser == DriverTypes.CHROME:
+            driver = Chrome(capabilities)
+        elif browser == DriverTypes.CHROMEHEADLESS:
+            driver = Chrome(capabilities, headless=True)
+        elif browser == DriverTypes.FIREFOX:
+            driver = FireFox(capabilities)
+        elif browser == DriverTypes.PHANTOMJS:
+            driver = PhantomJS(capabilities)
         else:
             logger.exception("Only supports Chrome, Firefox, PhantomJS in local mode")
             raise Exception("Only supports Chrome, Firefox, PhantomJS in local mode")
         try:
             driver.init()
-            logger.debug("Successfully initialised local web driver {0}".format(driver_type))
+            logger.debug("Successfully initialised local web driver {0}".format(browser))
             return driver
         except Exception as e:
             logger.exception("Failed to initialise local web driver")
             raise
 
     @staticmethod
-    def build_mobile_app_driver(driver_type, driver_capabilities, remote_url):
+    def build_mobile_app_driver(driver_type, capabilities, remote_url):
         if driver_type == DriverTypes.IOS:
-            driver = IOSAppDriver(desired_capabilities=driver_capabilities, remote_url=remote_url)
+            driver = IOSAppDriver(desired_capabilities=capabilities, remote_url=remote_url)
         elif driver_type == DriverTypes.ANDROID:
-            driver = AndroidAppDriver(desired_capabilities=driver_capabilities, remote_url=remote_url)
+            driver = AndroidAppDriver(desired_capabilities=capabilities, remote_url=remote_url)
         else:
             logger.exception("Only supports Android and IOS app drivers")
             raise Exception("Only supports Android and IOS app drivers")
@@ -61,11 +61,11 @@ class DriverFactory(object):
             raise
 
     @staticmethod
-    def build_mobile_web_driver(driver_type, driver_capabilities, remote_url):
+    def build_mobile_web_driver(driver_type, capabilities, remote_url):
         if driver_type == DriverTypes.IOSWEB:
-            driver = IOSBrowserDriver(desired_capabilities=driver_capabilities, remote_url=remote_url)
+            driver = IOSBrowserDriver(desired_capabilities=capabilities, remote_url=remote_url)
         elif driver_type == DriverTypes.ANDROIDWEB:
-            driver = AndroidBrowserDriver(desired_capabilities=driver_capabilities, remote_url=remote_url)
+            driver = AndroidBrowserDriver(desired_capabilities=capabilities, remote_url=remote_url)
         else:
             logger.exception("Only supports Android and IOS browser drivers")
             raise Exception("Only supports Android and IOS browser drivers")
@@ -78,21 +78,14 @@ class DriverFactory(object):
             raise
 
     @staticmethod
-    def build_remote_web_driver(driver_type="chrome", driver_options=None, grid_url="http://127.0.0.1:4444/wd/hub"):
-        if not driver_options:
-            if driver_type == DriverTypes.CHROME:
-                driver_options = Chrome.get_default_capability()
-            elif driver_type == DriverTypes.CHROMEHEADLESS:
-                driver_options = Chrome.get_default_capability(headless=True)
-            elif driver_type == DriverTypes.FIREFOX:
-                driver_options = FireFox.get_default_capability()
-            else:
-                logger.exception("Only supports Chrome and Firefox in remote mode when no capabilities passed")
-                raise Exception("Only supports Chrome and Firefox in remote mode when no capabilities passed")
-        driver = Remote(driver_options, remote_url=grid_url)
+    def build_remote_web_driver(capabilities=None, grid_url="http://127.0.0.1:4444/wd/hub"):
+        if not capabilities:
+            capabilities = Chrome.get_default_capability()
+            logger.warning("No capabilities specified, using chrome as default remote browser")
+        driver = Remote(capabilities, remote_url=grid_url)
         try:
             driver.init()
-            logger.debug("Successfully initialised remote web driver".format(driver_type))
+            logger.debug("Successfully initialised remote web driver".format(capabilities['browserName']))
             return driver
         except Exception as e:
             logger.exception("Failed to initialise remote web driver")

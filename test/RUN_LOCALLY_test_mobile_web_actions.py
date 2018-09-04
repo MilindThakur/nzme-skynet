@@ -27,7 +27,7 @@ class MobileWebActionsTestCase(unittest.TestCase):
         }
         cls.driver = DriverRegistry.register_driver(
             DriverTypes.ANDROIDWEB,
-            driver_options=cap,
+            capabilities=cap,
             grid_url=DOCKER_SELENIUM_URL)
 
     def test_driver_type(self):
