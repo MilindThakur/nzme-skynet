@@ -125,4 +125,6 @@ class BaseElement(object):
         hover.perform()
 
     def focus(self):
-        raise NotImplementedError
+        hover = ActionChains(self.driver).move_to_element(self._find_element())
+        hover.click()
+        hover.perform()
