@@ -124,7 +124,6 @@ def before_scenario(context, scenario):
                     local=context.is_local,
                     grid_url=context.grid_url)
             context.driver.baseurl = context.test_url
-            context.driver.goto_url(context.driver.baseurl, absolute=True)
     except Exception as e:
         logger.exception("Failed building the driver")
         raise
@@ -188,7 +187,7 @@ def before_step(context, step):
     :param step: behave.model.Step
 
     """
-    if context.driver is not None and context.config.userdata.getbool('zalenium', Config.ENV_OPTIONS['zalenium']):
+    if context.driver is not None and context.is_zalenium:
         try:
             context.driver.add_cookie({
                 'name': 'zaleniumMessage',
