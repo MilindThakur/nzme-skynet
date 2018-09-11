@@ -1,6 +1,7 @@
 # **Skynet - Test Automation Library @ NZME - Changelog**
 
 ```bash
+0.3.24  Re-introduce opening testurl before every scenario, needed for setting cookie in zalenium
 0.3.23  Add cloud testing capability, upgrade to selenium 3.14.0
 0.3.22  Fix chrome headless in remote mode
 0.3.21  Update to selenium 3.13.0, add debug logs, update docs

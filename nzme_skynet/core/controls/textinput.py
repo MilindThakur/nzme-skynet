@@ -9,6 +9,7 @@ class TextInput(Text):
 
     def clear(self):
         self._highlight()
+        self.focus()
         self._find_element().clear()
 
     @property

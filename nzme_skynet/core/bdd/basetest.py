@@ -80,7 +80,7 @@ def before_scenario(context, scenario):
             DriverRegistry.deregister_driver()
             context.driver = None
         except Exception:
-            logger.error('Failed to stop browser instance')
+            logger.exception('Failed to stop browser instance')
             raise
 
     tags = str(context.config.tags)
@@ -145,7 +145,7 @@ def after_scenario(context, scenario):
             try:
                 context.driver.take_screenshot_current_window(_screenshot)
             except Exception:
-                logger.error('Failed to take screenshot to: {}'.format(Config.LOG))
+                logger.debug('Failed to take screenshot to: {}'.format(Config.LOG))
                 pass
             # https://github.com/zalando/zalenium/blob/master/docs/usage_examples.md#marking-the-test-as-passed-or-failed
             if context.is_zalenium:
@@ -155,7 +155,7 @@ def after_scenario(context, scenario):
                         'value': 'false'
                     })
                 except Exception:
-                    logger.error('Failed to set failed cookie for scenario in Zalenium')
+                    logger.debug('Failed to set failed cookie for scenario in Zalenium')
                     pass
 
         # https://github.com/zalando/zalenium/blob/master/docs/usage_examples.md#marking-the-test-as-passed-or-failed
@@ -166,7 +166,7 @@ def after_scenario(context, scenario):
                     'value': 'true'
                 })
             except Exception:
-                logger.error('Failed to set passed cookie for scenario in Zalenium')
+                logger.debug('Failed to set passed cookie for scenario in Zalenium')
                 pass
 
     if context.driver:
@@ -174,7 +174,7 @@ def after_scenario(context, scenario):
             DriverRegistry.deregister_driver()
             context.driver = None
         except Exception:
-            logger.error('Failed to stop driver instance')
+            logger.exception('Failed to stop driver instance')
             raise
 
     logger.info('End of test: {}. Status {} !!!\n\n\n'.format(scenario.name, scenario.status.name.upper()))
@@ -187,14 +187,14 @@ def before_step(context, step):
     :param step: behave.model.Step
 
     """
-    if context.driver is not None and context.config.userdata.getbool('zalenium', Config.ENV_OPTIONS['zalenium']):
+    if context.driver is not None and context.is_zalenium:
         try:
             context.driver.add_cookie({
                 'name': 'zaleniumMessage',
                 'value': step.name.replace(' ', '_')
             })
         except Exception:
-            logger.error('Failed to set cookie for test step in Zalenium')
+            logger.debug('Failed to set cookie for test step in Zalenium')
             pass
 
 
@@ -219,5 +219,5 @@ def after_step(context, step):
             context.driver.take_screenshot_current_window(_screenshot)
             context.picture_num += 1
         except Exception:
-            logger.error('Failed to take screenshot to: {}'.format(Config.LOG))
+            logger.debug('Failed to take screenshot to: {}'.format(Config.LOG))
             pass
