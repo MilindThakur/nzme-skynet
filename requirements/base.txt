@@ -9,3 +9,4 @@ Appium-Python-Client
 faker
 browsermob-proxy
 haralyzer
+typing

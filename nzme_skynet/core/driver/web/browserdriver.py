@@ -8,6 +8,7 @@ from nzme_skynet.core.utils import js_wait
 from nzme_skynet.core.controls.enums.timeouts import DefaultTimeouts
 import logging
 from nzme_skynet.core.utils.log import Logger
+from typing import Union
 
 
 Logger.configure_logging()
@@ -33,7 +34,7 @@ class BrowserDriver(BaseDriver):
                 self.webdriver.get(self.baseurl+url)
         except TimeoutException:
             logger.info("Browser timeout, stopping the window load using js..")
-            self.webdriver.execute_script('window.stop();')
+            self.webdriver.execute_script('return window.stop();')
 
     def _create_driver(self):
         raise NotImplementedError
@@ -139,11 +140,37 @@ class BrowserDriver(BaseDriver):
             if throw_on_timeout:
                 raise TimeoutException("Page elements never fully loaded after %s seconds" % timeout)
 
+    def wait_for_url_to_contain(self, url, time=DefaultTimeouts.LARGE_TIMEOUT):
+        """
+        Wait until the page url contains the expected url
+        :param url: Expected url
+        :param time: Timeout to wait for
+        :return: True when url matches within timeout period, False otherwise
+        """
+        try:
+            return WebDriverWait(self.webdriver, time).until(expected_conditions.url_contains(url))
+        except Exception:
+            logger.debug("Failed to find expected url {0} in current url {1}".format(url, self.webdriver.current_url))
+            return False
+
+    def wait_for_url(self, url, time=DefaultTimeouts.LARGE_TIMEOUT):
+        """
+        Wait until the page url contains the expected url
+        :param url: Expected url
+        :param time: Timeout to wait for
+        :return: True when url matches within timeout period, False otherwise
+        """
+        try:
+            return WebDriverWait(self.webdriver, time).until(expected_conditions.url_matches(url))
+        except Exception:
+            logger.debug("Failed to match expected url {0} to current url {1}".format(url, self.webdriver.current_url))
+            return False
+
     def init(self):
         self._create_driver()
         # Changed from maximize_window to set_window_size as per
         # https://github.com/SeleniumHQ/docker-selenium/issues/559
         # Bug is not browser specific.
         # self.webdriver.maximize_window()
-        self.webdriver.set_window_size(1930, 1080)
+        # self.webdriver.set_window_size(1930, 1080)
         self.webdriver.set_page_load_timeout(DefaultTimeouts.PAGE_LOAD_TIMEOUT)

@@ -11,22 +11,32 @@ class Clickable(BaseElement):
         super(Clickable, self).__init__(by, locator)
 
     def click(self):
-        self.is_ready_to_interact()
-        self._highlight()
-        try:
-            self._find_element().click()
-        except WebDriverException:
-            logger.debug("Failed to click, trying to click using JS executor..")
+        elem = self.is_ready_to_interact()
+        if elem:
+            self._highlight()
             try:
-                self.clickjs()
-            except WebDriverException:
-                logger.debug("Failed JS click, trying click using Actions..")
+                elem.click()
+                return
+            except Exception as e:
+                logger.debug("Failed to click elem {0}. Exception: {1}".format(self._locator, e.message))
                 try:
-                    self.scroll_to_element()
-                    self.focus()
-                except Exception:
-                    logger.exception("Failed all ways to click on element, raising exception")
-                    raise
+                    logger.debug("Trying click using JS...")
+                    self.driver.execute_script("arguments[0].click();", elem)
+                    return
+                except Exception as e:
+                    logger.debug("Failed JS click. Exception: {0}".format(e.message))
+                    try:
+                        logger.debug("Trying click using Action chain..")
+                        hover = ActionChains(self.driver).move_to_element(elem)
+                        hover.click()
+                        hover.perform()
+                        return
+                    except Exception as e:
+                        logger.exception("Failed all ways to click on element, raising exception. Exception: {0}"
+                                         .format(e.message))
+                        raise
+        logger.exception("Element {0} is not available to interact with".format(self._locator))
+        raise Exception("Element {0} is not available to interact with".format(self._locator))
 
     def clickjs(self):
         self.driver.execute_script("arguments[0].click();", self._find_element())
