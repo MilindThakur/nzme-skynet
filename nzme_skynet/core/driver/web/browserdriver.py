@@ -155,10 +155,10 @@ class BrowserDriver(BaseDriver):
 
     def wait_for_url(self, url, time=DefaultTimeouts.LARGE_TIMEOUT):
         """
-        Wait until the page url contains the expected url
+        Wait until the page url is same as the expected url
         :param url: Expected url
         :param time: Timeout to wait for
-        :return: True when url matches within timeout period, False otherwise
+        :return: True when url matches exactly within timeout period, False otherwise
         """
         try:
             return WebDriverWait(self.webdriver, time).until(expected_conditions.url_matches(url))
