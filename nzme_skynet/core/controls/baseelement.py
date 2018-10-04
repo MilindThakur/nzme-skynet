@@ -5,9 +5,13 @@ from nzme_skynet.core.controls import highlight_state
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.remote.webelement import WebElement
+from selenium.webdriver.common.by import By
 import time
 import logging
 from nzme_skynet.core.utils.log import Logger
+from typing import Union
+from selenium.webdriver.phantomjs.webdriver import WebDriver
 
 
 Logger.configure_logging()
@@ -20,18 +24,27 @@ class BaseElement(object):
         self._locator = locator
 
     def _find_element(self):
+        # type: () -> WebElement
         try:
-            return WebDriverWait(self.driver, DefaultTimeouts.DEFAULT_TIMEOUT).until(ec.presence_of_element_located((self._by, self._locator)))
-        except Exception as e:
+            return WebDriverWait(self.driver, DefaultTimeouts.DEFAULT_TIMEOUT).until\
+                (ec.presence_of_element_located((self._by, self._locator)))
+        except Exception:
             logger.exception("Timeout: Failed to find element {0}".format(self._locator))
             raise
 
     def find_sub_elements(self, by, locator):
-        # TODO: return list of Element objects
+        # TODO: return list of BaseElement objects
         return self._find_element().find_elements(by, locator)
 
     @property
+    def parent(self):
+        # type: () -> WebElement
+        # TODO: return  BaseElement object
+        return self._find_element().find_element(By.XPATH, "..")
+
+    @property
     def driver(self):
+        # type: () -> Union[WebDriver, None]
         return DriverRegistry.get_webdriver()
 
     @property
@@ -46,7 +59,7 @@ class BaseElement(object):
         try:
             self._find_element()
             return True
-        except Exception as e:
+        except Exception:
             logger.debug("Element {0} is not present in the DOM".format(self._locator))
             return False
 
@@ -81,9 +94,11 @@ class BaseElement(object):
     # Visibility, Presence, Clickability
 
     def is_currently_visible(self, time=DefaultTimeouts.SHORT_TIMEOUT):
+        # type: (int) -> Union[WebElement, bool]
         return self.will_be_visible(time=time)
 
     def will_be_visible(self, time=DefaultTimeouts.LARGE_TIMEOUT):
+        # type: (int) -> Union[WebElement, bool]
         try:
             return WebDriverWait(self.driver, time).until(ec.visibility_of_element_located((self._by, self._locator)))
         except Exception:
@@ -91,9 +106,11 @@ class BaseElement(object):
             return False
 
     def is_currently_present(self, time=DefaultTimeouts.SHORT_TIMEOUT):
+        # type: (int) -> Union[WebElement, bool]
         return self.will_be_present(time=time)
 
     def will_be_present(self, time=DefaultTimeouts.LARGE_TIMEOUT):
+        # type: (int) -> Union[WebElement, bool]
         try:
             return WebDriverWait(self.driver, time).until(ec.presence_of_element_located((self._by, self._locator)))
         except Exception:
@@ -101,9 +118,11 @@ class BaseElement(object):
             return False
 
     def is_not_displayed(self, time=DefaultTimeouts.SHORT_TIMEOUT):
+        # type: (int) -> Union[WebElement, bool]
         return self.will_not_be_displayed(time=time)
 
     def will_not_be_displayed(self, time=DefaultTimeouts.LARGE_TIMEOUT):
+        # type: (int) -> Union[WebElement, bool]
         try:
             return WebDriverWait(self.driver, time).until(ec.invisibility_of_element_located((self._by, self._locator)))
         except Exception:
@@ -111,9 +130,11 @@ class BaseElement(object):
             return False
 
     def is_ready_to_interact(self, time=DefaultTimeouts.SHORT_TIMEOUT):
+        # type: (int) -> Union[WebElement, bool]
         return self.will_be_ready_to_interact(time=time)
 
     def will_be_ready_to_interact(self, time=DefaultTimeouts.LARGE_TIMEOUT):
+        # type: (int) -> Union[WebElement, bool]
         try:
             return WebDriverWait(self.driver, time).until(ec.element_to_be_clickable((self._by, self._locator)))
         except Exception:

@@ -21,3 +21,13 @@ class TextInput(Text):
         self.is_currently_visible()
         self.clear()
         self._find_element().send_keys(value)
+
+    def update_value(self, new_value):
+        """
+        Completely updates the exiting text value to a new value specified
+        :param new_value: the new value to update
+        """
+        # Check if text element is visible
+        # Clear existing value
+        # Set new value
+        raise NotImplemented
