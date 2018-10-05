@@ -53,17 +53,21 @@ setup(
         'pytest',
         'pytest-xdist',
         'requests',
-        'selenium==3.13.0',
+        'selenium==3.14.0',
         'faker',
         'browsermob-proxy',
         'haralyzer',
         'Appium-Python-Client',
-        'faker'
+        'faker',
+        'typing'
     ],
     classifiers=[
         "Development Status :: ",
         "Environment :: Web/mobile Environment",
         "Intended Audience :: Developers, Testers",
+        "Topic :: Internet",
+        "Topic :: Scientific/Engineering",
+        "Topic :: Software Development",
         "Operating System :: OS Independent",
         "Programming Language :: Python :: 2.7",
         "Framework :: Selenium"

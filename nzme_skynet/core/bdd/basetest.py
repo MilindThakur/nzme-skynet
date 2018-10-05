@@ -64,8 +64,15 @@ def before_scenario(context, scenario):
     Logger.create_test_folder(scenario.name)
 
     context.test_name = scenario.name
-    context.is_zalenium = context.config.userdata.getbool('zalenium', Config.ENV_OPTIONS['zalenium'])
+
+    # Accommodate for overriding config settings in CLI
+    context.browser_name = context.config.userdata.get('browserName', Config.BROWSER_CAPABILITIES['browserName'])
+    context.test_url = context.config.userdata.get('testurl', Config.ENV_OPTIONS['testurl'])
     context.is_local = context.config.userdata.getbool("local", Config.ENV_OPTIONS['local'])
+    context.grid_url = context.config.userdata.get('selenium_grid_hub', Config.ENV_OPTIONS['selenium_grid_hub'])
+    context.is_zalenium = context.config.userdata.getbool('zalenium', Config.ENV_OPTIONS['zalenium'])
+    if 'build' in context.config.userdata.keys():
+        Config.BROWSER_CAPABILITIES['build'] = context.config.userdata['build']
 
     # cleanup app state for new test
     if context.driver is not None:
@@ -73,7 +80,7 @@ def before_scenario(context, scenario):
             DriverRegistry.deregister_driver()
             context.driver = None
         except Exception:
-            logger.error('Failed to stop browser instance')
+            logger.exception('Failed to stop browser instance')
             raise
 
     tags = str(context.config.tags)
@@ -85,22 +92,22 @@ def before_scenario(context, scenario):
                 if 'android-browser' in tags:
                     context.driver = DriverRegistry.register_driver(
                         DriverTypes.ANDROIDWEB,
-                        driver_options=Config.ANDROID_CAPABILITIES,
+                        capabilities=Config.ANDROID_CAPABILITIES,
                         grid_url=Config.ENV_OPTIONS['selenium_grid_hub'])
                 elif 'ios-browser' in tags:
                     context.driver = DriverRegistry.register_driver(
                         DriverTypes.IOSWEB,
-                        driver_options=Config.IOS_CAPABILITIES,
+                        capabilities=Config.IOS_CAPABILITIES,
                         grid_url=Config.ENV_OPTIONS['selenium_grid_hub'])
                 elif 'android-app' in tags:
                     context.driver = DriverRegistry.register_driver(
                         DriverTypes.ANDROID,
-                        driver_options=Config.ANDROID_CAPABILITIES,
+                        capabilities=Config.ANDROID_CAPABILITIES,
                         grid_url=Config.ENV_OPTIONS['selenium_grid_hub'])
                 elif 'ios-app' in tags:
                     context.driver = DriverRegistry.register_driver(
                         DriverTypes.IOS,
-                        driver_options=Config.IOS_CAPABILITIES,
+                        capabilities=Config.IOS_CAPABILITIES,
                         grid_url=Config.ENV_OPTIONS['selenium_grid_hub'])
                 else:
                     logger.exception("Only supports tags android-app, android-browser, ios-app, ios-browser")
@@ -110,16 +117,13 @@ def before_scenario(context, scenario):
                 # Add Feature and Scenario name for grouping Zalenium Test
                 # https://github.com/zalando/zalenium/blob/master/docs/usage_examples.md#test-name
                 if not context.is_local and context.is_zalenium:
-                    if 'build' in context.config.userdata.keys():
-                        Config.DESKTOP_BROWSER_CAPABILITIES['build'] = context.config.userdata['build']
-                    Config.DESKTOP_BROWSER_CAPABILITIES['name'] = context.test_name
+                    Config.BROWSER_CAPABILITIES['name'] = context.test_name
                 context.driver = DriverRegistry.register_driver(
-                    driver_type=context.config.userdata.get("type", Config.DESKTOP_BROWSER_CAPABILITIES['browserName']),
-                    driver_options=Config.DESKTOP_BROWSER_CAPABILITIES,
+                    driver_type=context.browser_name,
+                    capabilities=Config.BROWSER_CAPABILITIES,
                     local=context.is_local,
-                    grid_url=context.config.userdata.get('selenium_grid_hub', Config.ENV_OPTIONS['selenium_grid_hub']))
-                context.driver.baseurl = context.config.userdata.get("testurl", Config.ENV_OPTIONS['testurl'])
-                context.driver.goto_url(context.driver.baseurl, absolute=True)
+                    grid_url=context.grid_url)
+            context.driver.baseurl = context.test_url
     except Exception as e:
         logger.exception("Failed building the driver")
         raise
@@ -141,8 +145,8 @@ def after_scenario(context, scenario):
             try:
                 context.driver.take_screenshot_current_window(_screenshot)
             except Exception:
-                logger.error('Failed to take screenshot to: {}'.format(Config.LOG))
-                raise
+                logger.debug('Failed to take screenshot to: {}'.format(Config.LOG))
+                pass
             # https://github.com/zalando/zalenium/blob/master/docs/usage_examples.md#marking-the-test-as-passed-or-failed
             if context.is_zalenium:
                 try:
@@ -151,7 +155,7 @@ def after_scenario(context, scenario):
                         'value': 'false'
                     })
                 except Exception:
-                    logger.error('Failed to set failed cookie for scenario in Zalenium')
+                    logger.debug('Failed to set failed cookie for scenario in Zalenium')
                     pass
 
         # https://github.com/zalando/zalenium/blob/master/docs/usage_examples.md#marking-the-test-as-passed-or-failed
@@ -162,7 +166,7 @@ def after_scenario(context, scenario):
                     'value': 'true'
                 })
             except Exception:
-                logger.error('Failed to set passed cookie for scenario in Zalenium')
+                logger.debug('Failed to set passed cookie for scenario in Zalenium')
                 pass
 
     if context.driver:
@@ -170,7 +174,7 @@ def after_scenario(context, scenario):
             DriverRegistry.deregister_driver()
             context.driver = None
         except Exception:
-            logger.error('Failed to stop driver instance')
+            logger.exception('Failed to stop driver instance')
             raise
 
     logger.info('End of test: {}. Status {} !!!\n\n\n'.format(scenario.name, scenario.status.name.upper()))
@@ -183,14 +187,14 @@ def before_step(context, step):
     :param step: behave.model.Step
 
     """
-    if context.driver is not None and context.config.userdata.getbool('zalenium', Config.ENV_OPTIONS['zalenium']):
+    if context.driver is not None and context.is_zalenium:
         try:
             context.driver.add_cookie({
                 'name': 'zaleniumMessage',
                 'value': step.name.replace(' ', '_')
             })
         except Exception:
-            logger.error('Failed to set cookie for test step in Zalenium')
+            logger.debug('Failed to set cookie for test step in Zalenium')
             pass
 
 
@@ -215,5 +219,5 @@ def after_step(context, step):
             context.driver.take_screenshot_current_window(_screenshot)
             context.picture_num += 1
         except Exception:
-            logger.error('Failed to take screenshot to: {}'.format(Config.LOG))
-            raise
+            logger.debug('Failed to take screenshot to: {}'.format(Config.LOG))
+            pass

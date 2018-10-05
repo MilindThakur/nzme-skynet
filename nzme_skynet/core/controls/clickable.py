@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
+from selenium.common.exceptions import WebDriverException
+import logging
 from nzme_skynet.core.controls.baseelement import BaseElement
 import logging
 from nzme_skynet.core.utils.log import Logger
-
+from selenium.webdriver.common.action_chains import ActionChains
 
 Logger.configure_logging()
 logger = logging.getLogger(__name__)
@@ -21,15 +23,38 @@ class Clickable(BaseElement):
         super(Clickable, self).__init__(by, locator)
 
     def click(self):
-        """
-        This method highlights and performs click action on the web element when it is present and visible.
-        Returns False with a debug log when the element is not present.
-
-        :return: perform click action or False
-        """
-        self.is_ready_to_interact()
-        self._highlight()
-        self._find_element().click()
+        original_url = self.driver.current_url
+        elem = self.is_ready_to_interact()
+        if elem:
+            self._highlight()
+            try:
+                elem.click()
+                return
+            except Exception as e:
+                logger.debug("Failed to click elem {0}. Exception: {1}".format(self._locator, e.message))
+                if self.driver.current_url == original_url:
+                    logger.debug("Currently on the same page, trying other click options..")
+                    try:
+                        logger.debug("Trying click using JS...")
+                        self.driver.execute_script("arguments[0].click();", elem)
+                        return
+                    except Exception as e:
+                        logger.debug("Failed JS click. Exception: {0}".format(e.message))
+                        try:
+                            logger.debug("Trying click using Action chain..")
+                            hover = ActionChains(self.driver).move_to_element(elem)
+                            hover.click()
+                            hover.perform()
+                            return
+                        except Exception as e:
+                            logger.exception("Failed all ways to click on element, raising exception. Exception: {0}"
+                                             .format(e.message))
+                            raise
+                else:
+                    logger.debug("The page has already transitioned to a new page, stopping click method")
+                    return
+        logger.exception("Element {0} is not available to interact with".format(self._locator))
+        raise Exception("Element {0} is not available to interact with".format(self._locator))
 
     def clickjs(self):
         """

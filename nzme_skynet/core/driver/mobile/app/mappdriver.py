@@ -6,25 +6,19 @@ from nzme_skynet.core.controls.enums.timeouts import DefaultTimeouts
 import logging
 logger = logging.getLogger(__name__)
 
-
 class MAppDriver(MobileDriver):
 
     def __init__(self, desired_capabilities, remote_url='http://127.0.0.1:4444/wd/hub'):
-        self._desired_cap = desired_capabilities
-        self._remote_url = remote_url
-        self._driver = None
+        super(MAppDriver, self).__init__(desired_capabilities, remote_url)
+        # Cache the App context view for switching between WEBVIEW and NATIVE_APP view
         self._cache_context = None
 
-    def accept_location_popup(self):
-        raise NotImplementedError
-
     def close_app(self):
+        logger.debug("Closing app..")
         self.webdriver.close_app()
 
-    def _create_desired_capabilities(self):
-        raise NotImplementedError
-
     def reset(self):
+        logger.debug("Resetting the app..")
         self.webdriver.reset()
 
     # TODO: Assume the mobile app tests always start in NATIVE_APP context
@@ -32,6 +26,7 @@ class MAppDriver(MobileDriver):
     # if the context array is > 2
     def switch_to_webview(self):
         if 'NATIVE_APP' in self.context:
+            logger.debug("App running in NATIVE VIEW")
             self._cache_context = self.webdriver.context
         try:
             WebDriverWait(self.webdriver, DefaultTimeouts.DEFAULT_TIMEOUT).\
@@ -46,6 +41,7 @@ class MAppDriver(MobileDriver):
     def switch_to_native(self):
         try:
             if 'WEBVIEW' in self.context:
+                logger.debug("App in WEBVIEW, switching to NATIVE VIEW..")
                 self.webdriver.switch_to.context(self.webdriver.contexts[0])
         except:
             self.webdriver.switch_to.context(self._cache_context)
@@ -53,15 +49,3 @@ class MAppDriver(MobileDriver):
     @property
     def current_activity(self):
         return self.webdriver.current_activity
-
-    def init(self):
-        raise NotImplementedError
-
-    def _create_driver(self):
-        raise NotImplementedError
-
-    def _set_default_capabilities(self):
-        raise NotImplementedError
-
-    def take_screenshot_current_window(self, filename):
-        self.webdriver.get_screenshot_as_file(filename)

@@ -93,27 +93,6 @@ class BaseDriver(object):
     def wait_for_page_load(self, timeout, throw_on_timeout):
         raise NotImplementedError
 
-    # Device Specific Interfaces
-
-    # Device Actions Specific Interfaces
-
-    def pinch_and_zoom(self):
-        raise NotImplementedError
-
-    def swipe(self):
-        raise NotImplementedError
-
-    def scroll(self):
-        raise NotImplementedError
-
-    # Device App Specific Interfaces
-
-    def close_app(self):
-        raise NotImplementedError
-
-    def reset(self):
-        raise NotImplementedError
-
     @property
     def current_running_activity(self):
         raise NotImplementedError

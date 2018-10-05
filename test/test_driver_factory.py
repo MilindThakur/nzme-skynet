@@ -52,7 +52,7 @@ class DriverFactoryTest(unittest.TestCase):
 
     def test_unsupported_local_driver_registration(self):
         with self.assertRaises(Exception) as context:
-            DriverRegistry.register_driver(DriverTypes.IE)
+            DriverRegistry.register_driver(driver_type=DriverTypes.IE)
         self.assertTrue('Only supports Chrome, Firefox, PhantomJS in local mode', context.exception.message)
 
     def test_default_remote_chrome_driver_registration(self):
@@ -71,12 +71,6 @@ class DriverFactoryTest(unittest.TestCase):
         DriverRegistry.deregister_driver()
         self.assertIsNone(DriverRegistry.get_driver(), 'Error: Driver found without registration')
 
-    def test_unsupported_custom_remote_driver_registration(self):
-        with self.assertRaises(Exception) as context:
-            DriverRegistry.register_driver(driver_type=DriverTypes.IE, local=False)
-        self.assertTrue('Only supports Chrome and Firefox in remote mode when no capabilities passed' in
-                        context.exception.message)
-
     def test_remote_driver_registration_with_capabilities(self):
         test_capabilities = {
             "browserName": "chrome",
@@ -84,7 +78,7 @@ class DriverFactoryTest(unittest.TestCase):
             "version": '',
             "javascriptEnabled": True
         }
-        DriverRegistry.register_driver(driver_options=test_capabilities, local=False)
+        DriverRegistry.register_driver(capabilities=test_capabilities, local=False)
         self.assertIsInstance(DriverRegistry.get_driver(), BrowserDriver)
         self.assertIsInstance(DriverRegistry.get_webdriver(), WebDriver)
         self.assertEqual(DriverRegistry.get_driver().name, DriverTypes.CHROME)

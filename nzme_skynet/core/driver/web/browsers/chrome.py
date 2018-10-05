@@ -35,6 +35,8 @@ class Chrome(BrowserDriver):
         # self._options.add_experimental_option('prefs', {'profile.managed_default_content_settings.images': 2})
         if self._headless:
             self.add_option("--headless")
+            self.add_option("--disable-gpu")
+            self.add_option("--no-sandbox")
 
         # TODO - Implement this
         if self.driver_capabilities and 'viewport' in self.driver_capabilities:

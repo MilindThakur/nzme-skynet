@@ -16,7 +16,7 @@
 * Download [Chrome browser](https://www.google.com/chrome/browser/desktop/index.html) and [Chrome Driver](https://sites.google.com/a/chromium.org/chromedriver/)
 * Download Firefox. Firefox > v.47 requires [Marionette](https://developer.mozilla.org/en-US/docs/Mozilla/QA/Marionette) driver
 * Install [PhantomJS](http://phantomjs.org/download.html) (headless browser)
-* Install [mobile dependencies] 
+* Install [mobile dependencies](docs/howto_mobile_tests.md)
 
 ### **Clone Skynet automation repo**
 ```bash
@@ -69,7 +69,8 @@ We use a docker based on-demand Selenium Grid Infrastructure called [Zalenium](h
 ./docker_compose.sh stop
 ```
 ### **Docker configuration**
-The test infrastructure configurations are managed in the _**docker-compose.yaml_** file. To test any browser on any cloud provider
+The test infrastructure configurations are managed in the _docker-compose.yaml_ file. To test any browser on any cloud provider.
+
  * Add appropriate cloud provider environment variables (username, access-key)
  * Set the flag _--sauceLabsEnabled_ (or other provider) to true
  * Set flag _--startTunnel_ to true
@@ -84,6 +85,41 @@ To run the tests in cloud (grid):
 * Set the flag _local_ to false
 * Set the BROWSER details
 * Start the grid
+
+```
+    #------- Desktop Platforms -------#
+    [BROWSER]
+    browserName=internet explorer
+    browserVersion=11.0
+    platformName=WINDOWS
+    platformVersion=any
+    browserstack.local=true
+    highlight=true
+    
+    #------- Mobile Platforms -------#
+    [ANDROID]
+    browserName=chrome
+    platformName=Android
+    platformVersion=8.0
+    deviceName=Samsung Galaxy S9 Plus
+    browserstack.local=true
+    real_mobile=true
+    
+    [IOS]
+    browserName=safari
+    platformName=iOS
+    platformVersion=11.0
+    deviceName=iPhone X
+    browserstack.local=true
+    real_mobile=true
+    
+    #------- Environmental -------#
+    [ENVIRONMENT]
+    testurl=https://www.google.co.nz/
+    local=false
+    selenium_grid_hub=http://127.0.0.1:4444/wd/hub
+    zalenium=false
+```
 
 ## **Scripts**
 The package includes scripts to be able to run from commandline

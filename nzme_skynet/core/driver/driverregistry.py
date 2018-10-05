@@ -23,11 +23,11 @@ class DriverRegistry(object):
     """
 
     @staticmethod
-    def register_driver(driver_type='chrome', driver_options=None, local=True, grid_url="http://127.0.0.1:4444/wd/hub"):
+    def register_driver(driver_type='chrome', capabilities=None, local=True, grid_url="http://127.0.0.1:4444/wd/hub"):
         """
         Build and register driver
         :param driver_type: DriverTypes
-        :param driver_options: capabilities
+        :param capabilities: capabilities
         :param local: Local or Selenium Grid/Server
         :param grid_url: Selenium grid url
         :return:
@@ -36,17 +36,20 @@ class DriverRegistry(object):
         if get_driver():
             logger.warning("Driver already registered. Only one driver can be registered at a time")
             return get_driver()
-        set_highlight(driver_options['highlight'] if driver_options and 'highlight' in driver_options else False)
+        set_highlight(capabilities['highlight'] if capabilities and 'highlight' in capabilities else False)
         try:
-            if driver_type in DESKTOP_WEBBROWSER:
-                if local:
-                    new_driver = DriverFactory.build_local_web_driver(driver_type, driver_options)
+            if local:
+                if driver_type in DESKTOP_WEBBROWSER:
+                    new_driver = DriverFactory.build_local_web_driver(driver_type, capabilities)
+                elif driver_type in MOBILE_WEBBROWSER:
+                    new_driver = DriverFactory.build_mobile_web_driver(driver_type, capabilities, grid_url)
+                elif driver_type in MOBILE_APP:
+                    new_driver = DriverFactory.build_mobile_app_driver(driver_type, capabilities, grid_url)
                 else:
-                    new_driver = DriverFactory.build_remote_web_driver(driver_type, driver_options, grid_url)
-            elif driver_type in MOBILE_WEBBROWSER:
-                new_driver = DriverFactory.build_mobile_web_driver(driver_type, driver_options, grid_url)
-            elif driver_type in MOBILE_APP:
-                new_driver = DriverFactory.build_mobile_app_driver(driver_type, driver_options, grid_url)
+                    logger.exception("Empty or Unknown driver type, valid options: chrome, firefox, android, ios-web etc")
+                    raise Exception("Empty or Unknown driver type, valid options: chrome, firefox, android, ios-web etc")
+            else:
+                new_driver = DriverFactory.build_remote_web_driver(capabilities, grid_url)
             register_driver(new_driver)
             return get_driver()
         except Exception as e:
