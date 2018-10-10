@@ -21,12 +21,6 @@ class BrowserDriver(BaseDriver):
     """
 
     def goto_url(self, url, absolute=False):
-        """
-        By default loads page relative to the test url
-        :param url:
-        :param absolute:
-        :return:
-        """
         try:
             if absolute:
                 self.webdriver.get(url)
@@ -37,16 +31,32 @@ class BrowserDriver(BaseDriver):
             self.webdriver.execute_script('return window.stop();')
 
     def _create_driver(self):
+        """
+        Create driver based on browser/device required
+        :return: BrowserDriver instance
+        """
         raise NotImplementedError
 
     def add_option(self, option):
+        """
+        Add browser options
+        :param option:
+        """
         raise NotImplementedError
 
     def add_extension(self, extension):
+        """
+        Include necessary browser extension
+        :param extension: browser extension
+        """
         raise NotImplementedError
 
     @staticmethod
     def get_default_capability():
+        """
+        Returns the default capability that the browser/driver is initiated with
+        :return: (dict) capability
+        """
         raise NotImplementedError
 
     def set_proxy(self):
@@ -90,6 +100,10 @@ class BrowserDriver(BaseDriver):
         self.webdriver.forward()
 
     def add_cookie(self, cookie_dict):
+        """
+        Add cookie to current session
+        :param cookie_dict: (dict) cookie key, value pait
+        """
         self.webdriver.add_cookie(cookie_dict)
 
     def take_screenshot_current_window(self, filename):
@@ -167,10 +181,14 @@ class BrowserDriver(BaseDriver):
             return False
 
     def init(self):
+        """
+        Initialise and create driver
+        :return: BaseDriver instance
+        """
         self._create_driver()
         # Changed from maximize_window to set_window_size as per
         # https://github.com/SeleniumHQ/docker-selenium/issues/559
         # Bug is not browser specific.
-        # self.webdriver.maximize_window()
+        self.webdriver.maximize_window()
         # self.webdriver.set_window_size(1930, 1080)
         self.webdriver.set_page_load_timeout(DefaultTimeouts.PAGE_LOAD_TIMEOUT)
