@@ -13,7 +13,7 @@ class BaseDriver(object):
 
     def quit(self):
         """
-        Quit driver
+        Quit driver and browser window
         :return: None
         """
         self.webdriver.quit()
@@ -87,6 +87,10 @@ class BaseDriver(object):
         Navigate to a URL
         When absolute=True, navigates to the url provided
         When absolute=False, uses baseurl to navigate to the relative url
+
+        driver.goto_url("/relative")
+        driver.goto_url("https://www.google.co.nz", absolute=True)
+
         :param url: (String) URL to nativate to
         :param absolute: boolean, default False
         """
