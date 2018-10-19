@@ -60,6 +60,27 @@ class BaseDriver(object):
         """
         raise NotImplementedError
 
+    def switch_to_window_by_title(self, title):
+        """
+        Identify and switch to window by matching title
+        :param title: (String) Window title
+        """
+        raise NotImplementedError
+
+    def switch_to_window_by_index(self, index):
+        """
+        Switch to window by index
+        :param index: (int) index
+        """
+        raise NotImplementedError
+
+    def switch_to_window_by_url(self, url):
+        """
+        Identify and switch to window by matching url
+        :param url: (String) url of new window
+        """
+        raise NotImplementedError
+
     def switch_to_newest_window(self):
         raise NotImplementedError
 

@@ -29,28 +29,29 @@ Sample Code
 .. highlight:: python
 
 ::
-      from nzme_skynet.core.driver.driverregistry import DriverRegistry
-      from nzme_skynet.core.controls.textinput import TextInput
-      from nzme_skynet.core.controls.button import Button
 
-      DriverRegistry.register_driver() # Default is local Chrome driver
-      driver = DriverRegistry.get_driver()
-      driver.goto_url("https://www.google.co.nz")
-      search_input = TextInput(By.NAME, 'q')
-      submit_search_btn = Button(By.NAME, 'btnK')
-      search_input.set_value('nzme')
-      submit_search_btn.click()
-      search_result_container = Element(By.ID, 'rso')
-      search_result_container.will_be_visible()
-      driver.wait_for_url_to_contain('nzme')
-      DriverRegistry.deregister_driver()
+   from nzme_skynet.core.driver.driverregistry import DriverRegistry
+   from nzme_skynet.core.controls.textinput import TextInput
+   from nzme_skynet.core.controls.button import Button
+
+   DriverRegistry.register_driver() # Default is local Chrome driver
+   driver = DriverRegistry.get_driver()
+   driver.goto_url("https://www.google.co.nz")
+   search_input = TextInput(By.NAME, 'q')
+   submit_search_btn = Button(By.NAME, 'btnK')
+   search_input.set_value('nzme')
+   submit_search_btn.click()
+   search_result_container = Element(By.ID, 'rso')
+   search_result_container.will_be_visible()
+   driver.wait_for_url_to_contain('nzme')
+   DriverRegistry.deregister_driver()
 
 
 Getting Started
 ---------------
 * :doc:`Intro </intro>`
 * :doc:`Installation </install>`
-* :doc:`Tutorial </tutorial>`
+* :doc:`Quick Tutorial </tutorial>`
 
 Contribute
 ==========
