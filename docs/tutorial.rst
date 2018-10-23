@@ -53,15 +53,10 @@ Skynet APIs can be used as a python script or within a unittest framework like u
 As a BDD tool
 =============
 
-Skynet uses `behave </https://github.com/behave/behave>`_ as a BDD tool and has in built hooks, tags for auto test
-initialisation. The test configuration is driven by a testsetup.ini config file and can be overridden in CLI using behave
-command line.
+Skynet uses `behave <https://github.com/behave/behave>`_ as a BDD tool and has pre-defined built-in hooks, tags for auto test
+initialisation. The test configuration is driven by a config file and can be overridden in CLI using behave command line.
 
-A typical feature file will look like as follows:
-
-.. highlight:: bash
-
-::
+Refer to :doc:`writing BDD style tests </bdd>` for more info
 
 
 Built-in command line script

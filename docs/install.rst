@@ -18,14 +18,14 @@ Please make sure you have following installed:
 Install Browsers and Drivers
 ============================
 
-    Follow `drivers </drivers>`_ to install necessary browsers and Selenium drivers to run the scripts locally
+Follow :doc:`drivers </drivers>` to install necessary browsers and Selenium drivers to run the scripts locally
 
 
 Install stable release from repo
 ================================
 
 The Skynet artifacts are not publicly available on PyPi yet and are stored locally in the
-`JFrog </https://nzme.jfrog.io/nzme/webapp/#/home>`_ repo. Grab yourself an access and obtain the API key.
+`JFrog <https://nzme.jfrog.io/nzme/webapp/#/home>`_ repo. Grab yourself an access and obtain the API key.
 
 To be able to use the _pip_ command to install Skynet, it is advisable to create a _pip.conf_ file with following
 configuration.
