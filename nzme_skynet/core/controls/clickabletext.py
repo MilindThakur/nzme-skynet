@@ -14,6 +14,16 @@ class ClickableText(Clickable):
 
     :param by: type of locator
     :param locator: locator value
+
+    Usage Example::
+
+        login_text = ClickableText(By.ID, "uniqueID")
+
+        element_text = login_text.text
+        login_text.click()
+        assert login_text.has_text("some_text")
+        assert login_text.will_have_text("some_text", time=5)
+
     """
 
     def __init__(self, by, locator):

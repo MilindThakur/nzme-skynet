@@ -4,10 +4,21 @@ from nzme_skynet.core.controls.clickabletext import ClickableText
 
 class Button(ClickableText):
     """
-    This class extends ClickableText class and contains method to retrieve the the status of the element
+    This class extends ClickableText class and contains method to retrieve the the status of the button
 
     :param by: type of locator
     :param locator: locator value
+
+    Usage Example::
+
+        login_button = Button(By.ID, "uniqueID")
+
+        login_button.get_status()
+        button_text = login_button.text
+        login_button.click()
+        login_button.hover_over()
+        login_button.is_ready_to_interact()
+
     """
     def __init__(self, by, locator):
         super(Button, self).__init__(by, locator)

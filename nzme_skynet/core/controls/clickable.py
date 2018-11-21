@@ -22,7 +22,29 @@ class Clickable(BaseElement):
     def __init__(self, by, locator):
         super(Clickable, self).__init__(by, locator)
 
+    def dblclick(self):
+        """
+        Double clicks an element.
+
+        Usage Example:
+
+            elem = Clickable(By.ID, "uniqueID")
+            elem.dblclick()
+
+        """
+        raise NotImplementedError
+
     def click(self):
+        """
+        Allows a click on an element. This command will try performing different clicks before throwing exception.
+        It will:
+
+         - Check if element is ready to interact with and then click
+         - If fails, tries JS click
+         - If fails, tries mouse click
+         - Else throw exception
+
+        """
         original_url = self.driver.current_url
         elem = self.is_ready_to_interact()
         if elem:

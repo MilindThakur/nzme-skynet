@@ -14,6 +14,17 @@ class Checkbox(Clickable):
 
     :param by: type of locator
     :param locator: locator value
+
+    Usage Example:
+
+        color_checkbox = Checkbox(By.ID, "uniqueID")
+
+        color_checkbox.set("CHECKED")
+        color_checkbox.check()
+        color_checkbox.uncheck()
+        assert color_checkbox.is_checked()
+        color_checkbox.is_currently_visible()
+
     """
 
     def __init__(self, by, locator):

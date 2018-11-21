@@ -52,6 +52,7 @@ Getting Started
 * :doc:`Intro </intro>`
 * :doc:`Installation </install>`
 * :doc:`Quick Tutorial </tutorial>`
+* :doc:`Project Setup </setup>`
 
 Contribute
 ==========
