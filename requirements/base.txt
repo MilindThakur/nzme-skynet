@@ -1,10 +1,8 @@
 -r preinstall.txt
 
 behave
-pytest
-pytest-xdist
 requests
-selenium==3.14.0
+selenium==3.141.0
 Appium-Python-Client
 faker
 browsermob-proxy

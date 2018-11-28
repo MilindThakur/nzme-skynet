@@ -50,16 +50,18 @@ setup(
     test_suite='nzme_skynet.test',
     install_requires=[
         'behave',
-        'pytest',
-        'pytest-xdist',
         'requests',
-        'selenium==3.14.0',
+        'selenium==3.141.0',
         'faker',
         'browsermob-proxy',
         'haralyzer',
         'Appium-Python-Client',
-        'faker',
         'typing'
+    ],
+    tests_require=[
+        'pytest',
+        'pytest-xdist',
+        'httpretty'
     ],
     classifiers=[
         "Development Status :: ",

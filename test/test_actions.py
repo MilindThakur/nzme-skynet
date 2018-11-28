@@ -18,7 +18,7 @@ from nzme_skynet.core.driver.enums.drivertypes import DriverTypes
 
 
 class ActionsTestCase(unittest.TestCase):
-    TEST_URL = "http://127.0.0.1:8000/"
+    TEST_URL = "http://testserver:8080/"
 
     @classmethod
     def setUpClass(cls):

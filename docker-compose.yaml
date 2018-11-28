@@ -11,7 +11,8 @@ services:
         container_name: zalenium
         hostname: zalenium
         privileged: true
-        network_mode: "host"
+        networks:
+          testsnw: {}
         tty: true
         volumes:
           - /var/run/docker.sock:/var/run/docker.sock
@@ -51,6 +52,30 @@ services:
           - 9090-9191
         links:
           - zalenium
+
+      testserver:
+        image: "trinitronx/python-simplehttpserver"
+        container_name: testserver
+        hostname: testserver
+        networks:
+          testsnw: {}
+        volumes:
+          - ./test/testserver:/var/www:ro
+        ports:
+          - 8000:8080
+
+#      theinternet:
+#        image: "gprestes/the-internet"
+#        container_name: theinternet
+#        hostname: theinternet
+#        networks:
+#          testsnw: {}
+#        ports:
+#          - 7080:5000
+
+networks:
+  testsnw:
+    driver: bridge
 
 ## Enable for machines that have hardware acceleration enabled
 #  nexus_7.1.1:
