@@ -46,6 +46,8 @@ services:
       browsermobproxy:
         container_name: browsermobproxy
         image: rubytester/browsermob-proxy
+        networks:
+          testsnw: {}
         ports:
           - 9090-9191:9090-9191
         expose:
