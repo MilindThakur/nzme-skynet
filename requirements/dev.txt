@@ -1,5 +1,8 @@
 -r base.txt
 
+codecov
 pytest
 pytest-xdist
+pytest-cov
 httpretty
+wheel
