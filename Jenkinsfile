@@ -19,12 +19,6 @@ node {
             """
         }
 
-        post {
-            always {
-                cobertura coberturaReportFile: '*/coverage.xml'
-            }
-        }
-
         stage('Building and Deploying'){
             def build = new Build()
             build.deploy('master', 'jfrog-nzme-testing')
@@ -34,6 +28,12 @@ node {
         currentBuild.result = "FAILED"
         throw e
     } finally {
+
+        post {
+            always {
+                cobertura coberturaReportFile: '*/coverage.xml'
+            }
+        }
         // Success or failure, always send notifications
         notifyBuild(currentBuild.result)
     }
