@@ -17,6 +17,11 @@ node {
             sh """
                 python -m coverage xml --include=nzme_skynet*
             """
+            post {
+                always {
+                    step([$class: 'CoberturaPublisher', autoUpdateHealth: false, autoUpdateStability: false, coberturaReportFile: '**/coverage.xml', failUnhealthy: false, failUnstable: false, maxNumberOfBuilds: 0, onlyStable: false, sourceEncoding: 'ASCII', zoomCoverageChart: false])
+                        }
+                }
         }
 
         stage('Building and Deploying'){
@@ -28,12 +33,6 @@ node {
         currentBuild.result = "FAILED"
         throw e
     } finally {
-        post {
-        always {
-            step([$class: 'CoberturaPublisher', autoUpdateHealth: false, autoUpdateStability: false, coberturaReportFile: '**/coverage.xml', failUnhealthy: false, failUnstable: false, maxNumberOfBuilds: 0, onlyStable: false, sourceEncoding: 'ASCII', zoomCoverageChart: false])
-            }
-        }
-
         // Success or failure, always send notifications
         notifyBuild(currentBuild.result)
     }
