@@ -14,9 +14,6 @@ node {
         stage('Running tests'){
             def test = new Test()
             test.tox()
-            sh """
-                python -m coverage xml --include=nzme_skynet*
-            """
         }
 
         stage('Building and Deploying'){
@@ -28,12 +25,6 @@ node {
         currentBuild.result = "FAILED"
         throw e
     } finally {
-
-        post {
-            always {
-                cobertura coberturaReportFile: '*/coverage.xml'
-            }
-        }
         // Success or failure, always send notifications
         notifyBuild(currentBuild.result)
     }
