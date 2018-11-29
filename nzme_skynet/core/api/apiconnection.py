@@ -1,41 +1,101 @@
 # coding=utf-8
 import requests
+from requests.auth import HTTPBasicAuth
+import logging
 
+logger = logging.getLogger('ApiConnection')
 
-class RestError(Exception):
-    def __init__(self, message):
-        self.message = message
-
-    def __str__(self):
-        return repr(self.message)
-
+class InvalidUsage(Exception):
+    pass
 
 class ApiConnection(object):
-    def __init__(self, host_url, http=True):
-        self.use_http = http
-        self.host = host_url
+    """
+    Wrapper class for requests library which manages requests session
+    """
+    def __init__(self, host_url, http=True, persist_session=True, username=None, password=None):
+        """
+        Request Client object
+        :param host_url: Host url to send requests to
+        :param http: optional, sets the http in url if not specified, default http
+        :param persist_session: If session id to be maintained between requests, default True
+        :param username: optional, username for basic auth
+        :param password: optional, password for basic auth
+        """
+        if host_url is None:
+            raise InvalidUsage("Must specify the 'host' url to send requests to")
+        if not 'http' in host_url or 'https' in host_url:
+            if http:
+                self._url = "http://" + host_url
+            else:
+                self._url = "https://" + host_url
+        self._req = self._create_session(persist_session, username, password)
 
-    def _create_connection_url(self):
-        if self.use_http:
-            return "http://" + self.host
-        else:
-            return "https://" + self.host
+    def _create_session(self, persist_session, username, password):
+        """
+        Creates session based request object if required
+        :param persist_session: bool, if requests need to be persisted through a session
+        :param username: username
+        :param password: password
+        :return: class: `Request <Request>` object
+        """
+        if (username and password) and persist_session:
+            logger.debug('(CREATE SESSION) for User: %s' % username)
+            req  = requests.Session()
+            req.auth = HTTPBasicAuth(username, password)
+        if not persist_session:
+            logger.debug('(CREATE REQUEST)')
+            req = requests
+        return req
 
-    def get(self, uri, params=None, headers=None, auth=None):
-        return self._request(uri, "GET", params=params, headers=headers, auth=auth)
+    def reset_session(self):
+        """
+        Reset the active session to a new one
+        :return: None
+        """
+        if isinstance(self._req, requests.Session):
+            self._req = requests.Session()
 
-    def post(self, uri, params=None, json=None, data=None, headers=None):
-        return self._request(uri, "POST", params=params, json=json, data=data, headers=headers)
+    def get(self, uri, **kwargs):
+        """
+        Get request
+        :param uri: relative url
+        :param kwargs: optional parameters for request
+        :return: class:`Response <Response>` object
+        """
+        return self._req.get(url=self._url+uri, **kwargs)
 
-    def put(self, uri, json, headers=None):
-        return self._request(uri, "PUT", json=json, headers=headers)
+    def post(self, uri, **kwargs):
+        """"
+        Post request
+        :param uri: relative url
+        :param kwargs: optional parameters for request
+        :return: class:`Response <Response>` object
+        """
+        return self._req.post(url=self._url+uri, **kwargs)
 
-    def patch(self, uri, json, headers=None):
-        return self._request(uri, "PATCH", json=json, headers=headers)
+    def put(self, uri, **kwargs):
+        """
+        Put request
+        :param uri: relative url
+        :param kwargs: optional parameters for request
+        :return: class:`Response <Response>` object
+        """
+        return self._req.put(url=self._url+uri, **kwargs)
 
-    def delete(self, uri, json=None, headers=None):
-        return self._request(uri, "DELETE", json=json, headers=headers)
+    def patch(self, uri, **kwargs):
+        """
+        Patch request
+        :param uri: relative url
+        :param kwargs: optional parameters for request
+        :return: class:`Response <Response>` object
+        """
+        return self._req.patch(url=self._url+uri, **kwargs)
 
-    def _request(self, uri, method, params=None, json=None, data=None, headers=None, auth=None):
-        h = self._create_connection_url()
-        return requests.request(method=method, url=h + uri, params=params, json=json, data=data, headers=headers, auth=auth)
+    def delete(self, uri, **kwargs):
+        """
+        Delete request
+        :param uri: relative url
+        :param kwargs: optional parameters for request
+        :return: class:`Response <Response>` object
+        """
+        return self._req.delete(url=self._url+uri, **kwargs)

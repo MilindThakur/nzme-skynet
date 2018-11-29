@@ -1,0 +1,9 @@
+-r base.txt
+
+coverage
+codecov
+pytest
+pytest-xdist
+pytest-cov
+httpretty
+wheel

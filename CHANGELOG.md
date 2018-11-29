@@ -1,6 +1,7 @@
 # **Skynet - Test Automation Library @ NZME - Changelog**
 
 ```bash
+0.3.26  Upgrade to Selenium 3.141.0, introduce declarative pipeline and code cov
 0.3.25  Improve click method, add methods to wait_for_url, wait_for_url_to_contain, include typing,
         remove dependency on zalenium version for running integration tests
 0.3.24  Re-introduce opening testurl before every scenario, needed for setting cookie in zalenium
