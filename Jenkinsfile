@@ -1,5 +1,9 @@
 #!/usr/bin/env groovy
 
+@Library('NZMEJenkinsLibs')
+import tests.python.Test
+import build.package_indexes.python.Build
+
 pipeline {
     agent any
     options {
