@@ -25,8 +25,10 @@ pipeline {
 
         stage('Running tests') {
             steps {
-                def test = new Test()
-                test.tox()
+                script {
+                    def test = new Test()
+                    test.tox()
+                }
                 sh """
                     python -m coverage xml --include=nzme_skynet*
                 """
@@ -40,21 +42,27 @@ pipeline {
 
         stage('Building and Deploying') {
             steps {
-                def build = new Build()
-                build.deploy('master', 'jfrog-nzme-testing')
+                script {
+                    def build = new Build()
+                    build.deploy('master', 'jfrog-nzme-testing')
+                }
             }
         }
     }
 
     post {
         always {
-            // Success or failure, always send notifications
-            notifyBuild(currentBuild.result)
+            script {
+                // Success or failure, always send notifications
+                notifyBuild(currentBuild.result)
+            }
         }
         failure {
-            // If there was an exception thrown, the build failed
-            currentBuild.result = "FAILED"
-            throw e
+            script {
+                // If there was an exception thrown, the build failed
+                currentBuild.result = "FAILED"
+                throw e
+            }
         }
     }
 }
