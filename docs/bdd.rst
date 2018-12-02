@@ -187,6 +187,6 @@ To execute the above feature on Zalenium container grid:
 
 .. note::
 
-    Please refer to :doc:`some tips </best_practice>` on writing better feature files, scenarios, step
+    Please refer to :doc:`some tips </best_practices>` on writing better feature files, scenarios, step
     files, page objects, tagging etc.
 

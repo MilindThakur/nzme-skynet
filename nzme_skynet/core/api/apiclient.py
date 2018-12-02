@@ -15,18 +15,15 @@ class ApiClient(object):
     """
     Wrapper class for requests library
 
-    Example Usage:
+    :Example:
 
-        client = ApiClient(host="api.example.com")
-        order = client.resource("/order")
-        items = client.resource("/items")
-
-        order.get(params={"type":"temp"})
-        items.get()
-
-        order.delete(path="/123")
-        items.delete()
-
+        >>> client = ApiClient(host="api.example.com")
+        >>> order = client.resource("/order")
+        >>> items = client.resource("/items")
+        >>> order.get(params={"type":"temp"})
+        >>> items.get()
+        >>> order.delete(path="/123")
+        >>> items.delete()
 
     :param host: Host url to send requests to
     :param http: optional, sets the http in url if not specified, default http

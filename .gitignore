@@ -4,7 +4,9 @@
 *.pyc
 .tox/
 .coverage
-.coverage.*
+coverage.xml
+.pytest_cache
+.vscode/
 
 # Packages
 *.egg
@@ -20,3 +22,5 @@ PageValidationResults
 
 # Sphinx doc
 docs/_build/
+
+.DS_Store

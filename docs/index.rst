@@ -54,6 +54,16 @@ Getting Started
 * :doc:`Quick Tutorial </tutorial>`
 * :doc:`Project Setup </setup>`
 
+.. _api:
+
+.. toctree::
+   :maxdepth: 2
+   :caption: API
+
+   api/client
+   api/resource
+
+
 Contribute
 ==========
 

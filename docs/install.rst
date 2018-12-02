@@ -67,7 +67,10 @@ public ssh key to the account.
 
     $ git clone git@bitbucket.org:grabone/skynet.git
     $ cd skynet
-    $ python setup.py install
+    $ mkvirtualenv skynet
+    (skynet)$ pip install -r requirements/dev.txt
+    (skynet)$ make clean
+    (skynet)$ make test
 
 
 
