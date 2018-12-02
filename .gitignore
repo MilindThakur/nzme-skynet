@@ -3,14 +3,20 @@
 *.log
 *.pyc
 .tox/
+.coverage
+.coverage.*
 
 # Packages
 *.egg
-*.egg-info
-dist
-build
+*.egg-info/
+sdist/
+dist/
+build/
 node_modules
 
 # output data
 PageValidationResults
 /logs/
+
+# Sphinx doc
+docs/_build/
