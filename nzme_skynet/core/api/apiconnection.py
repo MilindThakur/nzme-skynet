@@ -38,13 +38,11 @@ class ApiConnection(object):
         :param password: password
         :return: class: `Request <Request>` object
         """
-        if (username and password) and persist_session:
-            logger.debug('(CREATE SESSION) for User: %s' % username)
-            req  = requests.Session()
+        req = requests
+        if persist_session:
+            logger.debug('(CREATE SESSION)')
+            req = requests.Session()
             req.auth = HTTPBasicAuth(username, password)
-        if not persist_session:
-            logger.debug('(CREATE REQUEST)')
-            req = requests
         return req
 
     def reset_session(self):
