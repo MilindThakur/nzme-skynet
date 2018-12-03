@@ -48,13 +48,17 @@ class ApiClient(object):
         self._base_url = helper.create_base_url(host, ssl)
 
     def _create_session(self, persist_session, username, password):
-        if (username and password) and persist_session:
-            logger.debug('(CREATE SESSION) for User: %s' % username)
-            req  = requests.Session()
+        """Creates session based request object if required
+        :param persist_session: bool, if requests need to be persisted through a session
+        :param username: username
+        :param password: password
+        :return: class: `Request <Request>` object
+        """
+        req = requests
+        if persist_session:
+            logger.debug('(CREATE SESSION)')
+            req = requests.Session()
             req.auth = HTTPBasicAuth(username, password)
-        if not persist_session:
-            logger.debug('(CREATE REQUEST)')
-            req = requests
         return req
 
     def resource(self, uri, base_uri=None):

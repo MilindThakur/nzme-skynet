@@ -4,6 +4,7 @@ import unittest
 import requests
 import httpretty
 import json
+from types import ModuleType
 
 from nzme_skynet.core.api.apiclient import ApiClient
 
@@ -60,9 +61,14 @@ class ApiClientTest(unittest.TestCase):
         self.resource_url = 'https://' + self.client_kwargs['host'] + self.base_uri + self.uri
         self.client = ApiClient(**self.client_kwargs)
 
-    def test_create_client(self):
+    def test_create_session_client(self):
         self.assertEqual(self.client._base_url, ('https://'+ self.client_kwargs['host']))
         self.assertEqual(type(self.client._req), requests.sessions.Session)
+
+    def test_create_request_client(self):
+        self.client_req = ApiClient('mock_host', persist_session=None)
+        self.assertEqual(self.client_req._base_url, 'https://mock_host')
+        self.assertEqual(type(self.client_req._req), ModuleType)
 
     def test_create_resource(self):
         r = self.client.resource(self.uri, self.base_uri)
