@@ -18,7 +18,7 @@ from nzme_skynet.core.driver.enums.drivertypes import DriverTypes
 
 
 class ActionsTestCase(unittest.TestCase):
-    TEST_URL = "http://testserver:8080/"
+    TEST_URL = "http://the-internet.herokuapp.com/"
 
     @classmethod
     def setUpClass(cls):
@@ -35,9 +35,11 @@ class ActionsTestCase(unittest.TestCase):
         self.assertEqual(1, len(self.driver.window_handles))
 
     def test_switch_window_handles(self):
-        new_page_text_link = TextLink(by=By.LINK_TEXT, locator="new_page")
+        multiple_window_text_link = TextLink(by=By.LINK_TEXT, locator="Multiple Windows")
+        multiple_window_text_link.click()
+        click_here_text_link = TextLink(by=By.LINK_TEXT, locator="Click Here")
         new_page_handle = self.driver.window_handles[0]
-        new_page_text_link.click()
+        click_here_text_link.click()
         self.assertEqual(2, len(self.driver.window_handles))
         self.driver.switch_to_newest_window()
         self.assertNotEqual(new_page_handle, self.driver.window_handles)
@@ -47,17 +49,24 @@ class ActionsTestCase(unittest.TestCase):
         self.assertEqual(new_page_handle, self.driver.window_handles[0])
 
     def test_action_textinput(self):
-        txt_input = TextInput(By.NAME, "firstname")
+        form_authentication = TextLink(by=By.LINK_TEXT, locator="Form Authentication")
+        form_authentication.click()
+        txt_input = TextInput(By.NAME, "username")
         self.assertEqual(txt_input.value, "")
-        txt_input.set_value("something")
-        self.assertEqual(txt_input.value, "something")
+        txt_input.set_value("tomsmith")
+        self.assertEqual(txt_input.value, "tomsmith")
 
     def test_action_button(self):
-        submit_btn = Button(By.NAME, "submit")
-        self.assertEqual(submit_btn.text, "Submit")
+        form_authentication = TextLink(by=By.LINK_TEXT, locator="Form Authentication")
+        form_authentication.click()
+        submit_btn = Button(By.CLASS_NAME, "radius")
+        self.assertEqual(submit_btn.text, "Login")
+
 
     def test_action_checkbox(self):
-        agree_chk = Checkbox(By.NAME, "agree")
+        checkboxes = TextLink(by=By.LINK_TEXT, locator="Checkboxes")
+        checkboxes.click()
+        agree_chk = Checkbox(By.XPATH, '//*[@id="checkboxes"]/input[1]')
         self.assertFalse(agree_chk.is_checked())
         agree_chk.check()
         self.assertTrue(agree_chk.is_checked())
@@ -67,41 +76,42 @@ class ActionsTestCase(unittest.TestCase):
         self.assertTrue(agree_chk.is_checked())
 
     def test_action_image(self):
-        good_image = Image(By.XPATH, "//img[@alt='valid image']")
-        broken_image = Image(By.XPATH, "//img[@alt='broken image']")
+        image_link = TextLink(by=By.LINK_TEXT, locator="Broken Images")
+        image_link.click()
+        good_image = Image(By.XPATH, "//*[@class='example']/img[3]")
+        broken_image = Image(By.XPATH, "//*[@class='example']/img[1]")
         self.assertTrue(good_image.is_image_loaded())
         self.assertFalse(broken_image.is_image_loaded())
         self.assertEqual(good_image.src, self.TEST_URL + "img/avatar-blank.jpg")
-        self.assertEqual(good_image.width, '160')
-        self.assertEqual(good_image.height, '160')
-
-    def test_action_radiobutton(self):
-        male_radiobtn = RadioButton(By.CSS_SELECTOR, "body > form > p.male > label > input[type='radio']")
-        female_radiobtn = RadioButton(By.CSS_SELECTOR, "body > form > p.female > label > input[type='radio']")
-        self.assertTrue(male_radiobtn.is_selected())
-        self.assertFalse(female_radiobtn.is_selected())
-        female_radiobtn.click()
-        self.assertFalse(male_radiobtn.is_selected())
-        self.assertTrue(female_radiobtn.is_selected())
+        self.assertEqual(good_image.width, '120')
+        self.assertEqual(good_image.height, '90')
 
     def test_action_select(self):
-        dropdown = SelectElem(By.CLASS_NAME, "numbers")
+        dropdown_link = TextLink(by=By.LINK_TEXT, locator="Dropdown")
+        dropdown_link.click()
+        dropdown = SelectElem(By.ID, "dropdown")
         self.assertEqual(dropdown.get_options_count(), 3)
-        self.assertEqual(dropdown.get_selected_text(), "One")
+        self.assertEqual(dropdown.get_selected_text(), "Please select an option")
         dropdown.select_by_index(2)
-        self.assertEqual(dropdown.get_selected_text(), "Three")
+        self.assertEqual(dropdown.get_selected_text(), "Option 2")
 
     def test_action_textlink(self):
-        valid_link = TextLink(By.PARTIAL_LINK_TEXT, "Valid link")
-        self.assertEqual(valid_link.href, self.TEST_URL + "img/avatar-blank.jpg")
+        redirect_link = TextLink(By.PARTIAL_LINK_TEXT, "Redirect Link")
+        self.assertEqual(redirect_link.href, self.TEST_URL + "redirector")
 
     def test_action_text(self):
-        intro_txt = Text(By.ID, "introduction")
-        self.assertEqual(intro_txt.text, "Introductory text")
+        heading_txt = Text(By.CLASS_NAME, "heading")
+        self.assertEqual(heading_txt.text, "Welcome to the-internet")
 
     def test_action_element(self):
-        elem = Element(By.CLASS_NAME, "textInput")
-        self.assertEqual(elem.get_attribute("value"), "Sample Text")
+        dropdown_link = TextLink(by=By.LINK_TEXT, locator="Dropdown")
+        dropdown_link.click()
+        elem = Element(By.ID, "dropdown")
+        elem1 = Element(By.XPATH, ".//*[@id='dropdown']/option[2]")
+        self.assertEqual(elem1.get_attribute("value"), "1")
+
+    def tearDown(cls):
+        cls.driver.goto_url(cls.TEST_URL, absolute=True)
 
     @classmethod
     def tearDownClass(cls):
