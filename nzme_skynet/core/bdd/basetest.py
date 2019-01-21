@@ -11,7 +11,8 @@ import re
 from nzme_skynet.core.utils.log import Logger
 from setupparser import Config
 from behave.model_core import Status
-
+import allure
+from allure_commons.types import AttachmentType
 
 from nzme_skynet.core.driver.driverregistry import DriverRegistry
 from nzme_skynet.core.driver.enums.drivertypes import DriverTypes
@@ -221,3 +222,8 @@ def after_step(context, step):
         except Exception:
             logger.debug('Failed to take screenshot to: {}'.format(Config.LOG))
             pass
+    try:
+        with open(_screenshot, 'rb') as _file:
+            allure.attach(_file.read(), name='{}_{}'.format(context.test_name, step.name), attachment_type=AttachmentType.PNG)
+    except Exception:
+        logger.error('Failed to attach to report screenshot: {}'.format(_screenshot))
