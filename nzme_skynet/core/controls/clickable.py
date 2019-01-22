@@ -48,6 +48,9 @@ class Clickable(BaseElement):
     def clickjs(self):
         self.driver.execute_script("arguments[0].click();", self._find_element())
 
+    def double_click(self):
+        raise NotImplementedError
+
     def _scroll_and_click(self):
         self.scroll_to_element()
         self.click()

@@ -8,3 +8,4 @@ faker
 browsermob-proxy
 haralyzer
 typing
+allure-behave

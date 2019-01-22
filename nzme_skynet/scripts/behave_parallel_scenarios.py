@@ -56,8 +56,8 @@ def _run_feature(feature_scenario, tags=None, userdata=None):
         params = "-t {0} --no-capture".format(' -t '.join(tags))
     else:
         params = "-t {0} -D {1} --no-capture".format(' -t '.join(tags), ' -D '.join(userdata))
-    cmd = "behave --no-summary -k --junit -f plain {0} -i {1}".format(
-           params, execution_elements[0])
+    cmd = "behave -i {0} -n '{1}' -f allure_behave.formatter:AllureFormatter -o allure-results --no-summary -k --junit --junit-directory reports -f plain {2}".format(
+           execution_elements[0], execution_elements[1], params)
     r = call(cmd, shell=True)
     status = 'PASSED' if r == 0 else 'FAILED'
     logger.info("{0:50}: {1} --> {2}".format(execution_elements[0], execution_elements[1], status))
@@ -82,7 +82,7 @@ def main():
     except ValueError:
         j = []
     # Identify all the feature files that have the tags
-    features = [e['location'].replace(r'features/', '')[:-2] for e in j]
+    features = [e['location'][:-2] for e in j]
 
     features_scenarios = []
     for scenario_elements in j:
@@ -91,7 +91,7 @@ def main():
             for i in scenario_elements['elements']:
                 if i['keyword'].upper() in ["scenario".upper(), "scenario outline".upper()]:
                     # Build a list of filepaths for valid scenarios
-                    features_scenarios.append(scenario_elements['location'].replace(r'features/', '')[:-2] + delimiter
+                    features_scenarios.append(scenario_elements['location'][:-2] + delimiter
                                               + i['name'])
 
     logger.info("Found {} features".format(len(features)))
@@ -106,17 +106,23 @@ def main():
     run_feature = partial(_run_feature, tags=args.tags, userdata=args.define)
     logger.info("--------------------------------------------------------------------------")
     output = 0
+    failed_tests = []
     # https://stackoverflow.com/questions/1408356/keyboard-interrupts-with-pythons-multiprocessing-p
     for feature, scenario, status in pool.map_async(run_feature, features_scenarios).get(9999):
-        if status != 'OK':
+        if status != 'PASSED':
             if output == 0:
+                failed_tests.append((feature, scenario, status))
                 if status == "FAILED":
                     output = 1
                 else:
                     output = 2
     logger.info("--------------------------------------------------------------------------")
     end_time = datetime.now()
+    if failed_tests:
+        for failed_test in failed_tests:
+            logger.info("{0:50}: {1} --> {2}".format(failed_test[0], failed_test[1], failed_test[2]))
 
     logger.info("Duration: {}".format(format(end_time - start_time)))
+    logger.info("Test Status: {0}".format(str(output)))
 
     sys.exit(output)

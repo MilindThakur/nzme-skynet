@@ -56,7 +56,8 @@ setup(
         'browsermob-proxy',
         'haralyzer',
         'Appium-Python-Client',
-        'typing'
+        'typing',
+        'allure-behave'
     ],
     tests_require=[
         'pytest',
