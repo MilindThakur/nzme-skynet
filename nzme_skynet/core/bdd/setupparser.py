@@ -1,5 +1,9 @@
 # coding=utf-8
-import ConfigParser
+try:
+    import configparser
+except:
+    import ConfigParser as configparser
+
 import os
 
 
@@ -13,7 +17,7 @@ def get_environment_options(config):
 
 
 class Config(object):
-    config = ConfigParser.SafeConfigParser(allow_no_value=True)
+    config = configparser.SafeConfigParser(allow_no_value=True)
     # Preserve string case from INI for capability matching
     config.optionxform = str
     config.read('testsetup.ini')

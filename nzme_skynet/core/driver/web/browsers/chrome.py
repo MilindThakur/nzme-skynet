@@ -1,72 +1,48 @@
 # -*- coding: utf-8 -*-
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.chrome.webdriver import WebDriver
+from selenium.webdriver.chrome.webdriver import WebDriver as ChromeDriver
+from selenium.webdriver.remote.webdriver import WebDriver as RemoteDriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+import logging
 
 from nzme_skynet.core.driver.web.browserdriver import BrowserDriver
 
+logger = logging.getLogger(__name__)
+
 
 class Chrome(BrowserDriver):
-    def __init__(self, driver_capabilities, headless=False):
-        self.driver_capabilities = driver_capabilities
-        self._options = Options()
-        self._driver = None
-        self._headless = headless
 
-    @staticmethod
-    def get_default_capability(headless=False):
-        options = Options()
-        options.add_argument("--start-maximized")
-        options.add_argument("--test-type")
-        options.add_argument("--disable-notifications")
-        options.add_argument("-process-per-site")
-        options.add_argument("--dns-prefetch-disable")
-        if headless:
-            options.headless = True
-        return options.to_capabilities()
+    # Allow updating the capability with chromeOptions
+    def _update_capabilities_with_options(self):
+        new_chrome_options = {
+            "args": ["--test-type",
+                     "--disable-notifications",
+                     "-process-per-site",
+                     "--dns-prefetch-disable"
+                     ],
+            "extensions": [],
+            "prefs": {}
+        }
+        if not self._options:
+            logger.debug("No options specified, updating capabilities with default chrome settings")
+        else:
+            if "mobileEmulation" in self._options and self._options["mobileEmulation"]:
+                new_chrome_options["mobileEmulation"] = {"deviceName": self._options["mobileEmulation"]}
+            if "headless" in self._options and self._options["headless"]:
+                new_chrome_options["args"].extend(["--headless", "--disable-gpu", "--no-sandbox"])
 
-    def _create_default_chrome_options(self):
-        self.add_option("--start-maximized")
-        self.add_option("--test-type")
-        self.add_option("--disable-notifications")
-        self.add_option("-process-per-site")
-        self.add_option("--dns-prefetch-disable")
-        # Load pages without Images
-        # self._options.add_experimental_option('prefs', {'profile.managed_default_content_settings.images': 2})
-        if self._headless:
-            self.add_option("--headless")
-            self.add_option("--disable-gpu")
-            self.add_option("--no-sandbox")
+        if not self._capabilities:
+            logger.debug("No capabilities specified, creating default chrome capability..")
+            self._capabilities = DesiredCapabilities.CHROME.copy()
 
-        # TODO - Implement this
-        if self.driver_capabilities and 'viewport' in self.driver_capabilities:
-            # check for known list of devices and set appropriate device name.
+        if "goog:chromeOptions" in self._capabilities:
+            for key, value in new_chrome_options.iteritems():
+                self._capabilities["goog:chromeOptions"].setdefault(key, []).extend(value)
+        else:
+            self._capabilities["goog:chromeOptions"] = new_chrome_options
 
-            # match found
-            # use this to consume the known device name
-            # mobile_emulation = {"deviceName" = > "Nexus 5"}
-            # self.add_experimental_option("mobileEmulation", mobile_emulation)
-
-            # No match found
-            # if no name is returned then set width x height
-
-            pass
-
-    def _set_options(self):
-        self._create_default_chrome_options()
-
-    def add_option(self, option):
-        self._options.add_argument(option)
-
-    def add_extension(self, extension):
-        self._options.add_extension(extension)
-
-    def _create_driver(self):
-        self._set_options()
-        self._driver = WebDriver(desired_capabilities=DesiredCapabilities.CHROME.copy(),
-                                 chrome_options=self._options)
-
-    @property
-    def webdriver(self):
-        # type: () -> WebDriver
-        return self._driver
+    def _create_driver(self, local, grid_url):
+        self._update_capabilities_with_options()
+        if not local:
+            self._driver = RemoteDriver(command_executor=grid_url, desired_capabilities=self._capabilities)
+        else:
+            self._driver = ChromeDriver(desired_capabilities=self._capabilities)

@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
-
 from nzme_skynet.core.driver.enums.drivertypes import DriverTypes
 from nzme_skynet.core.driver.mobile.app.androidappdriver import AndroidAppDriver
 from nzme_skynet.core.driver.mobile.app.iosappdriver import IOSAppDriver
 from nzme_skynet.core.driver.mobile.browser.androidbrowserdriver import AndroidBrowserDriver
 from nzme_skynet.core.driver.mobile.browser.iosbrowserdriver import IOSBrowserDriver
 from nzme_skynet.core.driver.web.browsers.chrome import Chrome
-from nzme_skynet.core.driver.web.browsers.firefox import FireFox
-from nzme_skynet.core.driver.web.browsers.phantomjs import PhantomJS
-from nzme_skynet.core.driver.web.browsers.remote import Remote
+from nzme_skynet.core.driver.web.browsers.edge import Edge
+from nzme_skynet.core.driver.web.browsers.firefox import Firefox
+from nzme_skynet.core.driver.web.browsers.ie import IE
+from nzme_skynet.core.driver.web.browsers.safari import Safari
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 import logging
 from nzme_skynet.core.utils.log import Logger
 
@@ -23,21 +24,23 @@ class DriverFactory(object):
     """
 
     @staticmethod
-    def build_local_web_driver(browser=DriverTypes.CHROME, capabilities=None):
-        if browser == DriverTypes.CHROME:
-            driver = Chrome(capabilities)
-        elif browser == DriverTypes.CHROMEHEADLESS:
-            driver = Chrome(capabilities, headless=True)
-        elif browser == DriverTypes.FIREFOX:
-            driver = FireFox(capabilities)
-        elif browser == DriverTypes.PHANTOMJS:
-            driver = PhantomJS(capabilities)
+    def build_web_driver(driver_type, capabilities, options, local, grid_url):
+        if driver_type == "chrome":
+            driver = Chrome(capabilities, options)
+        elif driver_type == "firefox":
+            driver = Firefox(capabilities, options)
+        elif driver_type == "safari":
+            driver = Safari(capabilities, options)
+        elif driver_type == "edge":
+            driver = Edge(capabilities, options)
+        elif driver_type == "ie":
+            driver = IE(capabilities, options)
         else:
-            logger.exception("Only supports Chrome, Firefox, PhantomJS in local mode")
-            raise Exception("Only supports Chrome, Firefox, PhantomJS in local mode")
+            logger.exception("Only supports Chrome, Firefox, Safari, Edge, IE in browser mode")
+            raise Exception("Only supports  Chrome, Firefox, Safari, Edge, IE in browser mode")
         try:
-            driver.init()
-            logger.debug("Successfully initialised local web driver {0}".format(browser))
+            driver.init(local, grid_url)
+            logger.debug("Successfully initialised web driver {0}".format(driver_type))
             return driver
         except Exception as e:
             logger.exception("Failed to initialise local web driver")
@@ -75,18 +78,4 @@ class DriverFactory(object):
             return driver
         except Exception as e:
             logger.exception("Failed to initialise mobile browser driver")
-            raise
-
-    @staticmethod
-    def build_remote_web_driver(capabilities=None, grid_url="http://127.0.0.1:4444/wd/hub"):
-        if not capabilities:
-            capabilities = Chrome.get_default_capability()
-            logger.warning("No capabilities specified, using chrome as default remote browser")
-        driver = Remote(capabilities, remote_url=grid_url)
-        try:
-            driver.init()
-            logger.debug("Successfully initialised remote web driver".format(capabilities['browserName']))
-            return driver
-        except Exception as e:
-            logger.exception("Failed to initialise remote web driver")
             raise

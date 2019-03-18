@@ -1,45 +1,50 @@
 # -*- coding: utf-8 -*-
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
-from selenium.webdriver.firefox.firefox_profile import FirefoxProfile
+from selenium.webdriver.firefox.webdriver import WebDriver as FirefoxDriver
 from selenium.webdriver.firefox.options import Options
-from selenium.webdriver.firefox.webdriver import WebDriver
+from selenium.webdriver.remote.webdriver import WebDriver as RemoteDriver
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+import logging
 
 from nzme_skynet.core.driver.web.browserdriver import BrowserDriver
 
+logger = logging.getLogger(__name__)
 
-class FireFox(BrowserDriver):
-    def __init__(self, driver_options):
-        self._driver_options = driver_options
-        self._profile = FirefoxProfile()
-        self._options = Options()
-        self._driver = None
 
-    @staticmethod
-    def get_default_capability():
-        return DesiredCapabilities.FIREFOX.copy()
+class Firefox(BrowserDriver):
 
-    def _create_default_firefox_options(self):
-        pass
+    # Allow updating the capability with firefoxOptions
+    def _update_capabilities_with_options(self):
+        new_ff_options = Options()
 
-    def add_option(self, option):
-        self._options.add_argument(option)
+        if not self._options:
+            logger.debug("No options specified, updating capabilities with default firefox settings")
+        else:
+            if "mobileEmulation" in self._options:
+                logger.warning("mobileEmulation is only available for Chrome")
+            if "headless" in self._options:
+                new_ff_options.headless = True
+                # new_ff_options["args"].extend(["--headless"])
 
-    def _set_options(self):
-        self._create_default_firefox_options()
-        if self._driver_options:
-            for option in self._driver_options:
-                self.add_option(option)
+        if not self._capabilities:
+            logger.debug("No capabilities specified, creating default firefox capability..")
+            self._capabilities = DesiredCapabilities.FIREFOX.copy()
 
-    def add_extension(self, extension):
-        self._profile.add_extension(extension)
+        if "marionette" not in self._capabilities:
+            self._capabilities["marionette"] = True
 
-    def _create_driver(self):
-        self._set_options()
-        self._driver = WebDriver(firefox_profile=self._profile,
-                                 firefox_options=self._options,
-                                 capabilities=DesiredCapabilities.FIREFOX.copy())
+        new_ff_cap = new_ff_options.to_capabilities()
 
-    @property
-    def webdriver(self):
-        # type: () -> WebDriver
-        return self._driver
+        if "moz:firefoxOptions" in self._capabilities and "moz:firefoxOptions" in new_ff_cap:
+            logger.debug("Updating original capabilities moz:firefoxOptions with headless mode..")
+            for key, value in new_ff_cap["moz:firefoxOptions"].iteritems():
+                self._capabilities["moz:firefoxOptions"].setdefault(key, []).extend(value)
+        elif "moz:firefoxOptions" not in self._capabilities and "moz:firefoxOptions" in new_ff_cap:
+            logger.debug("No custom moz:firefoxOptions specified in capabilities, updating with headless mode..")
+            self._capabilities["moz:firefoxOptions"] = new_ff_cap["moz:firefoxOptions"]
+
+    def _create_driver(self, local, grid_url):
+        self._update_capabilities_with_options()
+        if not local:
+            self._driver = RemoteDriver(command_executor=grid_url, desired_capabilities=self._capabilities)
+        else:
+            self._driver = FirefoxDriver(desired_capabilities=self._capabilities)

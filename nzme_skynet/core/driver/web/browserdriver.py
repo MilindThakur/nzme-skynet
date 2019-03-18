@@ -8,7 +8,6 @@ from nzme_skynet.core.utils import js_wait
 from nzme_skynet.core.controls.enums.timeouts import DefaultTimeouts
 import logging
 from nzme_skynet.core.utils.log import Logger
-from typing import Union
 
 
 Logger.configure_logging()
@@ -17,8 +16,18 @@ logger = logging.getLogger(__name__)
 
 class BrowserDriver(BaseDriver):
     """
-    A base abstract class for web based (browser) drivers
+    A base class for web based (browser) drivers
     """
+
+    def __init__(self, capabilities, options):
+        self._capabilities = capabilities
+        self._options = options
+        self._driver = None
+
+    @property
+    def webdriver(self):
+        # type: () -> WebDriver
+        return self._driver
 
     def goto_url(self, url, absolute=False):
         """
@@ -36,17 +45,7 @@ class BrowserDriver(BaseDriver):
             logger.info("Browser timeout, stopping the window load using js..")
             self.webdriver.execute_script('return window.stop();')
 
-    def _create_driver(self):
-        raise NotImplementedError
-
-    def add_option(self, option):
-        raise NotImplementedError
-
-    def add_extension(self, extension):
-        raise NotImplementedError
-
-    @staticmethod
-    def get_default_capability():
+    def _create_driver(self, local, grid_url):
         raise NotImplementedError
 
     def set_proxy(self):
@@ -166,11 +165,17 @@ class BrowserDriver(BaseDriver):
             logger.debug("Failed to match expected url {0} to current url {1}".format(url, self.webdriver.current_url))
             return False
 
-    def init(self):
-        self._create_driver()
-        # Changed from maximize_window to set_window_size as per
-        # https://github.com/SeleniumHQ/docker-selenium/issues/559
-        # Bug is not browser specific.
-        # self.webdriver.maximize_window()
-        # self.webdriver.set_window_size(1930, 1080)
+    def init(self, local, grid_url):
+        """
+        Initialize webdriver based on browserName in capability. Also set the window size based on
+        resolution as "maximum" or e.g. "1900x1200"
+        """
+        self._create_driver(local, grid_url)
         self.webdriver.set_page_load_timeout(DefaultTimeouts.PAGE_LOAD_TIMEOUT)
+        if self._options and self._options["resolution"]:
+            if self._options["resolution"] == "maximum":
+                self.webdriver.maximize_window()
+            else:
+                width = self._options["resolution"].split("x")[0]
+                height = self._options["resolution"].split("x")[1]
+                self.webdriver.set_window_size(width, height)

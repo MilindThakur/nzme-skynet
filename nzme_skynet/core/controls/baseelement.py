@@ -11,7 +11,6 @@ import time
 import logging
 from nzme_skynet.core.utils.log import Logger
 from typing import Union
-from selenium.webdriver.phantomjs.webdriver import WebDriver
 
 
 Logger.configure_logging()
