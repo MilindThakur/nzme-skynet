@@ -20,7 +20,7 @@ class DriverFactoryTest(unittest.TestCase):
 
     # Chrome browser does not run in CI without headless mode.
     # Test should fail on CI but pass locally.
-    # @unittest.skip("Need Chrome binary and driver for local test")
+    @unittest.skip("Need Chrome binary and driver for local test")
     def test_default_chrome_local_driver_creation(self):
         DriverRegistry.register_driver()
         self.assertIsInstance(DriverRegistry.get_driver(), BrowserDriver)
@@ -31,7 +31,7 @@ class DriverFactoryTest(unittest.TestCase):
 
     # Chrome browser does not run in CI without headless mode.
     # Test should fail on CI but pass locally.
-    # @unittest.skip("Need FF binary and driver for local test")
+    @unittest.skip("Need FF binary and driver for local test")
     def test_ff_local_driver_registration(self):
         DriverRegistry.register_driver("firefox")
         self.assertIsInstance(DriverRegistry.get_driver(), BrowserDriver)
@@ -42,7 +42,7 @@ class DriverFactoryTest(unittest.TestCase):
 
     # Chrome browser does not run in CI without headless mode.
     # Test should fail on CI but pass locally.
-    # @unittest.skip("Need FF binary and driver for local test")
+    @unittest.skip("Need FF binary and driver for local test")
     def test_custom_local_driver_registration(self):
         test_capabilities = {
             "browserName": "firefox",
@@ -59,7 +59,7 @@ class DriverFactoryTest(unittest.TestCase):
 
     # Chrome browser does not run in CI without headless mode.
     # Test should fail on CI but pass locally.
-    # @unittest.skip("Need Chrome binary and driver for local test")
+    @unittest.skip("Need Chrome binary and driver for local test")
     def test_default_chrome_headless_local_driver_creation(self):
         option = {
             "highlight": True,
@@ -75,7 +75,7 @@ class DriverFactoryTest(unittest.TestCase):
 
     # Chrome browser does not run in CI without headless mode.
     # Test should fail on CI but pass locally.
-    # @unittest.skip("Need FF binary and driver for local test")
+    @unittest.skip("Need FF binary and driver for local test")
     def test_ff_headless_local_driver_registration(self):
         option = {
             "highlight": True,
