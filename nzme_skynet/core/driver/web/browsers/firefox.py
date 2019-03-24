@@ -21,9 +21,8 @@ class Firefox(BrowserDriver):
         else:
             if "mobileEmulation" in self._options:
                 logger.warning("mobileEmulation is only available for Chrome")
-            if "headless" in self._options:
+            if "headless" in self._options and self._options["headless"]:
                 new_ff_options.headless = True
-                # new_ff_options["args"].extend(["--headless"])
 
         if not self._capabilities:
             logger.debug("No capabilities specified, creating default firefox capability..")

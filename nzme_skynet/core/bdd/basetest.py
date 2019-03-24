@@ -40,19 +40,18 @@ def before_all(context):
     parser.read(configfile)
 
     if parser.has_section("BROWSER"):
+        context.options = {}
         context.browser_capabilities = ast.literal_eval(parser.get("BROWSER", 'capabilities'))
         # Update user specified browser capabilities from CLI
         for key in userdata:
             if key in context.browser_capabilities:
                 context.browser_capabilities[key] = userdata[key]
+        # Parse framework specific configuration options
         # Set global highlight state
         set_highlight(userdata.getbool("highlight", parser.getboolean("BROWSER", "highlight")))
         context.options["resolution"] = userdata.get("resolution", parser.get('BROWSER', 'resolution'))
-        # context.resolution = userdata.get("resolution", parser.get('BROWSER', 'resolution'))
         context.options["headless"] = userdata.getbool("headless", parser.getboolean("BROWSER", "headless"))
-        # context.headless = userdata.getbool("headless", parser.getboolean("BROWSER", "headless"))
         context.options["mobileEmulation"] = userdata.get("mobileEmulation", parser.get("BROWSER", "mobileEmulation"))
-        # context.mobileEmulation = userdata.get("mobileEmulation", parser.get("BROWSER", "mobileEmulation"))
         logger.debug("Created browser capability {0}".format(context.browser_capabilities))
     if parser.has_section("ANDROID"):
         context.android_capabilities = ast.literal_eval(parser.get("ANDROID", "capabilities"))
@@ -150,14 +149,14 @@ def before_scenario(context, scenario):
                 # Desktop browser tests
                 # Add Feature and Scenario name for grouping Zalenium Test
                 # https://github.com/zalando/zalenium/blob/master/docs/usage_examples.md#test-name
-                if not context.is_local and context.is_zalenium:
+                if not context.local and context.zalenium:
                     context.browser_capabilities['name'] = context.test_name
                 context.driver = DriverRegistry.register_driver(
                     driver_type=context.browser_capabilities['browserName'],
                     capabilities=context.browser_capabilities,
-                    local=context.is_local,
-                    grid_url=context.selenium_grid_hub)
-            context.driver.baseurl = context.test_url
+                    local=context.local,
+                    grid_url=context.selenium_grid_hub, options=context.options)
+            context.driver.baseurl = context.testurl
     except Exception:
         logger.exception("Failed building the driver")
         raise
@@ -182,7 +181,7 @@ def after_scenario(context, scenario):
                 logger.debug('Failed to take screenshot to: {}'.format(context.log))
                 pass
             # https://github.com/zalando/zalenium/blob/master/docs/usage_examples.md#marking-the-test-as-passed-or-failed
-            if context.is_zalenium:
+            if context.zalenium:
                 try:
                     context.driver.add_cookie({
                         'name': 'zaleniumTestPassed',
@@ -193,7 +192,7 @@ def after_scenario(context, scenario):
                     pass
 
         # https://github.com/zalando/zalenium/blob/master/docs/usage_examples.md#marking-the-test-as-passed-or-failed
-        if scenario.status == Status.passed and context.is_zalenium:
+        if scenario.status == Status.passed and context.zalenium:
             try:
                 context.driver.add_cookie({
                     'name': 'zaleniumTestPassed',
@@ -221,7 +220,7 @@ def before_step(context, step):
     :param step: behave.model.Step
 
     """
-    if context.driver is not None and context.is_zalenium:
+    if context.driver is not None and context.zalenium:
         try:
             context.driver.add_cookie({
                 'name': 'zaleniumMessage',

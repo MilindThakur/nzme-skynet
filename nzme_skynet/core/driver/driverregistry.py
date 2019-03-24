@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from nzme_skynet.core.driver.basedriver import BaseDriver
-from nzme_skynet.core.driver.enums.drivertypes import DESKTOP_WEBBROWSER, DriverTypes, MOBILE_WEBBROWSER, MOBILE_APP
+from nzme_skynet.core.driver.enums.drivertypes import DESKTOP_WEBBROWSER, MOBILE_WEBBROWSER, MOBILE_APP
 from nzme_skynet.core.driver.driverfactory import DriverFactory
 from nzme_skynet.core.driver import register_driver, deregister_driver, get_driver
 from selenium.webdriver.remote.webdriver import WebDriver
@@ -18,7 +18,6 @@ class DriverRegistry(object):
     The driver is registered at a global level. Currently supports registration
     of only one driver at any time.
     """
-
     @staticmethod
     def register_driver(driver_type='chrome', capabilities=None, local=True, grid_url="http://127.0.0.1:4444/wd/hub", options=None):
         """

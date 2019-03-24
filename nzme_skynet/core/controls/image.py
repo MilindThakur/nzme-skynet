@@ -7,9 +7,6 @@ from nzme_skynet.core.controls.enums.timeouts import DefaultTimeouts
 
 class Image(Clickable):
 
-    def __init__(self, by, locator):
-        super(Image, self).__init__(by, locator)
-
     @property
     def src(self):
         self._highlight()

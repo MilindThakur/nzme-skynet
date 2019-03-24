@@ -48,10 +48,6 @@ class BrowserDriver(BaseDriver):
     def _create_driver(self, local, grid_url):
         raise NotImplementedError
 
-    def set_proxy(self):
-        # TODO: Implemented here
-        pass
-
     @property
     def title(self):
         return self.webdriver.title
@@ -116,7 +112,7 @@ class BrowserDriver(BaseDriver):
 
     def switch_to_alert(self, time=DefaultTimeouts.SHORT_TIMEOUT):
         if WebDriverWait(self.webdriver, time).until(expected_conditions.alert_is_present()):
-            return self.webdriver.switch_to_alert()
+            return self.webdriver.switch_to.alert
 
     def switch_and_accept_alert(self, time=DefaultTimeouts.SHORT_TIMEOUT):
         alert = self.switch_to_alert(time)

@@ -51,6 +51,10 @@ class BaseElement(object):
         return self._find_element().location
 
     @property
+    def tag_name(self):
+        return self._find_element().tag_name
+
+    @property
     def size(self):
         return self._find_element().size
 
@@ -89,6 +93,9 @@ class BaseElement(object):
 
     def scroll_to_element(self, offset=200):
         self.driver.execute_script("window.scrollBy(0," + str(self.location['y'] - offset) + ");")
+
+    def scroll_into_view(self):
+        self._find_element().location_once_scrolled_into_view()
 
     # Visibility, Presence, Clickability
 
