@@ -34,11 +34,12 @@ class Firefox(BrowserDriver):
         new_ff_cap = new_ff_options.to_capabilities()
 
         if "moz:firefoxOptions" in self._capabilities and "moz:firefoxOptions" in new_ff_cap:
-            logger.debug("Updating original capabilities moz:firefoxOptions with headless mode..")
+            logger.debug("Updating original capabilities moz:firefoxOptions..")
             for key, value in new_ff_cap["moz:firefoxOptions"].iteritems():
-                self._capabilities["moz:firefoxOptions"].setdefault(key, []).extend(value)
+                if not self._capabilities["moz:firefoxOptions"][key] == new_ff_cap["moz:firefoxOptions"][key]:
+                    self._capabilities["moz:firefoxOptions"].setdefault(key, []).extend(value)
         elif "moz:firefoxOptions" not in self._capabilities and "moz:firefoxOptions" in new_ff_cap:
-            logger.debug("No custom moz:firefoxOptions specified in capabilities, updating with headless mode..")
+            logger.debug("No custom moz:firefoxOptions specified in capabilities, setting default..")
             self._capabilities["moz:firefoxOptions"] = new_ff_cap["moz:firefoxOptions"]
 
     def _create_driver(self, local, grid_url):

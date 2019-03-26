@@ -36,8 +36,11 @@ class Chrome(BrowserDriver):
 
         if "goog:chromeOptions" in self._capabilities:
             for key, value in new_chrome_options.iteritems():
-                self._capabilities["goog:chromeOptions"].setdefault(key, []).extend(value)
+                if not self._capabilities["goog:chromeOptions"][key] == new_chrome_options[key]:
+                    logger.debug("Updating original capabilities goog:chromeOptions..")
+                    self._capabilities["goog:chromeOptions"].setdefault(key, []).extend(value)
         else:
+            logger.debug("No custom goog:chromeOptions specified in capabilities, setting default..")
             self._capabilities["goog:chromeOptions"] = new_chrome_options
 
     def _create_driver(self, local, grid_url):

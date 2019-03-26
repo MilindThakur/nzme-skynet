@@ -151,11 +151,12 @@ def before_scenario(context, scenario):
                 # https://github.com/zalando/zalenium/blob/master/docs/usage_examples.md#test-name
                 if not context.local and context.zalenium:
                     context.browser_capabilities['name'] = context.test_name
-                context.driver = DriverRegistry.register_driver(
+                DriverRegistry.register_driver(
                     driver_type=context.browser_capabilities['browserName'],
                     capabilities=context.browser_capabilities,
                     local=context.local,
                     grid_url=context.selenium_grid_hub, options=context.options)
+            context.driver = DriverRegistry.get_driver()
             context.driver.baseurl = context.testurl
     except Exception:
         logger.exception("Failed building the driver")
