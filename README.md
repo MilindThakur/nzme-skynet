@@ -80,46 +80,73 @@ To enable video recording on the tests
  * Set the flag _--videoRecordingEnabled_ to true (the videos will be available in the _/tmp/videos_ folder and dashboard)
  
 ## **Test Setup**
-Test setup is managed in a configuration file _testsetup.ini_ which can be overridden on commandline
-To run the tests in cloud (grid):
-* Set the flag _local_ to false
-* Set the BROWSER details
-* Start the grid
+Test setup is managed in a configuration file _testsetup.ini_ which can be overridden on commandline.
 
 ```
-    #------- Desktop Platforms -------#
-    [BROWSER]
-    browserName=internet explorer
-    browserVersion=11.0
-    platformName=WINDOWS
-    platformVersion=any
-    browserstack.local=true
-    highlight=true
-    
-    #------- Mobile Platforms -------#
-    [ANDROID]
-    browserName=chrome
-    platformName=Android
-    platformVersion=8.0
-    deviceName=Samsung Galaxy S9 Plus
-    browserstack.local=true
-    real_mobile=true
-    
-    [IOS]
-    browserName=safari
-    platformName=iOS
-    platformVersion=11.0
-    deviceName=iPhone X
-    browserstack.local=true
-    real_mobile=true
-    
-    #------- Environmental -------#
-    [ENVIRONMENT]
-    testurl=https://www.google.co.nz/
-    local=false
-    selenium_grid_hub=http://127.0.0.1:4444/wd/hub
-    zalenium=false
+#------- Desktop Platforms -------#
+[BROWSER]
+#- Generic Selenium/Cloud capabilities -#
+capabilities =  {
+    "browserName": "chrome",
+    "version": "ANY",
+    "platform": "ANY",
+    "goog:chromeOptions" : {
+      "args": ["--disable-gpu"],
+      "extensions": [],
+      "prefs": {}
+        }
+    }
+#- Framework specific capabilities -#
+highlight = true
+resolution = maximum # e.g. maximum, 1126x830
+headless = false
+mobileEmulation = # e.g. iPhone X, Galaxy S5 etc
+
+#------- Mobile Platforms -------#
+#- Generic Appium capabilities -#
+[ANDROID]
+capabilities = {
+    "platformName": "Android",
+    "platformVersion": "8.1",
+    "deviceName": "Device 01"
+    "udid": "emulator-5554",
+    "appPackage": "appPackage",
+    "appActivity": "appActivity",
+    "app": "/path/to/my.app"
+}
+
+[IOS]
+capabilities = {
+    "platformName": "iOS",
+    "platformVersion": "11.0",
+    "deviceName": "iPhone 7",
+    "automationName": "XCUITest",
+    "app": "/path/to/my.app"
+    }
+
+#------- Environmental -------#
+#- Framework specific capabilities -#
+[ENVIRONMENT]
+testurl=https://www.google.co.nz/
+local=true
+selenium_grid_hub=http://127.0.0.1:4444/wd/hub
+zalenium=false
 ```
+The capabilities key is "free-form" selenium/appium/cloud capabilities key-value pair that is passed on to the
+webdriver. For desktop tests, one can remove the sections [Android] and [IOS], similarly for mobile tests
+one can remove the section [BROWSER]. The section [ENVIRONMENT] is mandatory.
+
+Once can also have separate ".ini" files for different runs e.g. testsetup_browserstack.ini with browserstack
+specific capabilities only, or testsetup_android.ini for android tests. This custom .ini can be passed as a 
+command line parameter for the behave tests.
+
+    $ behave -f testsetup_browserstack.ini --tags=@p1
+    $ behave -f testsetup_android.ini --tags=@android --tags=@p1
+    
+The capabilities and environment key value options can also be updated on the commandline.
+
+    $ behave -D browserName=firefox -D version=65.0 -D local=true -D headless=true --tags=@p1
+
 
 ### **BDD Parallel Tests Run utility**
 Allows running BDD tests in parallel, hence saving on execution time.

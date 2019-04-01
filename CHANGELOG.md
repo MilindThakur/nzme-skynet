@@ -1,6 +1,7 @@
 # **Skynet - Test Automation Library @ NZME - Changelog**
 
 ```bash
+0.4.0   ** BREAKING CHANGE **: new testsetup.ini config to support "free-form" capabilities  
 0.3.28  Add step screenshots to allure report
 0.3.27  Fix API request initialization
 0.3.26  Upgrade to Selenium 3.141.0, introduce declarative pipeline and code cov
