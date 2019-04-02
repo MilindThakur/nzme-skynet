@@ -22,7 +22,7 @@ class ActionsTestCase(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        DriverRegistry.register_driver(DriverTypes.CHROMEHEADLESS, local=False)
+        DriverRegistry.register_driver(DriverTypes.CHROME, local=False)
         cls.driver = DriverRegistry.get_driver()
         cls.driver.goto_url(cls.TEST_URL, absolute=True)
 

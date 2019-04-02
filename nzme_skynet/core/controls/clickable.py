@@ -1,19 +1,16 @@
 # -*- coding: utf-8 -*-
-from selenium.common.exceptions import WebDriverException
 import logging
 from nzme_skynet.core.controls.baseelement import BaseElement
 from selenium.webdriver.common.action_chains import ActionChains
+from nzme_skynet.core.controls.enums.timeouts import DefaultTimeouts
 logger = logging.getLogger(__name__)
 
 
 class Clickable(BaseElement):
 
-    def __init__(self, by, locator):
-        super(Clickable, self).__init__(by, locator)
-
-    def click(self):
+    def click(self, time=DefaultTimeouts.DEFAULT_TIMEOUT):
         original_url = self.driver.current_url
-        elem = self.is_ready_to_interact()
+        elem = self.will_be_ready_to_interact(time)
         if elem:
             self._highlight()
             try:
@@ -49,7 +46,7 @@ class Clickable(BaseElement):
         self.driver.execute_script("arguments[0].click();", self._find_element())
 
     def double_click(self):
-        raise NotImplementedError
+        ActionChains(self.driver).double_click(self.is_currently_present()).perform()
 
     def _scroll_and_click(self):
         self.scroll_to_element()

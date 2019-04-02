@@ -10,9 +10,6 @@ logger = logging.getLogger(__name__)
 
 class ClickableText(Clickable):
 
-    def __init__(self, by, locator):
-        super(ClickableText, self).__init__(by, locator)
-
     @property
     def text(self):
         self._highlight()

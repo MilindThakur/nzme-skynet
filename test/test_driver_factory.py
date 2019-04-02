@@ -29,31 +29,65 @@ class DriverFactoryTest(unittest.TestCase):
         DriverRegistry.deregister_driver()
         self.assertIsNone(DriverRegistry.get_driver(), 'Error: Driver found without registration')
 
-    def test_registering_multiple_drivers(self):
-        DriverRegistry.register_driver(DriverTypes.CHROMEHEADLESS, local=False)
-        current_driver = DriverRegistry.get_driver()
-        new_driver = DriverRegistry.register_driver(DriverTypes.CHROMEHEADLESS)
-        self.assertIsNotNone(new_driver, "Error: Should return previously registered driver")
-        self.assertEqual(current_driver, new_driver, "Error: Shoulld return same driver instance created before")
+    # Chrome browser does not run in CI without headless mode.
+    # Test should fail on CI but pass locally.
+    @unittest.skip("Need FF binary and driver for local test")
+    def test_ff_local_driver_registration(self):
+        DriverRegistry.register_driver("firefox")
+        self.assertIsInstance(DriverRegistry.get_driver(), BrowserDriver)
+        self.assertIsInstance(DriverRegistry.get_webdriver(), WebDriver)
+        self.assertEqual(DriverRegistry.get_driver().name, DriverTypes.FIREFOX)
         DriverRegistry.deregister_driver()
         self.assertIsNone(DriverRegistry.get_driver(), 'Error: Driver found without registration')
-        self.assertIsNone(DriverRegistry.get_webdriver(), 'Error: Webdriver found without registration')
+
+    # Chrome browser does not run in CI without headless mode.
+    # Test should fail on CI but pass locally.
+    @unittest.skip("Need FF binary and driver for local test")
+    def test_custom_local_driver_registration(self):
+        test_capabilities = {
+            "browserName": "firefox",
+            "platform": 'LINUX',
+            "version": '',
+            "javascriptEnabled": True
+        }
+        DriverRegistry.register_driver(DriverTypes.FIREFOX, capabilities=test_capabilities)
+        self.assertIsInstance(DriverRegistry.get_driver(), BrowserDriver)
+        self.assertIsInstance(DriverRegistry.get_webdriver(), WebDriver)
+        self.assertEqual(DriverRegistry.get_driver().name, DriverTypes.FIREFOX)
+        DriverRegistry.deregister_driver()
+        self.assertIsNone(DriverRegistry.get_driver(), 'Error: Driver found without registration')
 
     # Chrome browser does not run in CI without headless mode.
     # Test should fail on CI but pass locally.
     @unittest.skip("Need Chrome binary and driver for local test")
-    def test_custom_local_driver_registration(self):
-        DriverRegistry.register_driver(DriverTypes.CHROMEHEADLESS)
+    def test_default_chrome_headless_local_driver_creation(self):
+        option = {
+            "highlight": True,
+            "headless": True,
+            "resolution": "maximum"
+        }
+        DriverRegistry.register_driver(options=option)
         self.assertIsInstance(DriverRegistry.get_driver(), BrowserDriver)
         self.assertIsInstance(DriverRegistry.get_webdriver(), WebDriver)
         self.assertEqual(DriverRegistry.get_driver().name, DriverTypes.CHROME)
         DriverRegistry.deregister_driver()
         self.assertIsNone(DriverRegistry.get_driver(), 'Error: Driver found without registration')
 
-    def test_unsupported_local_driver_registration(self):
-        with self.assertRaises(Exception) as context:
-            DriverRegistry.register_driver(driver_type=DriverTypes.IE)
-        self.assertTrue('Only supports Chrome, Firefox, PhantomJS in local mode', context.exception.message)
+    # Chrome browser does not run in CI without headless mode.
+    # Test should fail on CI but pass locally.
+    @unittest.skip("Need FF binary and driver for local test")
+    def test_ff_headless_local_driver_registration(self):
+        option = {
+            "highlight": True,
+            "headless": True,
+            "resolution": "maximum"
+        }
+        DriverRegistry.register_driver("firefox", options=option)
+        self.assertIsInstance(DriverRegistry.get_driver(), BrowserDriver)
+        self.assertIsInstance(DriverRegistry.get_webdriver(), WebDriver)
+        self.assertEqual(DriverRegistry.get_driver().name, DriverTypes.FIREFOX)
+        DriverRegistry.deregister_driver()
+        self.assertIsNone(DriverRegistry.get_driver(), 'Error: Driver found without registration')
 
     def test_default_remote_chrome_driver_registration(self):
         DriverRegistry.register_driver(local=False)
@@ -63,24 +97,65 @@ class DriverFactoryTest(unittest.TestCase):
         DriverRegistry.deregister_driver()
         self.assertIsNone(DriverRegistry.get_driver(), 'Error: Driver found without registration')
 
-    def test_custom_remote_driver_registration(self):
-        DriverRegistry.register_driver(driver_type=DriverTypes.CHROMEHEADLESS, local=False)
+    def test_remote_ff_driver_registration(self):
+        DriverRegistry.register_driver(DriverTypes.FIREFOX, local=False)
+        self.assertIsInstance(DriverRegistry.get_driver(), BrowserDriver)
+        self.assertIsInstance(DriverRegistry.get_webdriver(), WebDriver)
+        self.assertEqual(DriverRegistry.get_driver().name, DriverTypes.FIREFOX)
+        DriverRegistry.deregister_driver()
+        self.assertIsNone(DriverRegistry.get_driver(), 'Error: Driver found without registration')
+
+    def test_remote_driver_registration_with_capabilities(self):
+        test_capabilities = {
+            "browserName": "firefox",
+            "platform": 'LINUX',
+            "version": '',
+            "javascriptEnabled": True
+        }
+        DriverRegistry.register_driver(DriverTypes.FIREFOX, capabilities=test_capabilities, local=False)
+        self.assertIsInstance(DriverRegistry.get_driver(), BrowserDriver)
+        self.assertIsInstance(DriverRegistry.get_webdriver(), WebDriver)
+        self.assertEqual(DriverRegistry.get_driver().name, DriverTypes.FIREFOX)
+        DriverRegistry.deregister_driver()
+        self.assertIsNone(DriverRegistry.get_driver(), 'Error: Driver found without registration')
+
+    def test_remote_chrome_headless_driver_registration_with_capabilities(self):
+        option = {
+            "highlight": True,
+            "headless": True,
+            "resolution": "maximum"
+        }
+        DriverRegistry.register_driver(DriverTypes.CHROME, local=False, options=option)
         self.assertIsInstance(DriverRegistry.get_driver(), BrowserDriver)
         self.assertIsInstance(DriverRegistry.get_webdriver(), WebDriver)
         self.assertEqual(DriverRegistry.get_driver().name, DriverTypes.CHROME)
         DriverRegistry.deregister_driver()
         self.assertIsNone(DriverRegistry.get_driver(), 'Error: Driver found without registration')
 
-    def test_remote_driver_registration_with_capabilities(self):
-        test_capabilities = {
-            "browserName": "chrome",
-            "platform": 'LINUX',
-            "version": '',
-            "javascriptEnabled": True
+    def test_remote_ff_headless_driver_registration_with_capabilities(self):
+        option = {
+            "highlight": True,
+            "headless": True,
+            "resolution": "maximum"
         }
-        DriverRegistry.register_driver(capabilities=test_capabilities, local=False)
+        DriverRegistry.register_driver(DriverTypes.FIREFOX, local=False, options=option)
         self.assertIsInstance(DriverRegistry.get_driver(), BrowserDriver)
         self.assertIsInstance(DriverRegistry.get_webdriver(), WebDriver)
-        self.assertEqual(DriverRegistry.get_driver().name, DriverTypes.CHROME)
+        self.assertEqual(DriverRegistry.get_driver().name, DriverTypes.FIREFOX)
         DriverRegistry.deregister_driver()
         self.assertIsNone(DriverRegistry.get_driver(), 'Error: Driver found without registration')
+
+    def test_registering_multiple_drivers(self):
+        DriverRegistry.register_driver(DriverTypes.CHROME, local=False)
+        current_driver = DriverRegistry.get_driver()
+        new_driver = DriverRegistry.register_driver(DriverTypes.FIREFOX)
+        self.assertIsNotNone(new_driver, "Error: Should return previously registered driver")
+        self.assertEqual(current_driver, new_driver, "Error: Should return same driver instance created before")
+        DriverRegistry.deregister_driver()
+        self.assertIsNone(DriverRegistry.get_driver(), 'Error: Driver found without registration')
+        self.assertIsNone(DriverRegistry.get_webdriver(), 'Error: Webdriver found without registration')
+
+    def test_unsupported_local_driver_registration(self):
+        with self.assertRaises(Exception) as context:
+            DriverRegistry.register_driver(driver_type=DriverTypes.IE)
+        self.assertTrue('Only supports Chrome, Firefox in local mode', context.exception.message)

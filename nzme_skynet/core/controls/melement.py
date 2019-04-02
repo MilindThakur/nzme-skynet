@@ -5,9 +5,6 @@ from nzme_skynet.core.controls.baseelement import BaseElement
 
 class MElement(BaseElement):
 
-    def __init__(self, by, locator):
-        super(MElement, self).__init__(by, locator)
-
     def click(self):
         self.is_ready_to_interact()
         # Highlight here, This needs to be implemented for mobile

@@ -1,12 +1,9 @@
 # -*- coding: utf-8 -*-
 from nzme_skynet.core.driver.basedriver import BaseDriver
-from nzme_skynet.core.driver.enums.drivertypes import DESKTOP_WEBBROWSER, DriverTypes, MOBILE_WEBBROWSER, MOBILE_APP
+from nzme_skynet.core.driver.enums.drivertypes import DESKTOP_WEBBROWSER, MOBILE_WEBBROWSER, MOBILE_APP
 from nzme_skynet.core.driver.driverfactory import DriverFactory
-from nzme_skynet.core.controls import set_highlight, highlight_state
 from nzme_skynet.core.driver import register_driver, deregister_driver, get_driver
 from selenium.webdriver.remote.webdriver import WebDriver
-from selenium.webdriver.phantomjs.webdriver import WebDriver
-import signal
 import logging
 from nzme_skynet.core.utils.log import Logger
 
@@ -21,9 +18,8 @@ class DriverRegistry(object):
     The driver is registered at a global level. Currently supports registration
     of only one driver at any time.
     """
-
     @staticmethod
-    def register_driver(driver_type='chrome', capabilities=None, local=True, grid_url="http://127.0.0.1:4444/wd/hub"):
+    def register_driver(driver_type='chrome', capabilities=None, local=True, grid_url="http://127.0.0.1:4444/wd/hub", options=None):
         """
         Build and register driver
         :param driver_type: DriverTypes
@@ -32,29 +28,24 @@ class DriverRegistry(object):
         :param grid_url: Selenium grid url
         :return:
         """
-        new_driver = None
         if get_driver():
             logger.warning("Driver already registered. Only one driver can be registered at a time")
             return get_driver()
-        set_highlight(capabilities['highlight'] if capabilities and 'highlight' in capabilities else False)
         try:
-            if local:
-                if driver_type in DESKTOP_WEBBROWSER:
-                    new_driver = DriverFactory.build_local_web_driver(driver_type, capabilities)
-                elif driver_type in MOBILE_WEBBROWSER:
-                    new_driver = DriverFactory.build_mobile_web_driver(driver_type, capabilities, grid_url)
-                elif driver_type in MOBILE_APP:
-                    new_driver = DriverFactory.build_mobile_app_driver(driver_type, capabilities, grid_url)
-                else:
-                    logger.exception("Empty or Unknown driver type, valid options: chrome, firefox, android, ios-web etc")
-                    raise Exception("Empty or Unknown driver type, valid options: chrome, firefox, android, ios-web etc")
+            if driver_type in DESKTOP_WEBBROWSER:
+                new_driver = DriverFactory.build_web_driver(driver_type, capabilities, options, local, grid_url)
+            elif driver_type in MOBILE_WEBBROWSER:
+                new_driver = DriverFactory.build_mobile_web_driver(driver_type, capabilities, grid_url)
+            elif driver_type in MOBILE_APP:
+                new_driver = DriverFactory.build_mobile_app_driver(driver_type, capabilities, grid_url)
             else:
-                new_driver = DriverFactory.build_remote_web_driver(capabilities, grid_url)
-            register_driver(new_driver)
-            return get_driver()
-        except Exception as e:
+                logger.exception("Empty or Unknown driver type, valid options: chrome, firefox, android, ios")
+                raise Exception("Empty or Unknown driver type, valid options: chrome, firefox, android, ios")
+        except Exception:
             logger.exception("Failed to register driver")
             raise
+        register_driver(new_driver)
+        return get_driver()
 
     @staticmethod
     def deregister_driver():
@@ -63,13 +54,9 @@ class DriverRegistry(object):
         :return:
         """
         if get_driver():
-            # https://github.com/seleniumhq/selenium/issues/767
-            if isinstance(DriverRegistry.get_webdriver(), WebDriver):
-                DriverRegistry.get_webdriver().service.process.send_signal(signal.SIGTERM)
             DriverRegistry.get_webdriver().quit()
             deregister_driver()
             logger.debug("Successfully deregistered driver")
-            set_highlight(False)
 
     @staticmethod
     def get_driver():

@@ -4,9 +4,6 @@ from nzme_skynet.core.controls.clickabletext import ClickableText
 
 class TextLink(ClickableText):
 
-    def __init_(self, by, locator):
-        super(TextLink, self).__init__(by, locator)
-
     @property
     def href(self):
         self._highlight()
