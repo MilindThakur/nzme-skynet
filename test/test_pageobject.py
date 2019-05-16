@@ -21,7 +21,8 @@ class GoogleHomePage(BaseWebPage):
     def search(self, string):
         self.search_input.set_value(string)
         # To get around suggestions option hiding the search button
-        ActionChains(DriverRegistry.get_webdriver()).send_keys(Keys.ESCAPE).perform()
+        ActionChains(DriverRegistry.get_webdriver()
+                     ).send_keys(Keys.ESCAPE).perform()
         self.submit_search_btn.click()
 
 
@@ -35,7 +36,8 @@ class GoogleSearchResultPage(BaseWebPage):
 class POValidation(unittest.TestCase):
 
     def setUp(self):
-        DriverRegistry.register_driver(driver_type=DriverTypes.CHROME, local=False)
+        DriverRegistry.register_driver(
+            driver_type=DriverTypes.CHROME, local=False)
 
     def test_web_page_object_creation(self):
         ghomepage = GoogleHomePage()
@@ -48,7 +50,8 @@ class POValidation(unittest.TestCase):
         assert gresultpage.page_url is None
         gresultpage.search_result_container.will_be_visible()
         first_result_url = gresultpage.get_result_url(1)
-        assert "www.nzme.co.nz/" in first_result_url, "Unexpected {0} found in first result".format(first_result_url)
+        assert "www.nzme.co.nz/" in first_result_url, "Unexpected {0} found in first result".format(
+            first_result_url)
 
     def tearDown(self):
         DriverRegistry.deregister_driver()

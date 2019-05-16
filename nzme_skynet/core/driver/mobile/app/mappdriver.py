@@ -6,6 +6,7 @@ from nzme_skynet.core.controls.enums.timeouts import DefaultTimeouts
 import logging
 logger = logging.getLogger(__name__)
 
+
 class MAppDriver(MobileDriver):
 
     def __init__(self, desired_capabilities, remote_url='http://127.0.0.1:4444/wd/hub'):
@@ -30,10 +31,11 @@ class MAppDriver(MobileDriver):
             self._cache_context = self.webdriver.context
         try:
             WebDriverWait(self.webdriver, DefaultTimeouts.DEFAULT_TIMEOUT).\
-             until(lambda driver: len(driver.contexts) > 1)
+                until(lambda driver: len(driver.contexts) > 1)
             self.webdriver.switch_to.context(self.webdriver.contexts[1])
         except TimeoutException:
-            raise TimeoutException("Page elements never fully loaded after %s seconds" % DefaultTimeouts.DEFAULT_TIMEOUT)
+            raise TimeoutException(
+                "Page elements never fully loaded after %s seconds" % DefaultTimeouts.DEFAULT_TIMEOUT)
         # self.webdriver.switch_to.context(self.webdriver.contexts[1])
 
     # TODO: Assuming the contexts are always available. In case its not,

@@ -17,18 +17,23 @@ class Clickable(BaseElement):
                 elem.click()
                 return
             except Exception as e:
-                logger.debug("Failed to click elem {0}. Exception: {1}".format(self._locator, e.message))
+                logger.debug("Failed to click elem {0}. Exception: {1}".format(
+                    self._locator, e.message))
                 if self.driver.current_url == original_url:
-                    logger.debug("Currently on the same page, trying other click options..")
+                    logger.debug(
+                        "Currently on the same page, trying other click options..")
                     try:
                         logger.debug("Trying click using JS...")
-                        self.driver.execute_script("arguments[0].click();", elem)
+                        self.driver.execute_script(
+                            "arguments[0].click();", elem)
                         return
                     except Exception as e:
-                        logger.debug("Failed JS click. Exception: {0}".format(e.message))
+                        logger.debug(
+                            "Failed JS click. Exception: {0}".format(e.message))
                         try:
                             logger.debug("Trying click using Action chain..")
-                            hover = ActionChains(self.driver).move_to_element(elem)
+                            hover = ActionChains(
+                                self.driver).move_to_element(elem)
                             hover.click()
                             hover.perform()
                             return
@@ -37,16 +42,21 @@ class Clickable(BaseElement):
                                              .format(e.message))
                             raise
                 else:
-                    logger.debug("The page has already transitioned to a new page, stopping click method")
+                    logger.debug(
+                        "The page has already transitioned to a new page, stopping click method")
                     return
-        logger.exception("Element {0} is not available to interact with".format(self._locator))
-        raise Exception("Element {0} is not available to interact with".format(self._locator))
+        logger.exception(
+            "Element {0} is not available to interact with".format(self._locator))
+        raise Exception(
+            "Element {0} is not available to interact with".format(self._locator))
 
     def clickjs(self):
-        self.driver.execute_script("arguments[0].click();", self._find_element())
+        self.driver.execute_script(
+            "arguments[0].click();", self._find_element())
 
     def double_click(self):
-        ActionChains(self.driver).double_click(self.is_currently_present()).perform()
+        ActionChains(self.driver).double_click(
+            self.is_currently_present()).perform()
 
     def _scroll_and_click(self):
         self.scroll_to_element()

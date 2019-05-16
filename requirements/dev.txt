@@ -7,3 +7,4 @@ pytest-xdist
 pytest-cov
 httpretty
 wheel
+autopep8~=1.4

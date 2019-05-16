@@ -11,7 +11,8 @@ class IOSBrowserDriver(MBrowserDriver):
         if not self._desired_cap:
             raise Exception("No capabilities provided to init Appium driver")
         if not self._desired_cap['platformVersion']:
-            raise Exception("Please provide platformVersion to test app against")
+            raise Exception(
+                "Please provide platformVersion to test app against")
         if self._browser not in ['safari', 'chrome']:
             raise Exception("Only supports Safari and Chrome browsers on IOS")
 
@@ -21,4 +22,5 @@ class IOSBrowserDriver(MBrowserDriver):
         self._desired_cap['platformName'] = 'iOS'
         if not self._desired_cap['deviceName']:
             raise Exception("No iOS deviceName specified")
-        logger.debug("iOS capability for creating driver {0}".format(self._desired_cap))
+        logger.debug(
+            "iOS capability for creating driver {0}".format(self._desired_cap))

@@ -25,10 +25,10 @@ class BaseElement(object):
     def _find_element(self):
         # type: () -> WebElement
         try:
-            return WebDriverWait(self.driver, DefaultTimeouts.DEFAULT_TIMEOUT).until\
-                (ec.presence_of_element_located((self._by, self._locator)))
+            return WebDriverWait(self.driver, DefaultTimeouts.DEFAULT_TIMEOUT).until(ec.presence_of_element_located((self._by, self._locator)))
         except Exception:
-            logger.exception("Timeout: Failed to find element {0}".format(self._locator))
+            logger.exception(
+                "Timeout: Failed to find element {0}".format(self._locator))
             raise
 
     def find_sub_elements(self, by, locator):
@@ -63,7 +63,8 @@ class BaseElement(object):
             self._find_element()
             return True
         except Exception:
-            logger.debug("Element {0} is not present in the DOM".format(self._locator))
+            logger.debug(
+                "Element {0} is not present in the DOM".format(self._locator))
             return False
 
     def _highlight(self):
@@ -85,14 +86,16 @@ class BaseElement(object):
         try:
             return self.get_attribute(attribute)
         except Exception:
-            logger.debug("Element {0} does not have attribute {1}".format(self._locator, attribute))
+            logger.debug("Element {0} does not have attribute {1}".format(
+                self._locator, attribute))
             return False
 
     def get_css_property(self, css_property):
         return self._find_element().value_of_css_property(css_property)
 
     def scroll_to_element(self, offset=200):
-        self.driver.execute_script("window.scrollBy(0," + str(self.location['y'] - offset) + ");")
+        self.driver.execute_script(
+            "window.scrollBy(0," + str(self.location['y'] - offset) + ");")
 
     def scroll_into_view(self):
         self._find_element().location_once_scrolled_into_view()
@@ -108,7 +111,8 @@ class BaseElement(object):
         try:
             return WebDriverWait(self.driver, time).until(ec.visibility_of_element_located((self._by, self._locator)))
         except Exception:
-            logger.debug("Element {0} was not visible in time {1} secs".format(self._locator, str(time)))
+            logger.debug("Element {0} was not visible in time {1} secs".format(
+                self._locator, str(time)))
             return False
 
     def is_currently_present(self, time=DefaultTimeouts.SHORT_TIMEOUT):
@@ -120,7 +124,8 @@ class BaseElement(object):
         try:
             return WebDriverWait(self.driver, time).until(ec.presence_of_element_located((self._by, self._locator)))
         except Exception:
-            logger.debug("Element {0} was not present in time {1} secs".format(self._locator, time))
+            logger.debug("Element {0} was not present in time {1} secs".format(
+                self._locator, time))
             return False
 
     def is_not_displayed(self, time=DefaultTimeouts.SHORT_TIMEOUT):
@@ -132,7 +137,8 @@ class BaseElement(object):
         try:
             return WebDriverWait(self.driver, time).until(ec.invisibility_of_element_located((self._by, self._locator)))
         except Exception:
-            logger.debug("Element {0} was not invisible in time {1} secs".format(self._locator, time))
+            logger.debug("Element {0} was not invisible in time {1} secs".format(
+                self._locator, time))
             return False
 
     def is_ready_to_interact(self, time=DefaultTimeouts.SHORT_TIMEOUT):
@@ -144,7 +150,8 @@ class BaseElement(object):
         try:
             return WebDriverWait(self.driver, time).until(ec.element_to_be_clickable((self._by, self._locator)))
         except Exception:
-            logger.debug("Element {0} was not clickable in time {1} secs".format(self._locator, time))
+            logger.debug("Element {0} was not clickable in time {1} secs".format(
+                self._locator, time))
             return False
 
     def hover_over(self):

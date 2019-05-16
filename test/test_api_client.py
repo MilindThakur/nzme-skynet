@@ -8,16 +8,20 @@ from types import ModuleType
 
 from nzme_skynet.core.api.apiclient import ApiClient
 
+
 def get_serialized_result(dict_mock):
     return json.dumps({'result': dict_mock})
 
+
 def get_serialized_error(dict_mock):
     return json.dumps({'error': dict_mock})
+
 
 class ApiClientTest(unittest.TestCase):
     """
     Api Client unittests
     """
+
     def setUp(self):
         self.error_message_body = {
             'message': 'test_message',
@@ -58,11 +62,13 @@ class ApiClientTest(unittest.TestCase):
             'password': 'test'
 
         }
-        self.resource_url = 'https://' + self.client_kwargs['host'] + self.base_uri + self.uri
+        self.resource_url = 'https://' + \
+            self.client_kwargs['host'] + self.base_uri + self.uri
         self.client = ApiClient(**self.client_kwargs)
 
     def test_create_session_client(self):
-        self.assertEqual(self.client._base_url, ('https://'+ self.client_kwargs['host']))
+        self.assertEqual(self.client._base_url,
+                         ('https://' + self.client_kwargs['host']))
         self.assertEqual(type(self.client._req), requests.sessions.Session)
 
     def test_create_request_client(self):
@@ -83,19 +89,23 @@ class ApiClientTest(unittest.TestCase):
                                body=get_serialized_result(self.create_record),
                                status=200,
                                content_type="application/json")
-        r = self.client.resource(self.uri, self.base_uri).get(params=self.get_param)
+        r = self.client.resource(self.uri, self.base_uri).get(
+            params=self.get_param)
         self.assertEqual(r.status_code, 200)
         r_json = json.loads(r.content)
         self.assertEqual(r_json['result']['id'], self.create_record['id'])
-        self.assertEqual(r_json['result']['title'], self.create_record['title'])
-        self.assertEqual(r_json['result']['author'], self.create_record['author'])
+        self.assertEqual(r_json['result']['title'],
+                         self.create_record['title'])
+        self.assertEqual(r_json['result']['author'],
+                         self.create_record['author'])
 
     @httpretty.activate
     def test_response(self):
         httpretty.register_uri(httpretty.GET,
                                self.resource_url,
                                status=200,
-                               adding_headers={'test-1': 'foo', 'test-2': 'bar'},
+                               adding_headers={
+                                   'test-1': 'foo', 'test-2': 'bar'},
                                content_type="application/json")
         response = self.client.resource(self.uri, self.base_uri).get()
         self.assertEqual(type(response), requests.Response)
@@ -107,7 +117,8 @@ class ApiClientTest(unittest.TestCase):
     def test_http_error(self):
         httpretty.register_uri(httpretty.GET,
                                self.resource_url,
-                               body=get_serialized_error(self.error_message_body),
+                               body=get_serialized_error(
+                                   self.error_message_body),
                                status=400,
                                content_type="application/json")
         response = self.client.resource(self.uri, self.base_uri).get()
@@ -132,7 +143,8 @@ class ApiClientTest(unittest.TestCase):
                                body=get_serialized_result(self.create_record),
                                status=200,
                                content_type="application/json")
-        response = self.client.resource(self.uri, self.base_uri).post(data=json.dumps(self.create_record))
+        response = self.client.resource(self.uri, self.base_uri).post(
+            data=json.dumps(self.create_record))
         response_json = json.loads(response.content)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response_json['result']['title'], 'foo_title')
@@ -145,10 +157,12 @@ class ApiClientTest(unittest.TestCase):
                                body=get_serialized_result(self.updated_record),
                                status=200,
                                content_type="application/json")
-        r = self.client.resource(self.uri, self.base_uri).put(path="/1", data=json.dumps(self.updated_record))
+        r = self.client.resource(self.uri, self.base_uri).put(
+            path="/1", data=json.dumps(self.updated_record))
         self.assertEqual(r.status_code, 200)
         response_json = json.loads(r.content)
-        self.assertEqual(response_json['result']['title'], self.updated_record['title'])
+        self.assertEqual(response_json['result']
+                         ['title'], self.updated_record['title'])
 
     @httpretty.activate
     def test_delete(self):
@@ -170,5 +184,5 @@ class ApiClientTest(unittest.TestCase):
         response_1 = resource.delete(path=new_path)
         self.assertEqual(response_1.status_code, 200)
         response_1_json = json.loads(response_1.content)
-        self.assertEqual(response_1_json['result']['status'], self.delete_record['status'])
-
+        self.assertEqual(response_1_json['result']
+                         ['status'], self.delete_record['status'])

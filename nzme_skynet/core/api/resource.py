@@ -4,6 +4,7 @@ import logging
 
 logger = logging.getLogger('ApiClient')
 
+
 class Resource(object):
     """
     Resource request wrapper
@@ -14,7 +15,8 @@ class Resource(object):
     """
 
     def __init__(self, uri=None, base_uri=None, base_url=None, req=None):
-        self._resource_url = helper.create_resource_url(base_url, uri, base_uri)
+        self._resource_url = helper.create_resource_url(
+            base_url, uri, base_uri)
         self._req = req
 
     def get(self, **kwargs):
@@ -30,9 +32,11 @@ class Resource(object):
         return self._request('DELETE', self._append_path(path), **kwargs)
 
     def _request(self, method, url, **kwargs):
-        logger.debug('(SENT REQUEST) Method: %s, URL: %s' % (method, self._resource_url))
-        response =  self._req.request(method, url, **kwargs)
-        logger.debug('(RECEIVED RESPONSE) Code: %s, URL: %s' % (response.status_code, self._resource_url))
+        logger.debug('(SENT REQUEST) Method: %s, URL: %s' %
+                     (method, self._resource_url))
+        response = self._req.request(method, url, **kwargs)
+        logger.debug('(RECEIVED RESPONSE) Code: %s, URL: %s' %
+                     (response.status_code, self._resource_url))
         return response
 
     @property

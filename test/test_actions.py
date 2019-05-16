@@ -71,13 +71,16 @@ class ActionsTestCase(unittest.TestCase):
         broken_image = Image(By.XPATH, "//img[@alt='broken image']")
         self.assertTrue(good_image.is_image_loaded())
         self.assertFalse(broken_image.is_image_loaded())
-        self.assertEqual(good_image.src, self.TEST_URL + "img/avatar-blank.jpg")
+        self.assertEqual(good_image.src, self.TEST_URL +
+                         "img/avatar-blank.jpg")
         self.assertEqual(good_image.width, '160')
         self.assertEqual(good_image.height, '160')
 
     def test_action_radiobutton(self):
-        male_radiobtn = RadioButton(By.CSS_SELECTOR, "body > form > p.male > label > input[type='radio']")
-        female_radiobtn = RadioButton(By.CSS_SELECTOR, "body > form > p.female > label > input[type='radio']")
+        male_radiobtn = RadioButton(
+            By.CSS_SELECTOR, "body > form > p.male > label > input[type='radio']")
+        female_radiobtn = RadioButton(
+            By.CSS_SELECTOR, "body > form > p.female > label > input[type='radio']")
         self.assertTrue(male_radiobtn.is_selected())
         self.assertFalse(female_radiobtn.is_selected())
         female_radiobtn.click()
@@ -93,7 +96,8 @@ class ActionsTestCase(unittest.TestCase):
 
     def test_action_textlink(self):
         valid_link = TextLink(By.PARTIAL_LINK_TEXT, "Valid link")
-        self.assertEqual(valid_link.href, self.TEST_URL + "img/avatar-blank.jpg")
+        self.assertEqual(valid_link.href, self.TEST_URL +
+                         "img/avatar-blank.jpg")
 
     def test_action_text(self):
         intro_txt = Text(By.ID, "introduction")
@@ -110,4 +114,3 @@ class ActionsTestCase(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-

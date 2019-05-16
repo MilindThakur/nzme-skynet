@@ -49,4 +49,3 @@ class SelectElem(BaseElement):
     def get_options_count(self):
         self._select_init()
         return len(self.select.options)
-

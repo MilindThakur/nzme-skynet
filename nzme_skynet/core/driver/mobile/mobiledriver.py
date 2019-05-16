@@ -4,6 +4,7 @@ from nzme_skynet.core.driver.basedriver import BaseDriver
 import logging
 logger = logging.getLogger(__name__)
 
+
 class MobileDriver(BaseDriver):
 
     def __init__(self, desired_capabilities, remote_url='http://127.0.0.1:4444/wd/hub'):
@@ -35,7 +36,8 @@ class MobileDriver(BaseDriver):
     def _create_driver(self):
         logger.debug("Creating Mobile driver..")
         self._create_desired_capabilities()
-        self._driver = WebDriver(command_executor=self._remote_url, desired_capabilities=self._desired_cap)
+        self._driver = WebDriver(
+            command_executor=self._remote_url, desired_capabilities=self._desired_cap)
 
     def _create_desired_capabilities(self):
         raise NotImplementedError
@@ -43,4 +45,3 @@ class MobileDriver(BaseDriver):
     @property
     def context(self):
         return self.webdriver.context
-

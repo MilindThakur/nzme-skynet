@@ -5,13 +5,16 @@ import logging
 
 logger = logging.getLogger('ApiConnection')
 
+
 class InvalidUsage(Exception):
     pass
+
 
 class ApiConnection(object):
     """
     Wrapper class for requests library which manages requests session
     """
+
     def __init__(self, host_url, http=True, persist_session=True, username=None, password=None):
         """
         Request Client object
@@ -22,7 +25,8 @@ class ApiConnection(object):
         :param password: optional, password for basic auth
         """
         if host_url is None:
-            raise InvalidUsage("Must specify the 'host' url to send requests to")
+            raise InvalidUsage(
+                "Must specify the 'host' url to send requests to")
         if not 'http' in host_url or 'https' in host_url:
             if http:
                 self._url = "http://" + host_url

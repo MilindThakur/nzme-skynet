@@ -3,13 +3,15 @@ from nzme_skynet.core.driver.mobile.app.mappdriver import MAppDriver
 import logging
 logger = logging.getLogger(__name__)
 
+
 class AndroidAppDriver(MAppDriver):
 
     def _create_desired_capabilities(self):
         if not self._desired_cap:
             raise Exception("No capabilities provided to init Appium driver")
         if 'platformVersion' not in self._desired_cap:
-            raise Exception("Please provide platformVersion to test app against")
+            raise Exception(
+                "Please provide platformVersion to test app against")
         if 'app' not in self._desired_cap:
             raise Exception("Please provide absolute app path for .apk")
         if 'appPackage' not in self._desired_cap:
@@ -22,4 +24,5 @@ class AndroidAppDriver(MAppDriver):
         if 'fullReset' not in self._desired_cap:
             self._desired_cap['fullReset'] = 'true'
         self._desired_cap['platformName'] = 'Android'
-        logger.debug("Received Android capability for creating driver: {0}".format(self._desired_cap))
+        logger.debug("Received Android capability for creating driver: {0}".format(
+            self._desired_cap))
