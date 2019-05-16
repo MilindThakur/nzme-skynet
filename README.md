@@ -22,7 +22,8 @@
 * Download [Chrome browser](https://www.google.com/chrome/browser/desktop/index.html) and [Chrome Driver](https://sites.google.com/a/chromium.org/chromedriver/)
 * Download Firefox. Firefox > v.47 requires [Marionette](https://developer.mozilla.org/en-US/docs/Mozilla/QA/Marionette) driver
 * To verify drivers are working [check these instructions](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/verify_webdriver.md)
-* Install [mobile dependencies](docs/howto_mobile_tests.md)
+* Install [mobile dependencies](docs/howto_mobile_tests.md) or docker solution e.g. [Selenoid Android](https://aerokube.com/selenoid/latest/#_android),
+[docker-android](https://github.com/budtmo/docker-android)
 * (optional) Install Selenium Grid of choice e.g. [Zalenium](https://github.com/zalando/zalenium),
 [Selenoid](https://github.com/aerokube/selenoid), [docker-selenium](https://github.com/SeleniumHQ/docker-selenium) etc
 
@@ -31,8 +32,18 @@
         cd skynet
         mkvirtualenv skynet-env
         pip install -r requirements/dev.txt
+        
+Style guide: https://www.python.org/dev/peps/pep-0008/
+    
+        python -m autopep8 -r --global-config .config-pep8 -i .
      
 ## **Run Tests**
+
+You can also run all of the tests via `tox` in your local
+
+        $ tox
+
+For detailed run:
 
 Setup test env
 
@@ -56,6 +67,7 @@ Teardown test env
         ./docker_compose.sh stop
 
 ## **BDD Test Setup**
+
 Test setup is managed in a default configuration file _testsetup.ini_ which can be overridden on commandline.
 
 ```
