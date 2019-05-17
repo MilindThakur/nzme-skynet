@@ -12,63 +12,67 @@ file with appropriate capabilities as specified by the provider documentation e.
 
 e.g. (Browserstack)
 
-    #------- Desktop Platforms -------#
-    [BROWSER]
-    browserName=internet explorer
-    browserVersion=11.0
-    platformName=WINDOWS
-    platformVersion=any
-    browserstack.local=true
-    highlight=true 
-  
+        #------- Desktop Platforms -------#
+        [BROWSER]
+        capabilities =  {
+                        'os' : 'Windows',
+                        'os_version' : '10',
+                        'browser' : 'Chrome',
+                        'browser_version' : '73.0',
+                        'resolution' : '1920x1080',
+                        'project' : 'test_project',
+                        'build' : 'test_build',
+                        'name' : 'test_name',
+                        'browserstack.local' : 'true',
+                        'browserstack.debug' : 'true',
+                        'browserstack.selenium_version' : '3.14.0'
+                        }
+      
 * Set the environment _local_ variable to _false_  and specify the remote url to test
 
     
-    #------- Environmental -------#
-    [ENVIRONMENT]
-    testurl=https://www.google.co.nz/
-    local=false
-    selenium_grid_hub=<cloud_service_command_executor_url>
-    zalenium=false
+        #------- Environmental -------#
+        [ENVIRONMENT]
+        testurl=https://www.google.co.nz/
+        local=false
+        selenium_grid_hub=<cloud_service_command_executor_url>
+        zalenium=false
+
 * Start the local tunnel if testing internal sites
 
 
-    $ ./BrowserStackLocal --key <user_key>
+        $ ./BrowserStackLocal --key <user_key>
     
-Above setup can be overridden in CLI as
+* Run the tests
 
-    behave <feature_file> --tags=@p1 -D browserName=safari -D browserVersion=11.0
-    -D platformName=MAC -D browserstack.local=true -D testurl=https://www.google.co.nz/
-    -D local=false -D selenium_grid_hub=<cloud_service_command_executor_url>
+
+        $ behave --tag=@p1 --browserName=chrome     
+
     
 ### **Browser based tests on devices**
 
 To run test scenarios on multiple browsers across devices (ios/android),
-* Tag the scenarios with _@android-web_ or _@ios-web_ tags
+* Tag the scenarios with _@android-browser_ or _@ios-browser_ tags
 * Update the appropriate _[ANDROID]_ or _[IOS]_ sections of the 
 _testsetup.ini_ config file with appropriate capabilities as specified by the 
 provider documentation
 
-e.g. IOS browser (Browserstack)
+e.g. IOS (Browserstack)
 
-    [IOS]
-    browserName=safari
-    platformName=iOS
-    platformVersion=11.0
-    deviceName=iPhone X
-    browserstack.local=true
-    real_mobile=true
-    
-e.g. ANDROID browser (Browserstack)
-
-    [ANDROID]
-    browserName=chrome
-    platformName=Android
-    platformVersion=8.0
-    deviceName=Samsung Galaxy S9 Plus
-    browserstack.local=true
-    real_mobile=true
-
+        [IOS]
+        capabilities = {
+                        'os_version' : '12',
+                        'device' : 'iPhone XS Max',
+                        'real_mobile' : 'true',
+                        'project' : 'test',
+                        'build' : 'test_123',
+                        'name' : 'loginTest',
+                        'browserstack.local' : 'true',
+                        'browserstack.debug' : 'true',
+                        'browserstack.networkProfile' : '4g-lte-high-latency',
+                        'browserstack.video' : 'false'
+                        }
+         
 * Set the environment _local_ variable to _false_  and specify the remote url to test
 
 
@@ -78,6 +82,11 @@ e.g. ANDROID browser (Browserstack)
     local=false
     selenium_grid_hub=<cloud_service_command_executor_url>
     zalenium=false
+
+* Run the tests
+
+
+        $ behave --tag=@p1 --tags=@ios-browser
 
 ### **Using Zalenium**
 

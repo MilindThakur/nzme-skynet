@@ -131,7 +131,7 @@ specific capabilities only, or _testsetup_android.ini_ for android tests. This c
 command line parameter for behave tests.
 
     $ behave -D configfile=testsetup_browserstack.ini --tags=@p1
-    $ behave -D configfile=testsetup_ci.ini --tags=@android-app --tags=@p1
+    $ behave -D configfile=testsetup_android.ini --tags=@android-app --tags=@p1
     
 The capabilities and environment key value options can also be updated on the commandline.
 

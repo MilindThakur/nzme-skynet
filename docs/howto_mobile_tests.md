@@ -4,57 +4,50 @@
 
 ### **Installation**
 
-The framework uses appium to run the tests on Android/iOS. Please follow [installation instructions](./install_appium.md) for appium 
+The framework uses Appium to run the tests on Android/iOS. Please follow [installation instructions](./install_appium.md)
+for Appium 
 
 ### How to run tests on Android and iOS devices
 
-Start the appium server or launch the docker setup using [docker script](../docker_compose.sh)
+Start the Appium server or launch [docker-android](https://github.com/budtmo/docker-android) or 
+[Selenoid Appium](https://aerokube.com/selenoid/latest/#_android)
 
-The configuration for mobile tests are set in the testsetup.ini file, available at the root of the project
+The configuration for mobile tests are set in the _testsetup.ini_ file, available at the root of the project
 
     #------- Mobile Platforms -------#
     [ANDROID]
-    platformVersion=8.1
-    version=8.1
-    deviceName=Android Emulator
-    browserName=chrome
-    app=<path_to_apk>
-    appPackage=<package_name>
-    appActivity=<activity_name>
-    fullReset=true
+    capabilities = {
+                    }
 
     [IOS]
-    platformName=iOS
-    platformVersion=11.2
-    deviceName=iPhone 6
-    app=<path_to_zip>
-    bundleId=<bundle_id>
-    browserName=Safari
-    fullReset=false
+    capabilities = {
+                    }
     
-The capabilities can be directly added to the setup based on needed configuration. These capabilities are passed on to 
-the appium server by the framework.
+The capabilities can be directly added to the setup based on needed configuration. These capabilities are used to launch
+an appropriate device driver by the framework and relayed over Appium.
 
-    [IOS]
-    platformName=iOS
-    platformVersion=11.2
-    deviceName=iPhone 6
-    app=<path_to_zip>
-    bundleId=<bundle_id>
-    iosBrowserName=Safari
-    fullReset=false
-    locationServicesEnabled=false
-    locationServicesAuthorized=false
-    autoDismissAlerts=true
+    [ANDROID]
+    capabilities = {
+                    "platformName": "Android",
+                    "platformVersion": "9",
+                    "deviceName": "Android Emulator 01",
+                    "appPackage": "<app_package_name>",
+                    "automationName":"UiAutomator2",
+                    "app": "<apk_location>",
+                    "appActivity": "<activity_name>",
+                    "fullReset":True,
+                    "clearSystemFiles":True,
+                    "newCommandTimeout":3000
+                    }
 
-Set the appium server url in the section ENVIRONMENT
+Set the Appium server url in the section ENVIRONMENT
 
     #------- Environmental -------#
     [ENVIRONMENT]   
     testurl=<url_to_test_for_web>
     local=false
     zalenium=true
-    selenium_grid_hub=http://localhost:4444/wd/hub
+    selenium_grid_hub=<appium_url>
        
 Tag the BDD scenarios with:
 
@@ -62,3 +55,7 @@ Tag the BDD scenarios with:
      @android-browser
      @ios-app
      @ios-browser
+     
+Run the tests (use tags based on platform to run)
+
+    $ behave --tags=@p1 --tags=@android-app
