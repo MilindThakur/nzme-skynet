@@ -41,29 +41,43 @@ def before_all(context):
 
     if parser.has_section("BROWSER"):
         context.options = {}
-        context.browser_capabilities = ast.literal_eval(parser.get("BROWSER", 'capabilities'))
+        context.browser_capabilities = ast.literal_eval(
+            parser.get("BROWSER", 'capabilities'))
         # Update user specified browser capabilities from CLI
         for key in userdata:
             if key in context.browser_capabilities:
                 context.browser_capabilities[key] = userdata[key]
         # Parse framework specific configuration options
         # Set global highlight state
-        set_highlight(userdata.getbool("highlight", parser.getboolean("BROWSER", "highlight")))
-        context.options["resolution"] = userdata.get("resolution", parser.get('BROWSER', 'resolution'))
-        context.options["headless"] = userdata.getbool("headless", parser.getboolean("BROWSER", "headless"))
-        context.options["mobileEmulation"] = userdata.get("mobileEmulation", parser.get("BROWSER", "mobileEmulation"))
-        logger.debug("Created browser capability {0}".format(context.browser_capabilities))
+        set_highlight(userdata.getbool(
+            "highlight", parser.getboolean("BROWSER", "highlight")))
+        context.options["resolution"] = userdata.get(
+            "resolution", parser.get('BROWSER', 'resolution'))
+        context.options["headless"] = userdata.getbool(
+            "headless", parser.getboolean("BROWSER", "headless"))
+        context.options["mobileEmulation"] = userdata.get(
+            "mobileEmulation", parser.get("BROWSER", "mobileEmulation"))
+        logger.debug("Created browser capability {0}".format(
+            context.browser_capabilities))
     if parser.has_section("ANDROID"):
-        context.android_capabilities = ast.literal_eval(parser.get("ANDROID", "capabilities"))
-        logger.debug("Created android capability {0}".format(context.android_capabilities))
+        context.android_capabilities = ast.literal_eval(
+            parser.get("ANDROID", "capabilities"))
+        logger.debug("Created android capability {0}".format(
+            context.android_capabilities))
     if parser.has_section("IOS"):
-        context.ios_capabilities = ast.literal_eval(parser.get("IOS", "capabilities"))
-        logger.debug("Created ios capability {0}".format(context.ios_capabilities))
+        context.ios_capabilities = ast.literal_eval(
+            parser.get("IOS", "capabilities"))
+        logger.debug("Created ios capability {0}".format(
+            context.ios_capabilities))
     if parser.has_section("ENVIRONMENT"):
-        context.testurl = userdata.get("testurl", parser.get("ENVIRONMENT", "testurl"))
-        context.local = userdata.getbool("local", parser.getboolean("ENVIRONMENT", "local"))
-        context.selenium_grid_hub = userdata.get("selenium_grid_hub", parser.get("ENVIRONMENT", "selenium_grid_hub"))
-        context.zalenium = userdata.getbool("zalenium", parser.getboolean("ENVIRONMENT", "zalenium"))
+        context.testurl = userdata.get(
+            "testurl", parser.get("ENVIRONMENT", "testurl"))
+        context.local = userdata.getbool(
+            "local", parser.getboolean("ENVIRONMENT", "local"))
+        context.selenium_grid_hub = userdata.get(
+            "selenium_grid_hub", parser.get("ENVIRONMENT", "selenium_grid_hub"))
+        context.zalenium = userdata.getbool(
+            "zalenium", parser.getboolean("ENVIRONMENT", "zalenium"))
     context.log = os.path.abspath('logs')
 
 
@@ -143,8 +157,10 @@ def before_scenario(context, scenario):
                         capabilities=context.ios_capabilities,
                         grid_url=context.selenium_grid_hub)
                 else:
-                    logger.exception("Only supports tags @android-app, @android-browser, @ios-app, @ios-browser")
-                    raise Exception("Only supports tags @android-app, @android-browser, @ios-app, @ios-browser")
+                    logger.exception(
+                        "Only supports tags @android-app, @android-browser, @ios-app, @ios-browser")
+                    raise Exception(
+                        "Only supports tags @android-app, @android-browser, @ios-app, @ios-browser")
             else:
                 # Desktop browser tests
                 # Add Feature and Scenario name for grouping Zalenium Test
@@ -174,12 +190,14 @@ def after_scenario(context, scenario):
     if context.driver is not None:
 
         if scenario.status == Status.failed:
-            _screenshot = '{}/{}_fail.png'.format(context.log, scenario.name.replace(' ', '_'))
+            _screenshot = '{}/{}_fail.png'.format(
+                context.log, scenario.name.replace(' ', '_'))
             # Take screen shot on a failure
             try:
                 context.driver.take_screenshot_current_window(_screenshot)
             except Exception:
-                logger.debug('Failed to take screenshot to: {}'.format(context.log))
+                logger.debug(
+                    'Failed to take screenshot to: {}'.format(context.log))
                 pass
             # https://github.com/zalando/zalenium/blob/master/docs/usage_examples.md#marking-the-test-as-passed-or-failed
             if context.zalenium:
@@ -189,7 +207,8 @@ def after_scenario(context, scenario):
                         'value': 'false'
                     })
                 except Exception:
-                    logger.debug('Failed to set failed cookie for scenario in Zalenium')
+                    logger.debug(
+                        'Failed to set failed cookie for scenario in Zalenium')
                     pass
 
         # https://github.com/zalando/zalenium/blob/master/docs/usage_examples.md#marking-the-test-as-passed-or-failed
@@ -200,7 +219,8 @@ def after_scenario(context, scenario):
                     'value': 'true'
                 })
             except Exception:
-                logger.debug('Failed to set passed cookie for scenario in Zalenium')
+                logger.debug(
+                    'Failed to set passed cookie for scenario in Zalenium')
                 pass
 
     if context.driver:
@@ -211,7 +231,8 @@ def after_scenario(context, scenario):
             logger.exception('Failed to stop driver instance')
             raise
 
-    logger.info('End of test: {}. Status {} !!!\n\n\n'.format(scenario.name, scenario.status.name.upper()))
+    logger.info('End of test: {}. Status {} !!!\n\n\n'.format(
+        scenario.name, scenario.status.name.upper()))
 
 
 def before_step(context, step):
@@ -242,7 +263,8 @@ def after_step(context, step):
 
     # TODO: Create screenshot filename
     _screenshot = '{}/{}/{}__{}__.png'.format(context.log,
-                                              context.test_name.replace(' ', '_'),
+                                              context.test_name.replace(
+                                                  ' ', '_'),
                                               context.picture_num,
                                               step_name)
 
@@ -253,11 +275,13 @@ def after_step(context, step):
             context.driver.take_screenshot_current_window(_screenshot)
             context.picture_num += 1
         except Exception:
-            logger.debug('Failed to take screenshot to: {}'.format(context.log))
+            logger.debug(
+                'Failed to take screenshot to: {}'.format(context.log))
             pass
     try:
         with open(_screenshot, 'rb') as _file:
             allure.attach(_file.read(), name='{}_{}'.format(context.test_name, step.name),
                           attachment_type=AttachmentType.PNG)
     except Exception:
-        logger.error('Failed to attach to report screenshot: {}'.format(_screenshot))
+        logger.error(
+            'Failed to attach to report screenshot: {}'.format(_screenshot))

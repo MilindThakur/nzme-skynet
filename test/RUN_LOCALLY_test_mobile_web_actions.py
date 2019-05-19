@@ -43,7 +43,8 @@ class MobileWebActionsTestCase(unittest.TestCase):
         assert TEST_URL in self.driver.current_url
         assert 'Google' in self.driver.title
         search_input = TextInput(By.NAME, 'q')
-        search_btn = Button(By.CSS_SELECTOR, 'button[aria-label="Google Search"]')
+        search_btn = Button(
+            By.CSS_SELECTOR, 'button[aria-label="Google Search"]')
         search_input.set_value("NZME")
         search_btn.click()
         results = Element(By.ID, 'ires')

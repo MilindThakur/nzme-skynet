@@ -14,6 +14,7 @@ class Component(object):
         self._page_second_widget = PageSecondWidgetPO()
 
     """
+
     def __init__(self, func):
         self.loader = func
         self.secretAttr = '_' + func.__name__

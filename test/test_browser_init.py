@@ -47,8 +47,10 @@ class TestBrowserDriverInit(unittest.TestCase):
         self.assertTrue("version" in chrome._capabilities)
         self.assertTrue("platform" in chrome._capabilities)
         self.assertTrue("goog:chromeOptions" in chrome._capabilities)
-        self.assertTrue("--headless" in chrome._capabilities["goog:chromeOptions"]["args"])
-        self.assertTrue("mobileEmulation" in chrome._capabilities["goog:chromeOptions"])
+        self.assertTrue(
+            "--headless" in chrome._capabilities["goog:chromeOptions"]["args"])
+        self.assertTrue(
+            "mobileEmulation" in chrome._capabilities["goog:chromeOptions"])
 
     def test_chrome_init_with_cap_and_options(self):
         cap = {
@@ -66,8 +68,10 @@ class TestBrowserDriverInit(unittest.TestCase):
         self.assertEquals(chrome._options, opt)
         chrome._update_capabilities_with_options()
         self.assertTrue("goog:chromeOptions" in chrome._capabilities)
-        self.assertTrue("--headless" in chrome._capabilities["goog:chromeOptions"]["args"])
-        self.assertTrue("mobileEmulation" in chrome._capabilities["goog:chromeOptions"])
+        self.assertTrue(
+            "--headless" in chrome._capabilities["goog:chromeOptions"]["args"])
+        self.assertTrue(
+            "mobileEmulation" in chrome._capabilities["goog:chromeOptions"])
 
     def test_chrome_with_options_in_cap(self):
         cap = {
@@ -88,9 +92,12 @@ class TestBrowserDriverInit(unittest.TestCase):
         self.assertEquals(chrome._options, opt)
         chrome._update_capabilities_with_options()
         self.assertTrue("goog:chromeOptions" in chrome._capabilities)
-        self.assertFalse("--headless" in chrome._capabilities["goog:chromeOptions"]["args"], chrome._capabilities)
-        self.assertTrue("--some-args" in chrome._capabilities["goog:chromeOptions"]["args"])
-        self.assertFalse("mobileEmulation" in chrome._capabilities["goog:chromeOptions"])
+        self.assertFalse(
+            "--headless" in chrome._capabilities["goog:chromeOptions"]["args"], chrome._capabilities)
+        self.assertTrue(
+            "--some-args" in chrome._capabilities["goog:chromeOptions"]["args"])
+        self.assertFalse(
+            "mobileEmulation" in chrome._capabilities["goog:chromeOptions"])
 
     def test_ff_init_with_cap_and_options(self):
         cap = {
@@ -108,8 +115,10 @@ class TestBrowserDriverInit(unittest.TestCase):
         self.assertEquals(ff._options, opt)
         ff._update_capabilities_with_options()
         self.assertTrue("moz:firefoxOptions" in ff._capabilities)
-        self.assertTrue("-headless" in ff._capabilities["moz:firefoxOptions"]["args"])
-        self.assertFalse("mobileEmulation" in ff._capabilities["moz:firefoxOptions"])
+        self.assertTrue(
+            "-headless" in ff._capabilities["moz:firefoxOptions"]["args"])
+        self.assertFalse(
+            "mobileEmulation" in ff._capabilities["moz:firefoxOptions"])
 
     def test_ff_init_with_cap_custom_mozffoptions_and_options(self):
         cap = {
@@ -136,13 +145,16 @@ class TestBrowserDriverInit(unittest.TestCase):
         self.assertEquals(ff._options, opt)
         ff._update_capabilities_with_options()
         self.assertTrue("moz:firefoxOptions" in ff._capabilities)
-        self.assertTrue("-headless" in ff._capabilities["moz:firefoxOptions"]["args"])
-        self.assertTrue("-some-args" in ff._capabilities["moz:firefoxOptions"]["args"])
+        self.assertTrue(
+            "-headless" in ff._capabilities["moz:firefoxOptions"]["args"])
+        self.assertTrue(
+            "-some-args" in ff._capabilities["moz:firefoxOptions"]["args"])
         self.assertEquals(len(ff._capabilities["moz:firefoxOptions"]), 4)
         self.assertTrue("binary" in ff._capabilities["moz:firefoxOptions"])
         self.assertTrue("prefs" in ff._capabilities["moz:firefoxOptions"])
         self.assertTrue("log" in ff._capabilities["moz:firefoxOptions"])
-        self.assertFalse("mobileEmulation" in ff._capabilities["moz:firefoxOptions"])
+        self.assertFalse(
+            "mobileEmulation" in ff._capabilities["moz:firefoxOptions"])
 
     def test_safari_init_with_cap_and_options(self):
         cap = {
@@ -164,17 +176,17 @@ class TestBrowserDriverInit(unittest.TestCase):
 
     def test_browserstack_capability_init(self):
         cap = {
-            'os' : 'Windows',
-            'os_version' : '10',
-            'browser' : 'Chrome',
-            'browser_version' : '73.0',
-            'resolution' : '1920x1080',
-            'project' : 'test_proj',
-            'build' : 'test_build',
-            'name' : 'test_name',
-            'browserstack.local' : 'true',
-            'browserstack.debug' : 'true',
-            'browserstack.selenium_version' : '3.14.0'
+            'os': 'Windows',
+            'os_version': '10',
+            'browser': 'Chrome',
+            'browser_version': '73.0',
+            'resolution': '1920x1080',
+            'project': 'test_proj',
+            'build': 'test_build',
+            'name': 'test_name',
+            'browserstack.local': 'true',
+            'browserstack.debug': 'true',
+            'browserstack.selenium_version': '3.14.0'
         }
         opt = {
             "headless": True,
@@ -186,6 +198,8 @@ class TestBrowserDriverInit(unittest.TestCase):
         self.assertEquals(chrome._options, opt)
         chrome._update_capabilities_with_options()
         self.assertTrue("goog:chromeOptions" in chrome._capabilities)
-        self.assertTrue("--headless" in chrome._capabilities["goog:chromeOptions"]["args"])
-        self.assertFalse("mobileEmulation" in chrome._capabilities["goog:chromeOptions"])
+        self.assertTrue(
+            "--headless" in chrome._capabilities["goog:chromeOptions"]["args"])
+        self.assertFalse(
+            "mobileEmulation" in chrome._capabilities["goog:chromeOptions"])
         self.assertEquals(len(chrome._capabilities), 12)

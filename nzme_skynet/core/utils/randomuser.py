@@ -1,6 +1,7 @@
 # coding=utf-8
 from faker import Faker
 
+
 class RandomUser(object):
 
     def __init__(self):

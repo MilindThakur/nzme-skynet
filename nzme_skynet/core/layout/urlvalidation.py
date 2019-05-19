@@ -63,14 +63,16 @@ def _validate_js_error_on_url(url, driver, open_url=True):
 
 def validate_images(url):
     DriverRegistry.register_driver(DriverTypes.CHROMEHEADLESS, local=False)
-    broken_images_list = _validate_images_on_url(url, DriverRegistry.get_webdriver())
+    broken_images_list = _validate_images_on_url(
+        url, DriverRegistry.get_webdriver())
     DriverRegistry.deregister_driver()
     return broken_images_list
 
 
 def validate_links(url):
     DriverRegistry.register_driver(DriverTypes.CHROMEHEADLESS, local=False)
-    broken_links_list = _validate_links_on_url(url,  DriverRegistry.get_webdriver())
+    broken_links_list = _validate_links_on_url(
+        url,  DriverRegistry.get_webdriver())
     DriverRegistry.deregister_driver()
     return broken_links_list
 
@@ -88,8 +90,11 @@ def validate_all(urls):
     list_urls = urls.split(',')
     for url in list_urls:
         DriverRegistry.get_webdriver().get(url)
-        errors.append(_validate_images_on_url(url, DriverRegistry.get_webdriver(), open_url=False))
-        errors.append(_validate_links_on_url(url, DriverRegistry.get_webdriver(), open_url=False))
-        errors.append(_validate_js_error_on_url(url, DriverRegistry.get_webdriver(), open_url=False))
+        errors.append(_validate_images_on_url(
+            url, DriverRegistry.get_webdriver(), open_url=False))
+        errors.append(_validate_links_on_url(
+            url, DriverRegistry.get_webdriver(), open_url=False))
+        errors.append(_validate_js_error_on_url(
+            url, DriverRegistry.get_webdriver(), open_url=False))
     DriverRegistry.deregister_driver()
     return list(itertools.chain.from_iterable(errors))

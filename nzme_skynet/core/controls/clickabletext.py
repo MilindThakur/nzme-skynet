@@ -23,5 +23,6 @@ class ClickableText(Clickable):
             return WebDriverWait(self.driver, time).until(ec.text_to_be_present_in_element((self._by, self._locator),
                                                                                            text))
         except Exception as e:
-            logger.debug("Failed to find text {0} for element {1}".format(text, self._locator))
+            logger.debug("Failed to find text {0} for element {1}".format(
+                text, self._locator))
             return False

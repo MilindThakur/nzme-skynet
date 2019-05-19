@@ -16,7 +16,8 @@ from functools import partial
 from datetime import datetime
 
 
-logging.basicConfig(level=logging.INFO,format="[%(levelname)-8s %(asctime)s] %(message)s")
+logging.basicConfig(level=logging.INFO,
+                    format="[%(levelname)-8s %(asctime)s] %(message)s")
 logger = logging.getLogger(__name__)
 
 delimiter = "_BEHAVE_PARALLEL_BDD_"
@@ -29,9 +30,12 @@ def parse_arguments():
     Parses commandline arguments
     :return: Parsed arguments
     """
-    parser = argparse.ArgumentParser('Run behave in parallel mode for scenarios')
-    parser.add_argument('--processes', '-p', type=int, help='Maximum number of processes. Default = 5', default=5)
-    parser.add_argument('--tags', '-t', help='specify behave tags to run', action='append')
+    parser = argparse.ArgumentParser(
+        'Run behave in parallel mode for scenarios')
+    parser.add_argument('--processes', '-p', type=int,
+                        help='Maximum number of processes. Default = 5', default=5)
+    parser.add_argument(
+        '--tags', '-t', help='specify behave tags to run', action='append')
     parser.add_argument('--define', '-D', action='append', help='Define user-specific data for the config.userdata '
                                                                 'dictionary. Example: -D foo=bar to store it in '
                                                                 'config.userdata["foo"].')
@@ -55,12 +59,14 @@ def _run_feature(feature_scenario, tags=None, userdata=None):
     if not userdata:
         params = "-t {0} --no-capture".format(' -t '.join(tags))
     else:
-        params = "-t {0} -D {1} --no-capture".format(' -t '.join(tags), ' -D '.join(userdata))
+        params = "-t {0} -D {1} --no-capture".format(
+            ' -t '.join(tags), ' -D '.join(userdata))
     cmd = "behave -i {0} -n '{1}' -f allure_behave.formatter:AllureFormatter -o allure-results --no-summary -k --junit --junit-directory reports -f plain {2}".format(
-           execution_elements[0], execution_elements[1], params)
+        execution_elements[0], execution_elements[1], params)
     r = call(cmd, shell=True)
     status = 'PASSED' if r == 0 else 'FAILED'
-    logger.info("{0:50}: {1} --> {2}".format(execution_elements[0], execution_elements[1], status))
+    logger.info(
+        "{0:50}: {1} --> {2}".format(execution_elements[0], execution_elements[1], status))
     return execution_elements[0], execution_elements[1], status
 
 
@@ -71,7 +77,8 @@ def main():
     args = parse_arguments()
     pool = Pool(args.processes)
     if args.tags:
-        cmd = 'behave -d --no-junit --f json --no-summary --no-skipped -t {}'.format(' -t '.join(args.tags))
+        cmd = 'behave -d --no-junit --f json --no-summary --no-skipped -t {}'.format(
+            ' -t '.join(args.tags))
     else:
         cmd = 'behave -d --no-junit --f json --no-summary --no-skipped'
 
@@ -99,12 +106,13 @@ def main():
 
     if args.processes > len(features):
         logger.info("You have defined {} and will execute only necessary {} parallel process ".format(args.processes,
-                                                                                        len(features)))
+                                                                                                      len(features)))
     else:
         logger.info("Will execute {} parallel process".format(args.processes))
 
     run_feature = partial(_run_feature, tags=args.tags, userdata=args.define)
-    logger.info("--------------------------------------------------------------------------")
+    logger.info(
+        "--------------------------------------------------------------------------")
     output = 0
     failed_tests = []
     # https://stackoverflow.com/questions/1408356/keyboard-interrupts-with-pythons-multiprocessing-p
@@ -116,11 +124,13 @@ def main():
                     output = 1
                 else:
                     output = 2
-    logger.info("--------------------------------------------------------------------------")
+    logger.info(
+        "--------------------------------------------------------------------------")
     end_time = datetime.now()
     if failed_tests:
         for failed_test in failed_tests:
-            logger.info("{0:50}: {1} --> {2}".format(failed_test[0], failed_test[1], failed_test[2]))
+            logger.info(
+                "{0:50}: {1} --> {2}".format(failed_test[0], failed_test[1], failed_test[2]))
 
     logger.info("Duration: {}".format(format(end_time - start_time)))
     logger.info("Test Status: {0}".format(str(output)))

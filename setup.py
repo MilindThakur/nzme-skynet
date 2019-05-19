@@ -22,7 +22,8 @@ def read(*parts):
 
 def find_version(*file_paths):
     version_file = read(*file_paths)
-    version_match = re.search(r"^__version__ = ['\"]([^'\"]*)['\"]", version_file, re.M)
+    version_match = re.search(
+        r"^__version__ = ['\"]([^'\"]*)['\"]", version_file, re.M)
     if version_match:
         return version_match.group(1)
     raise RuntimeError("Unable to find version string.")
@@ -36,12 +37,17 @@ setup(
     maintainer='milind.thakur@nzme.co.nz',
     url='https://bitbucket.org/grabone/Skynet.git',
     description="NZME Test Automation Library",
-    license='',
+    license='BSD 3-Clause License',
     long_description=readme('README.md'),
+    keywords=[
+      'selenium',
+      'bdd',
+      'appium',
+      'browser automation',
+      'mobile automation'
+    ],
     entry_points={
         'console_scripts': [
-            'nzme-screenshots = nzme_skynet.scripts.screenshots:main',
-            'nzme-pagevalidation = nzme_skynet.scripts.validation:main',
             'nzme-behave-parallel = nzme_skynet.scripts.behave_parallel_scenarios:main'
         ]
     },

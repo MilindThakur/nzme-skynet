@@ -4,6 +4,7 @@
 
 * Follow this [handy guide](https://www.androidcentral.com/installing-android-sdk-windows-mac-and-linux-tutorial) from android central.
 * If you are running on linux you need to install some extra 32bit libraries. 
+
     ```
     sudo apt-get install zlib1g:i386 libc6:i386 libstdc++6:i386
     ```
@@ -11,8 +12,9 @@
 
 ### **Docker Install - Android Only**
 
-* The [docker-android](https://github.com/butomo1989/docker-android) image is recommended and is used in the
+* The [docker-android](https://github.com/butomo1989/docker-android) image is used in the
 docker-compose.yaml file. This acts as node to Zalenium grid. 
+* You could also use [Selnoid Android](https://aerokube.com/selenoid/latest/#_android) image for mobile test setup.
 
 ### **iOS & Android - macOS install**
 iOS is a special case because Apple made it so. This can only be done on a mac.

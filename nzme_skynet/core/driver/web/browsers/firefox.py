@@ -17,7 +17,8 @@ class Firefox(BrowserDriver):
         new_ff_options = Options()
 
         if not self._options:
-            logger.debug("No options specified, updating capabilities with default firefox settings")
+            logger.debug(
+                "No options specified, updating capabilities with default firefox settings")
         else:
             if "mobileEmulation" in self._options:
                 logger.warning("mobileEmulation is only available for Chrome")
@@ -25,7 +26,8 @@ class Firefox(BrowserDriver):
                 new_ff_options.headless = True
 
         if not self._capabilities:
-            logger.debug("No capabilities specified, creating default firefox capability..")
+            logger.debug(
+                "No capabilities specified, creating default firefox capability..")
             self._capabilities = DesiredCapabilities.FIREFOX.copy()
 
         if "marionette" not in self._capabilities:
@@ -36,15 +38,20 @@ class Firefox(BrowserDriver):
         if "moz:firefoxOptions" in self._capabilities and "moz:firefoxOptions" in new_ff_cap:
             for key, value in new_ff_cap["moz:firefoxOptions"].iteritems():
                 if not self._capabilities["moz:firefoxOptions"][key] == new_ff_cap["moz:firefoxOptions"][key]:
-                    logger.debug("Updating original capabilities moz:firefoxOptions..")
-                    self._capabilities["moz:firefoxOptions"].setdefault(key, []).extend(value)
+                    logger.debug(
+                        "Updating original capabilities moz:firefoxOptions..")
+                    self._capabilities["moz:firefoxOptions"].setdefault(
+                        key, []).extend(value)
         elif "moz:firefoxOptions" not in self._capabilities and "moz:firefoxOptions" in new_ff_cap:
-            logger.debug("No custom moz:firefoxOptions specified in capabilities, setting default..")
+            logger.debug(
+                "No custom moz:firefoxOptions specified in capabilities, setting default..")
             self._capabilities["moz:firefoxOptions"] = new_ff_cap["moz:firefoxOptions"]
 
     def _create_driver(self, local, grid_url):
         self._update_capabilities_with_options()
         if not local:
-            self._driver = RemoteDriver(command_executor=grid_url, desired_capabilities=self._capabilities)
+            self._driver = RemoteDriver(
+                command_executor=grid_url, desired_capabilities=self._capabilities)
         else:
-            self._driver = FirefoxDriver(desired_capabilities=self._capabilities)
+            self._driver = FirefoxDriver(
+                desired_capabilities=self._capabilities)

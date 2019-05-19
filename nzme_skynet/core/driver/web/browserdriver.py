@@ -130,10 +130,12 @@ class BrowserDriver(BaseDriver):
         """
         try:
             WebDriverWait(self.webdriver, timeout).\
-                until(lambda driver: driver.execute_script('return document.readyState') == 'complete')
+                until(lambda driver: driver.execute_script(
+                    'return document.readyState') == 'complete')
         except TimeoutException:
             if throw_on_timeout:
-                raise TimeoutException("Page elements never fully loaded after %s seconds" % timeout)
+                raise TimeoutException(
+                    "Page elements never fully loaded after %s seconds" % timeout)
 
     def wait_for_url_to_contain(self, url, time=DefaultTimeouts.LARGE_TIMEOUT):
         """
@@ -145,7 +147,8 @@ class BrowserDriver(BaseDriver):
         try:
             return WebDriverWait(self.webdriver, time).until(expected_conditions.url_contains(url))
         except Exception:
-            logger.debug("Failed to find expected url {0} in current url {1}".format(url, self.webdriver.current_url))
+            logger.debug("Failed to find expected url {0} in current url {1}".format(
+                url, self.webdriver.current_url))
             return False
 
     def wait_for_url(self, url, time=DefaultTimeouts.LARGE_TIMEOUT):
@@ -158,7 +161,8 @@ class BrowserDriver(BaseDriver):
         try:
             return WebDriverWait(self.webdriver, time).until(expected_conditions.url_matches(url))
         except Exception:
-            logger.debug("Failed to match expected url {0} to current url {1}".format(url, self.webdriver.current_url))
+            logger.debug("Failed to match expected url {0} to current url {1}".format(
+                url, self.webdriver.current_url))
             return False
 
     def init(self, local, grid_url):

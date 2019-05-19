@@ -39,10 +39,13 @@ class MobileAppActionsTestCase(unittest.TestCase):
         assert isinstance(self.driver.webdriver, AppiumDriver)
         self.assertIsNotNone(self.driver.webdriver.session_id)
         self.assertEqual(self.driver.context, 'NATIVE_APP')
-        self.assertEqual(self.driver.webdriver.desired_capabilities['platform'].lower(), 'android')
-        self.assertIsNotNone(self.driver.webdriver.desired_capabilities['deviceUDID'])
+        self.assertEqual(
+            self.driver.webdriver.desired_capabilities['platform'].lower(), 'android')
+        self.assertIsNotNone(
+            self.driver.webdriver.desired_capabilities['deviceUDID'])
         self.assertEqual(self.driver.current_activity, '.MainActivity')
-        self.assertEqual(self.driver.webdriver.current_package, 'nzme.test.skynettestapp')
+        self.assertEqual(self.driver.webdriver.current_package,
+                         'nzme.test.skynettestapp')
 
     def test_action_textinput(self):
         name_input = MElement(MobileBy.ID, "entertext_name_test")

@@ -29,18 +29,24 @@ class DriverRegistry(object):
         :return:
         """
         if get_driver():
-            logger.warning("Driver already registered. Only one driver can be registered at a time")
+            logger.warning(
+                "Driver already registered. Only one driver can be registered at a time")
             return get_driver()
         try:
             if driver_type in DESKTOP_WEBBROWSER:
-                new_driver = DriverFactory.build_web_driver(driver_type, capabilities, options, local, grid_url)
+                new_driver = DriverFactory.build_web_driver(
+                    driver_type, capabilities, options, local, grid_url)
             elif driver_type in MOBILE_WEBBROWSER:
-                new_driver = DriverFactory.build_mobile_web_driver(driver_type, capabilities, grid_url)
+                new_driver = DriverFactory.build_mobile_web_driver(
+                    driver_type, capabilities, grid_url)
             elif driver_type in MOBILE_APP:
-                new_driver = DriverFactory.build_mobile_app_driver(driver_type, capabilities, grid_url)
+                new_driver = DriverFactory.build_mobile_app_driver(
+                    driver_type, capabilities, grid_url)
             else:
-                logger.exception("Empty or Unknown driver type, valid options: chrome, firefox, android, ios")
-                raise Exception("Empty or Unknown driver type, valid options: chrome, firefox, android, ios")
+                logger.exception(
+                    "Empty or Unknown driver type, valid options: chrome, firefox, android, ios")
+                raise Exception(
+                    "Empty or Unknown driver type, valid options: chrome, firefox, android, ios")
         except Exception:
             logger.exception("Failed to register driver")
             raise

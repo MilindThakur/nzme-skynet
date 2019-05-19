@@ -33,8 +33,10 @@ class LayoutScreenshot(object):
         for url in self.urls_json["urls"]:
             driver.goto_url(url["url"], absolute=True)
             for device in self._devices_list:
-                driver.set_window_size(self.devices_json[device]["w"], self.devices_json[device]["h"])
+                driver.set_window_size(
+                    self.devices_json[device]["w"], self.devices_json[device]["h"])
                 filename = "%s_%s_%s.png" % (url["name"].replace(" ", ""), device,
                                              datetime.now().strftime("%Y%m%d-%H%M%S"))
-                driver.take_screenshot_current_window(self._folder + "/%s" % filename)
+                driver.take_screenshot_current_window(
+                    self._folder + "/%s" % filename)
         DriverRegistry.deregister_driver()

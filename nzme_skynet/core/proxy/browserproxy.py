@@ -36,7 +36,8 @@ class BrowserProxy(object):
         try:
             self._server = Server(path=self._bin_path)
         except Exception:
-            raise Exception("Error: Ensure the browsermob-proxy is added to the PATH if no path provided")
+            raise Exception(
+                "Error: Ensure the browsermob-proxy is added to the PATH if no path provided")
         self._server.start()
         self._proxy = self._server.create_proxy({'captureHeaders': True,
                                                  'captureContent': True,
@@ -49,21 +50,25 @@ class BrowserProxy(object):
 
     @staticmethod
     def _get_browsermobproxy_docker_ip():
-        proxy_container = os.popen("docker ps --format {{.Names}} | grep 'proxy'").read().rstrip()
+        proxy_container = os.popen(
+            "docker ps --format {{.Names}} | grep 'proxy'").read().rstrip()
         if not proxy_container:
             raise Exception("Please run the docker-compose.sh to start the grid with browsermobproxy "
                             "and then try again.")
-        network = os.popen("docker inspect --format {{.HostConfig.NetworkMode}} %s" % proxy_container).read().rstrip()
+        network = os.popen(
+            "docker inspect --format {{.HostConfig.NetworkMode}} %s" % proxy_container).read().rstrip()
         return os.popen("docker inspect --format {{.NetworkSettings.Networks.%s.IPAddress}} %s" %
                         (network, proxy_container)).read().rstrip()
 
     def _create_local_browser_driver(self):
         chrome_options = webdriver.ChromeOptions()
-        chrome_options.add_argument("--proxy-server={0}".format(self._proxy.proxy))
+        chrome_options.add_argument(
+            "--proxy-server={0}".format(self._proxy.proxy))
         chrome_options.add_argument('--ignore-certificate-errors')
         chrome_options.add_argument('--test-type')
         # Disable loading images
-        chrome_options.add_experimental_option('prefs', {'profile.managed_default_content_settings.images': 2})
+        chrome_options.add_experimental_option(
+            'prefs', {'profile.managed_default_content_settings.images': 2})
         chrome_options.add_argument('--headless')
         self._driver = webdriver.Chrome(chrome_options=chrome_options)
 
@@ -74,7 +79,7 @@ class BrowserProxy(object):
             "platform": 'LINUX',
             "version": '',
             "javascriptEnabled": True
-            }
+        }
         self._driver = webdriver.Remote(command_executor=self._grid_url,
                                         desired_capabilities=cap,
                                         proxy=webdriver_proxy)

@@ -8,8 +8,10 @@ from requests.auth import HTTPBasicAuth
 
 logger = logging.getLogger('ApiClient')
 
+
 class InvalidUsage(Exception):
     pass
+
 
 class ApiClient(object):
     """
@@ -36,14 +38,15 @@ class ApiClient(object):
     """
 
     def __init__(self,
-               host,
-               persist_session=True,
-               username=None,
-               password=None,
-               ssl=True):
+                 host,
+                 persist_session=True,
+                 username=None,
+                 password=None,
+                 ssl=True):
 
         if host is None:
-            raise InvalidUsage("Must specify the 'host' url to send requests to")
+            raise InvalidUsage(
+                "Must specify the 'host' url to send requests to")
         self._req = self._create_session(persist_session, username, password)
         self._base_url = helper.create_base_url(host, ssl)
 

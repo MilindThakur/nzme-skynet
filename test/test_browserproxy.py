@@ -13,9 +13,11 @@ class HarTestCase(unittest.TestCase):
         self.proxy.start()
 
     def test_url_entry_matcher(self):
-        har_page = self.proxy.create_har_page(self.TEST_URL, "google_url_matcher")
+        har_page = self.proxy.create_har_page(
+            self.TEST_URL, "google_url_matcher")
         self.assertIsNotNone(har_page, "Error: Har is not created")
-        match_list = self.proxy.filter_entry_by_matching_url(har_page, "gstatic.com")
+        match_list = self.proxy.filter_entry_by_matching_url(
+            har_page, "gstatic.com")
         self.assertGreater(len(match_list), 1)
 
     def tearDown(self):
