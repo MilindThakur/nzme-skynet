@@ -44,9 +44,9 @@ class DriverRegistry(object):
                     driver_type, capabilities, grid_url)
             else:
                 logger.exception(
-                    "Empty or Unknown driver type, valid options: chrome, firefox, android, ios")
+                    "Empty or Unknown driver type, valid options: chrome, firefox, safari, ie, android, ios")
                 raise Exception(
-                    "Empty or Unknown driver type, valid options: chrome, firefox, android, ios")
+                    "Empty or Unknown driver type, valid options: chrome, firefox, safari, ie, android, ios")
         except Exception:
             logger.exception("Failed to register driver")
             raise

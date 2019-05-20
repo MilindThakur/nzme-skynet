@@ -8,15 +8,21 @@ class TestBrowserDriverInit(unittest.TestCase):
 
     def test_chrome_init_without_cap_options(self):
         chrome = Chrome(capabilities=None, options=None)
-        self.assertEquals(chrome._capabilities, None)
-        self.assertEquals(chrome._options, None)
+        self.assertIsNone(chrome._capabilities)
+        self.assertIsNone(chrome._options)
         chrome._update_capabilities_with_options()
-        self.assertTrue(chrome._capabilities)
+        self.assertIsNotNone(chrome._capabilities)
+        self.assertEqual(len(chrome._capabilities), 4)
+        self.assertTrue("browserName" in chrome._capabilities)
         self.assertEquals(chrome._capabilities["browserName"], "chrome")
         self.assertTrue("version" in chrome._capabilities)
+        self.assertEqual(chrome._capabilities['version'], '')
         self.assertTrue("platform" in chrome._capabilities)
+        self.assertEqual(chrome._capabilities['platform'], 'ANY')
         self.assertTrue("goog:chromeOptions" in chrome._capabilities)
-        self.assertEquals(chrome._options, None)
+        self.assertTrue('args' in chrome._capabilities['goog:chromeOptions'])
+        self.assertEqual(len(chrome._capabilities['goog:chromeOptions']['args']), 4)
+        self.assertIsNone(chrome._options, None)
 
     def test_chrome_init_with_cap_only(self):
         cap = {
@@ -25,12 +31,17 @@ class TestBrowserDriverInit(unittest.TestCase):
             "platform": "ANY"
         }
         chrome = Chrome(capabilities=cap, options=None)
-        self.assertEquals(chrome._options, None)
-        self.assertEquals(chrome._capabilities, cap)
+        self.assertIsNone(chrome._options)
+        self.assertIsNotNone(chrome._capabilities)
         chrome._update_capabilities_with_options()
-        self.assertTrue(chrome._capabilities)
+        self.assertTrue("browserName" in chrome._capabilities)
+        self.assertEquals(chrome._capabilities["browserName"], "chrome")
+        self.assertTrue("version" in chrome._capabilities)
+        self.assertEqual(chrome._capabilities['version'], 'ANY')
+        self.assertTrue("platform" in chrome._capabilities)
+        self.assertEqual(chrome._capabilities['platform'], 'ANY')
         self.assertTrue("goog:chromeOptions" in chrome._capabilities)
-        self.assertEquals(chrome._options, None)
+        self.assertIsNone(chrome._options)
 
     def test_chrome_init_with_options_only(self):
         opt = {
@@ -39,14 +50,17 @@ class TestBrowserDriverInit(unittest.TestCase):
             "mobileEmulation": "iPhone X"
         }
         chrome = Chrome(capabilities=None, options=opt)
-        self.assertEquals(chrome._capabilities, None)
+        self.assertIsNone(chrome._capabilities)
         self.assertEquals(chrome._options, opt)
         chrome._update_capabilities_with_options()
-        self.assertTrue(chrome._capabilities)
+        self.assertIsNotNone(chrome._capabilities)
         self.assertEquals(chrome._capabilities["browserName"], "chrome")
         self.assertTrue("version" in chrome._capabilities)
+        self.assertEqual(chrome._capabilities['version'], '')
         self.assertTrue("platform" in chrome._capabilities)
+        self.assertEqual(chrome._capabilities['platform'], 'ANY')
         self.assertTrue("goog:chromeOptions" in chrome._capabilities)
+        self.assertEqual(len(chrome._capabilities['goog:chromeOptions']['args']), 7)
         self.assertTrue(
             "--headless" in chrome._capabilities["goog:chromeOptions"]["args"])
         self.assertTrue(
@@ -67,7 +81,13 @@ class TestBrowserDriverInit(unittest.TestCase):
         self.assertEquals(chrome._capabilities, cap)
         self.assertEquals(chrome._options, opt)
         chrome._update_capabilities_with_options()
+        self.assertEquals(chrome._capabilities["browserName"], "chrome")
+        self.assertTrue("version" in chrome._capabilities)
+        self.assertEqual(chrome._capabilities['version'], 'ANY')
+        self.assertTrue("platform" in chrome._capabilities)
+        self.assertEqual(chrome._capabilities['platform'], 'ANY')
         self.assertTrue("goog:chromeOptions" in chrome._capabilities)
+        self.assertEqual(len(chrome._capabilities['goog:chromeOptions']['args']), 7)
         self.assertTrue(
             "--headless" in chrome._capabilities["goog:chromeOptions"]["args"])
         self.assertTrue(
@@ -91,7 +111,13 @@ class TestBrowserDriverInit(unittest.TestCase):
         self.assertEquals(chrome._capabilities, cap)
         self.assertEquals(chrome._options, opt)
         chrome._update_capabilities_with_options()
+        self.assertEquals(chrome._capabilities["browserName"], "chrome")
+        self.assertTrue("version" in chrome._capabilities)
+        self.assertEqual(chrome._capabilities['version'], 'ANY')
+        self.assertTrue("platform" in chrome._capabilities)
+        self.assertEqual(chrome._capabilities['platform'], 'ANY')
         self.assertTrue("goog:chromeOptions" in chrome._capabilities)
+        self.assertEqual(len(chrome._capabilities['goog:chromeOptions']['args']), 5)
         self.assertFalse(
             "--headless" in chrome._capabilities["goog:chromeOptions"]["args"], chrome._capabilities)
         self.assertTrue(

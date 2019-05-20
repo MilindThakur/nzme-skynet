@@ -177,6 +177,6 @@ class DriverFactoryTest(unittest.TestCase):
 
     def test_unsupported_local_driver_registration(self):
         with self.assertRaises(Exception) as context:
-            DriverRegistry.register_driver(driver_type=DriverTypes.IE)
+            DriverRegistry.register_driver(driver_type="random")
         self.assertTrue(
-            'Only supports Chrome, Firefox in local mode', context.exception.message)
+            'Empty or Unknown driver type, valid options: chrome, firefox, safari, ie android, ios', context.exception.message)

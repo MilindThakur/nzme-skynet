@@ -13,24 +13,23 @@ class Chrome(BrowserDriver):
 
     # Allow updating the capability with chromeOptions
     def _update_capabilities_with_options(self):
-        new_chrome_options = {
+        # Default framework chromeOptions
+        _new_chrome_options = {
             "args": ["--test-type",
                      "--disable-notifications",
                      "-process-per-site",
                      "--dns-prefetch-disable"
-                     ],
-            "extensions": [],
-            "prefs": {}
+                     ]
         }
         if not self._options:
             logger.debug(
                 "No options specified, updating capabilities with default chrome settings")
         else:
             if "mobileEmulation" in self._options and self._options["mobileEmulation"]:
-                new_chrome_options["mobileEmulation"] = {
+                _new_chrome_options["mobileEmulation"] = {
                     "deviceName": self._options["mobileEmulation"]}
             if "headless" in self._options and self._options["headless"]:
-                new_chrome_options["args"].extend(
+                _new_chrome_options["args"].extend(
                     ["--headless", "--disable-gpu", "--no-sandbox"])
 
         if not self._capabilities:
@@ -38,17 +37,11 @@ class Chrome(BrowserDriver):
                 "No capabilities specified, creating default chrome capability..")
             self._capabilities = DesiredCapabilities.CHROME.copy()
 
+        # Update chromeOptions using framework defaults
         if "goog:chromeOptions" in self._capabilities:
-            for key, value in new_chrome_options.iteritems():
-                if not self._capabilities["goog:chromeOptions"][key] == new_chrome_options[key]:
-                    logger.debug(
-                        "Updating original capabilities goog:chromeOptions..")
-                    self._capabilities["goog:chromeOptions"].setdefault(
-                        key, []).extend(value)
+            self._capabilities["goog:chromeOptions"]['args'] = self._capabilities["goog:chromeOptions"]['args'] + _new_chrome_options['args']
         else:
-            logger.debug(
-                "No custom goog:chromeOptions specified in capabilities, setting default..")
-            self._capabilities["goog:chromeOptions"] = new_chrome_options
+            self._capabilities["goog:chromeOptions"] = _new_chrome_options
 
     def _create_driver(self, local, grid_url):
         self._update_capabilities_with_options()
