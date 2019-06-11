@@ -4,7 +4,5 @@ from selenium.webdriver.common.by import By
 from nzme_skynet.core.controls.baseelement import BaseElement
 
 
-class Element(BaseElement):
+class Element(BaseElement):pass
 
-    def __init__(self, by, locator):
-        super(Element, self).__init__(by, locator)
