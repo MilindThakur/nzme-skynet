@@ -25,9 +25,6 @@ class Chrome(BrowserDriver):
             logger.debug(
                 "No options specified, updating capabilities with default chrome settings")
         else:
-            if "mobileEmulation" in self._options and self._options["mobileEmulation"]:
-                _new_chrome_options["mobileEmulation"] = {
-                    "deviceName": self._options["mobileEmulation"]}
             if "headless" in self._options and self._options["headless"]:
                 _new_chrome_options["args"].extend(
                     ["--headless", "--disable-gpu", "--no-sandbox"])
@@ -42,6 +39,11 @@ class Chrome(BrowserDriver):
             self._capabilities["goog:chromeOptions"]['args'] = self._capabilities["goog:chromeOptions"]['args'] + _new_chrome_options['args']
         else:
             self._capabilities["goog:chromeOptions"] = _new_chrome_options
+
+        # Add experimental mobile emulation rendering
+        if "mobileEmulation" in self._options and self._options["mobileEmulation"]:
+            self._capabilities["goog:chromeOptions"]["mobileEmulation"] = {
+                    "deviceName": self._options["mobileEmulation"]}
 
     def _create_driver(self, local, grid_url):
         self._update_capabilities_with_options()
