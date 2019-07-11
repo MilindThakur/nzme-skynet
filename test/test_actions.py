@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import unittest
-import mock
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement

@@ -152,8 +152,8 @@ class BrowserProxyLocal(BrowserProxy):
             raise
         self._server.start()
         self._client = self._server.create_proxy({'captureHeaders': True,
-                                                 'captureContent': True,
-                                                 'captureBinaryContent': True})
+                                                  'captureContent': True,
+                                                  'captureBinaryContent': True})
 
     def start_browser(self, headless=False, resolution="maximum", mobileEmulation=""):
         """
@@ -163,7 +163,7 @@ class BrowserProxyLocal(BrowserProxy):
         :param str mobileEmulation: chrome emulation mode e.g. iPhone X, Samsung Galaxy S5 etc
         :return: Framework driver wrapper
         """
-        proxy_server_arg = "--proxy-server={0}".format(self._proxy.client)
+        proxy_server_arg = "--proxy-server={0}".format(self._client.proxy)
         capabilities = {
             "browserName": "chrome",
             "version": "ANY",
@@ -250,15 +250,17 @@ class BrowserProxyGrid(BrowserProxy):
         :param str mobileEmulation: chrome emulation mode e.g. iPhone X, Samsung Galaxy S5 etc
         :return: Framework driver wrapper
         """
-        proxy_server_arg = "--proxy-server={0}".format(self._proxy.proxy)
+        proxy_server_arg = "--proxy-server={0}".format(self._client.proxy)
         options = {
             "highlight": False,
             "headless": headless,
             "resolution": resolution,
             "mobileEmulation": mobileEmulation
         }
-        self._capabilities["goog:chromeOptions"] = {"args": [proxy_server_arg, '--ignore-certificate-errors', '--test-type']}
-        DriverRegistry.register_driver(DriverTypes.CHROME, capabilities=self._capabilities, local=False, options=options,
+        self._capabilities["goog:chromeOptions"] = {
+            "args": [proxy_server_arg, '--ignore-certificate-errors', '--test-type']}
+        DriverRegistry.register_driver(DriverTypes.CHROME, capabilities=self._capabilities, local=False,
+                                       options=options,
                                        grid_url=self._grid_url)
         self._driver = DriverRegistry.get_driver()
 
