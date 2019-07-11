@@ -1,6 +1,8 @@
 # **Skynet - Test Automation Library @ NZME - Changelog**
 
 ```bash
+0.4.3   Add ability to find element/s within the parent container, refactor browser proxy, fix chrome mobileEmulation 
+        rendering
 0.4.2   Fix unittests
 0.4.1   Update docs, pep8 styling
 0.4.0   ** BREAKING CHANGE **: new testsetup.ini config to support "free-form" capabilities  
