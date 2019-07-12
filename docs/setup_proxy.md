@@ -28,7 +28,7 @@ Returns a [HarParser](https://pypi.org/project/haralyzer/) page instance.
 
         bproxy.client.new_har(options={'captureHeaders': True})
         bproxy.driver.goto_url(self.TEST_URL, absolute=True)
-        har_page = self.bproxy.harparser
+        har_page = bproxy.harparser
         
 7. To perform interactions on the page before capturing traffic
 
@@ -39,7 +39,7 @@ Returns a [HarParser](https://pypi.org/project/haralyzer/) page instance.
         bproxy.driver.goto_url(page_url, absolute=True)
         bproxy.driver.refresh()
         Button(By.CSS_SELECTOR, ".vjs-big-play-button").click()
-        har_page = self.bproxy.harparser
+        har_page = bproxy.harparser
         
 8. To stop the setup. This stops the browsermob-proxy server and closes the browser instance.
 
@@ -173,7 +173,7 @@ Browsermob-proxy and browser can be run in a docker setup to aid testing in CI
         bproxy = BrowserProxyGrid(capabilities=capabilities)
         bproxy.start()
         
-    To start the browser with options, supports 
+    To start the browser with options
     
         bproxy.start_browser(self, headless=False, resolution="maximum", mobileEmulation=""):
     
@@ -185,6 +185,7 @@ Browsermob-proxy and browser can be run in a docker setup to aid testing in CI
 
         har_page = bproxy.capture_url_traffic(url=TEST_URL, wait_time=2)
 
-6. To stop the setup
+6. To stop the setup. This closes the client connection to the browserproxy-server in the container and closes the
+browser instance in the container. 
 
         bproxy.stop()

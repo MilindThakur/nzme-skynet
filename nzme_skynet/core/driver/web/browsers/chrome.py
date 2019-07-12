@@ -41,7 +41,7 @@ class Chrome(BrowserDriver):
             self._capabilities["goog:chromeOptions"] = _new_chrome_options
 
         # Add experimental mobile emulation rendering
-        if "mobileEmulation" in self._options and self._options["mobileEmulation"]:
+        if self._options and self._options["mobileEmulation"]:
             self._capabilities["goog:chromeOptions"]["mobileEmulation"] = {
                     "deviceName": self._options["mobileEmulation"]}
 
