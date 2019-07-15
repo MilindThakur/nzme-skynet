@@ -2,6 +2,7 @@
 import unittest
 
 from selenium.webdriver.common.by import By
+from selenium.webdriver.remote.webelement import WebElement
 
 from nzme_skynet.core.controls.button import Button
 from nzme_skynet.core.controls.checkbox import Checkbox
@@ -47,7 +48,7 @@ class ActionsTestCase(unittest.TestCase):
         self.assertEqual(new_page_handle, self.driver.window_handles[0])
 
     def test_action_textinput(self):
-        txt_input = TextInput(By.NAME, "firstname")
+        txt_input = TextInput(By.NAME, "firstname", index=1)
         self.assertEqual(txt_input.value, "")
         txt_input.set_value("something")
         self.assertEqual(txt_input.value, "something")
@@ -106,6 +107,18 @@ class ActionsTestCase(unittest.TestCase):
     def test_action_element(self):
         elem = Element(By.CLASS_NAME, "textInput")
         self.assertEqual(elem.get_attribute("value"), "Sample Text")
+
+    def test_base_element_methods(self):
+        elem1 = Text(By.NAME, "firstname")
+        self.assertTrue(isinstance(elem1.element, WebElement))
+        elem2 = TextInput(By.NAME, "firstname", index=1)
+        self.assertTrue(isinstance(elem2.element, WebElement))
+        elem3 = TextInput(By.TAG_NAME, "input", parent=(By.CLASS_NAME, "male"))
+        self.assertTrue(isinstance(elem3.element, WebElement))
+        elem5 = TextInput(By.TAG_NAME, "input", parent=Element(By.CLASS_NAME, "male"))
+        self.assertTrue(isinstance(elem5.element, WebElement))
+        elem6 = TextInput(By.TAG_NAME, "input", parent=Element(By.CLASS_NAME, "male"), index=1)
+        self.assertTrue(isinstance(elem6.element, WebElement))
 
     @classmethod
     def tearDownClass(cls):

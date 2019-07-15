@@ -161,6 +161,53 @@ class DriverFactoryTest(unittest.TestCase):
         self.assertIsNone(DriverRegistry.get_driver(),
                           'Error: Driver found without registration')
 
+    def test_remote_chrome_with_capabilities_and_with_options(self):
+        capabilities = {
+            "browserName": "chrome",
+            "version": "ANY",
+            "platform": "ANY"
+        }
+
+        option = {
+            "highlight": True,
+            "headless": True,
+            "resolution": "maximum",
+            "mobileEmulation": "iPhone X"
+        }
+        DriverRegistry.register_driver(local=False, capabilities=capabilities, options=option)
+        self.assertIsInstance(DriverRegistry.get_driver(), BrowserDriver)
+        self.assertIsInstance(DriverRegistry.get_webdriver(), WebDriver)
+        self.assertEqual(DriverRegistry.get_driver().name, DriverTypes.CHROME)
+        DriverRegistry.deregister_driver()
+        self.assertIsNone(DriverRegistry.get_driver(),
+                          'Error: Driver found without registration')
+
+    def test_remote_chrome_with_custom_capabilities_chomeoptions_and_with_options(self):
+        capabilities = {
+            "browserName": "chrome",
+            "version": "ANY",
+            "platform": "ANY",
+            "goog:chromeOptions": {
+                "args": ["--disable-gpu", "--no-sandbox"],
+                "extensions": [],
+                "prefs": {}
+            }
+        }
+
+        option = {
+            "highlight": True,
+            "headless": True,
+            "resolution": "maximum",
+            "mobileEmulation": "iPhone X"
+        }
+        DriverRegistry.register_driver(local=False, capabilities=capabilities, options=option)
+        self.assertIsInstance(DriverRegistry.get_driver(), BrowserDriver)
+        self.assertIsInstance(DriverRegistry.get_webdriver(), WebDriver)
+        self.assertEqual(DriverRegistry.get_driver().name, DriverTypes.CHROME)
+        DriverRegistry.deregister_driver()
+        self.assertIsNone(DriverRegistry.get_driver(),
+                          'Error: Driver found without registration')
+
     def test_registering_multiple_drivers(self):
         DriverRegistry.register_driver(DriverTypes.CHROME, local=False)
         current_driver = DriverRegistry.get_driver()
