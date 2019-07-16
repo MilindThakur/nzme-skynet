@@ -1,4 +1,4 @@
-# **Skynet - Test Automation Library @ NZME**
+# **Skynet - Test Automation Library @ [NZME](https://www.nzme.co.nz/)**
 
 ## **Features included:**
 * A python library to automate web apps and mobile apps across range of browsers and devices
@@ -7,6 +7,7 @@
 * Plugin to run REST api calls
 * Support for BDD scenarios and parallel execution run
 * Support for Mobile app testing, see [Mobile app readme](docs/howto_mobile_tests.md)
+* Capture and manipulate HTTP traffic using browsermob-proxy 
 
 ## **Install Skynet package:**
  Install from source.
