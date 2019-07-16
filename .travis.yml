@@ -11,7 +11,7 @@ services:
 before_install:
   - docker pull elgalu/selenium
   - docker pull dosel/zalenium
-  - docker rubytester/browsermob-proxy
+  - docker pull rubytester/browsermob-proxy
   - docker pull trinitronx/python-simplehttpserver
 
 install:
