@@ -25,6 +25,6 @@ deploy:
   user: milind28
   password:
     secure: dfHhRcAOIo4nn2InknO3UKShUbI9NK/fTGBNf9WifIPqQRavY9drXRkLnOq2CwubsLjsq3m4ehzmoeV6Fsz8UOs1X9G4TY9pBFwDntQRWWE/l+8FQJtiAXjyW21srGWIgBVMsf9hAi3tuDaWbkwPuKyxHi1NkBfS4Jfd5LW2y8wNsT68GoUsLHuzobqvfGYQEfhZuKWrvFHWyvyDrMoJs4YVOXzVvnFkEH7wYgCdsz18XA+ibGs5zJzTf9OeDu2Bz6385NGZ4/Au+QcprG8JYnJTeCTKwOKh5eh6lxCi24QVqgUC/f5bmpPClo9+AcWQKTk2o49qG16ObsIKDuknAcm7/R5M5i7QML3aog0d0MKO4y70LMKP85OdImdoVTRxuqedtBF/6Mt1rs7uZHSet2O3YZqtTco81aPkcGbUm6RGVfvnelu9lFuPHLoHUILF8BRHk12urkNjI9wIdGlPWXc6Yav2ZluSU4Xlrdb2uLWltUpsncIJN9BmGqk+PFKEq0awznghw1j+GNsCZW+8gH5IbTU5UDToOYIlPo81MCtdkwMxxa7OM3iQI3S254vBYhupFVVMeiUxXBGd6JAz/n+dZZs3etW8z6Nt+DWaAJEPLSl4paJ691fVWPqO+FIZyYwzL77Qo6+BijHItTz2X9lS+RJg0MliueBSWbsrm94=
-  server: https://test.pypi.org
+  server: https://test.pypi.org/legacy/
   on:
     branch: travis
