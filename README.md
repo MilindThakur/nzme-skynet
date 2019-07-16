@@ -1,4 +1,7 @@
-# **Skynet - Test Automation Library @ NZME**
+# **Skynet - Test Automation Library @ [NZME](https://www.nzme.co.nz/)**
+
+[![Build Status](https://travis-ci.org/MilindThakur/nzme-skynet.svg?branch=master)](https://travis-ci.org/MilindThakur/nzme-skynet)
+[![codecov](https://codecov.io/gh/MilindThakur/nzme-skynet/branch/master/graph/badge.svg)](https://codecov.io/gh/MilindThakur/nzme-skynet)
 
 ## **Features included:**
 * A python library to automate web apps and mobile apps across range of browsers and devices
@@ -7,6 +10,7 @@
 * Plugin to run REST api calls
 * Support for BDD scenarios and parallel execution run
 * Support for Mobile app testing, see [Mobile app readme](docs/howto_mobile_tests.md)
+* Capture and manipulate HTTP traffic using browsermob-proxy 
 
 ## **Install Skynet package:**
  Install from source.
@@ -18,7 +22,8 @@
 ## **Setup instructions**
 
 ### **Install pip, web browsers, Emulators**
-* [Follow these instructions](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/requirements_installation.md) to install pip, git, virtualenv/virtualenvwrapper
+* Install [pip](https://pip.pypa.io/en/stable/installing/), [git](https://git-scm.com/), [
+virtualenv](https://virtualenv.pypa.io/en/stable/installation/) / [virtualenvwrapper](https://virtualenvwrapper.readthedocs.io/en/latest/install.html)
 * Download [Chrome browser](https://www.google.com/chrome/browser/desktop/index.html) and [Chrome Driver](https://sites.google.com/a/chromium.org/chromedriver/)
 * Download Firefox. Firefox > v.47 requires [Marionette](https://developer.mozilla.org/en-US/docs/Mozilla/QA/Marionette) driver
 * To verify drivers are working [check these instructions](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/verify_webdriver.md)

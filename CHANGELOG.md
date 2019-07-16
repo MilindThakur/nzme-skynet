@@ -1,6 +1,7 @@
 # **Skynet - Test Automation Library @ NZME - Changelog**
 
 ```bash
+0.4.4   Add travis CI for build on github
 0.4.3   Add ability to find element/s within the parent container, refactor browser proxy, fix chrome mobileEmulation 
         rendering
 0.4.2   Fix unittests

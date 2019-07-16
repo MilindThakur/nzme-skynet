@@ -2,8 +2,6 @@
 import unittest
 
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.common.keys import Keys
 
 from nzme_skynet.core.controls.textinput import TextInput
 from nzme_skynet.core.controls.button import Button
@@ -20,9 +18,6 @@ class GoogleHomePage(BaseWebPage):
 
     def search(self, string):
         self.search_input.set_value(string)
-        # To get around suggestions option hiding the search button
-        ActionChains(DriverRegistry.get_webdriver()
-                     ).send_keys(Keys.ESCAPE).perform()
         self.submit_search_btn.click()
 
 
