@@ -15,11 +15,10 @@ before_install:
   - docker pull trinitronx/python-simplehttpserver
 
 install:
-  - pip install -r requirements.txt
-  - python setup.py install
+  - pip install tox-travis
 
 script:
-  - test.sh
+  - tox
 
 deploy:
   provider: pypi
