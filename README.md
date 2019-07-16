@@ -1,5 +1,8 @@
 # **Skynet - Test Automation Library @ [NZME](https://www.nzme.co.nz/)**
 
+[![Build Status](https://travis-ci.org/MilindThakur/nzme-skynet.svg?branch=master)](https://travis-ci.org/MilindThakur/nzme-skynet)
+[![codecov](https://codecov.io/gh/MilindThakur/nzme-skynet/branch/master/graph/badge.svg)](https://codecov.io/gh/MilindThakur/nzme-skynet)
+
 ## **Features included:**
 * A python library to automate web apps and mobile apps across range of browsers and devices
 * Scripts to automate visual testing
