@@ -18,7 +18,8 @@
 ## **Setup instructions**
 
 ### **Install pip, web browsers, Emulators**
-* [Follow these instructions](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/requirements_installation.md) to install pip, git, virtualenv/virtualenvwrapper
+* Install [pip](https://pip.pypa.io/en/stable/installing/), [git](https://git-scm.com/), [
+virtualenv](https://virtualenv.pypa.io/en/stable/installation/) / [virtualenvwrapper](https://virtualenvwrapper.readthedocs.io/en/latest/install.html)
 * Download [Chrome browser](https://www.google.com/chrome/browser/desktop/index.html) and [Chrome Driver](https://sites.google.com/a/chromium.org/chromedriver/)
 * Download Firefox. Firefox > v.47 requires [Marionette](https://developer.mozilla.org/en-US/docs/Mozilla/QA/Marionette) driver
 * To verify drivers are working [check these instructions](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/verify_webdriver.md)

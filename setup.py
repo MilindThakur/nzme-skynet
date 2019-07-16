@@ -6,6 +6,7 @@ Setup package to install Skynet - NZME Test Automation Library dependencies
 import os
 import codecs
 import re
+from os import path
 
 from setuptools import setup, find_packages
 
@@ -29,16 +30,27 @@ def find_version(*file_paths):
     raise RuntimeError("Unable to find version string.")
 
 
+def long_description():
+    this_directory = path.abspath(path.dirname(__file__))
+    try:
+        with open(path.join(this_directory, 'README.md'), 'rb') as f:
+            return f.read().decode('utf-8')
+    except IOError:
+        return 'NZME Test Automation Library for Browser, Mobile and API automation'
+
+
+
 setup(
     name='nzme-skynet',
     version=find_version('nzme_skynet/__init__.py'),
     author='Milind Thakur',
-    author_email='milind.thakur@nzme.co.nz',
-    maintainer='milind.thakur@nzme.co.nz',
-    url='https://bitbucket.org/grabone/Skynet.git',
+    author_email='milindat28@gmail.com',
+    maintainer='milindat28@gmail.com',
+    url='https://github.com/MilindThakur/nzme-skynet',
     description="NZME Test Automation Library",
+    long_description_content_type='text/markdown',
     license='BSD 3-Clause License',
-    long_description=readme('README.md'),
+    long_description=long_description(),
     keywords=[
       'selenium',
       'bdd',
@@ -71,15 +83,17 @@ setup(
         'httpretty'
     ],
     classifiers=[
-        "Development Status :: ",
-        "Environment :: Web/mobile Environment",
-        "Intended Audience :: Developers, Testers",
+        "Development Status :: 4 - Beta",
+        "Environment :: Web Environment",
+        "Intended Audience :: Developers",
         "Topic :: Internet",
         "Topic :: Scientific/Engineering",
         "Topic :: Software Development",
+        "Topic :: Software Development :: Quality Assurance",
+        "Topic :: Software Development :: Testing",
+        "Topic :: Software Development :: Testing :: Acceptance",
         "Operating System :: OS Independent",
-        "Programming Language :: Python :: 2.7",
-        "Framework :: Selenium"
+        "Programming Language :: Python :: 2.7"
     ],
     zip_safe=True
 )
