@@ -3,9 +3,6 @@ dist: xenial
 language: python
 cache: pip
 
-python:
-  - '2.7'
-
 services:
   - docker
 
@@ -19,8 +16,17 @@ install:
   - pip install tox-travis
   - pip install codecov
 
+matrix:
+  include:
+    - python: 3.5
+      env:
+        - TOX_ENV=py35
+    - python: 3.6
+      env:
+        - TOX_ENV=py36
+
 script:
-  - tox
+  - tox -e $TOX_ENV
 
 after_success:
   - codecov
