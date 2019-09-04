@@ -14,7 +14,7 @@ class TestBrowserDriverInit(unittest.TestCase):
         self.assertIsNotNone(chrome._capabilities)
         self.assertEqual(len(chrome._capabilities), 4)
         self.assertTrue("browserName" in chrome._capabilities)
-        self.assertEquals(chrome._capabilities["browserName"], "chrome")
+        self.assertEqual(chrome._capabilities["browserName"], "chrome")
         self.assertTrue("version" in chrome._capabilities)
         self.assertEqual(chrome._capabilities['version'], '')
         self.assertTrue("platform" in chrome._capabilities)
@@ -35,7 +35,7 @@ class TestBrowserDriverInit(unittest.TestCase):
         self.assertIsNotNone(chrome._capabilities)
         chrome._update_capabilities_with_options()
         self.assertTrue("browserName" in chrome._capabilities)
-        self.assertEquals(chrome._capabilities["browserName"], "chrome")
+        self.assertEqual(chrome._capabilities["browserName"], "chrome")
         self.assertTrue("version" in chrome._capabilities)
         self.assertEqual(chrome._capabilities['version'], 'ANY')
         self.assertTrue("platform" in chrome._capabilities)
@@ -51,10 +51,10 @@ class TestBrowserDriverInit(unittest.TestCase):
         }
         chrome = Chrome(capabilities=None, options=opt)
         self.assertIsNone(chrome._capabilities)
-        self.assertEquals(chrome._options, opt)
+        self.assertEqual(chrome._options, opt)
         chrome._update_capabilities_with_options()
         self.assertIsNotNone(chrome._capabilities)
-        self.assertEquals(chrome._capabilities["browserName"], "chrome")
+        self.assertEqual(chrome._capabilities["browserName"], "chrome")
         self.assertTrue("version" in chrome._capabilities)
         self.assertEqual(chrome._capabilities['version'], '')
         self.assertTrue("platform" in chrome._capabilities)
@@ -78,10 +78,10 @@ class TestBrowserDriverInit(unittest.TestCase):
             "mobileEmulation": "iPhone X"
         }
         chrome = Chrome(capabilities=cap, options=opt)
-        self.assertEquals(chrome._capabilities, cap)
-        self.assertEquals(chrome._options, opt)
+        self.assertEqual(chrome._capabilities, cap)
+        self.assertEqual(chrome._options, opt)
         chrome._update_capabilities_with_options()
-        self.assertEquals(chrome._capabilities["browserName"], "chrome")
+        self.assertEqual(chrome._capabilities["browserName"], "chrome")
         self.assertTrue("version" in chrome._capabilities)
         self.assertEqual(chrome._capabilities['version'], 'ANY')
         self.assertTrue("platform" in chrome._capabilities)
@@ -108,10 +108,10 @@ class TestBrowserDriverInit(unittest.TestCase):
             "mobileEmulation": ""
         }
         chrome = Chrome(capabilities=cap, options=opt)
-        self.assertEquals(chrome._capabilities, cap)
-        self.assertEquals(chrome._options, opt)
+        self.assertEqual(chrome._capabilities, cap)
+        self.assertEqual(chrome._options, opt)
         chrome._update_capabilities_with_options()
-        self.assertEquals(chrome._capabilities["browserName"], "chrome")
+        self.assertEqual(chrome._capabilities["browserName"], "chrome")
         self.assertTrue("version" in chrome._capabilities)
         self.assertEqual(chrome._capabilities['version'], 'ANY')
         self.assertTrue("platform" in chrome._capabilities)
@@ -137,8 +137,8 @@ class TestBrowserDriverInit(unittest.TestCase):
             "mobileEmulation": ""
         }
         ff = Firefox(capabilities=cap, options=opt)
-        self.assertEquals(ff._capabilities, cap)
-        self.assertEquals(ff._options, opt)
+        self.assertEqual(ff._capabilities, cap)
+        self.assertEqual(ff._options, opt)
         ff._update_capabilities_with_options()
         self.assertTrue("moz:firefoxOptions" in ff._capabilities)
         self.assertTrue(
@@ -167,15 +167,15 @@ class TestBrowserDriverInit(unittest.TestCase):
             "mobileEmulation": ""
         }
         ff = Firefox(capabilities=cap, options=opt)
-        self.assertEquals(ff._capabilities, cap)
-        self.assertEquals(ff._options, opt)
+        self.assertEqual(ff._capabilities, cap)
+        self.assertEqual(ff._options, opt)
         ff._update_capabilities_with_options()
         self.assertTrue("moz:firefoxOptions" in ff._capabilities)
         self.assertTrue(
             "-headless" in ff._capabilities["moz:firefoxOptions"]["args"])
         self.assertTrue(
             "-some-args" in ff._capabilities["moz:firefoxOptions"]["args"])
-        self.assertEquals(len(ff._capabilities["moz:firefoxOptions"]), 4)
+        self.assertEqual(len(ff._capabilities["moz:firefoxOptions"]), 4)
         self.assertTrue("binary" in ff._capabilities["moz:firefoxOptions"])
         self.assertTrue("prefs" in ff._capabilities["moz:firefoxOptions"])
         self.assertTrue("log" in ff._capabilities["moz:firefoxOptions"])
@@ -194,11 +194,11 @@ class TestBrowserDriverInit(unittest.TestCase):
             "mobileEmulation": ""
         }
         safari = Safari(capabilities=cap, options=opt)
-        self.assertEquals(safari._capabilities, cap)
-        self.assertEquals(safari._options, opt)
+        self.assertEqual(safari._capabilities, cap)
+        self.assertEqual(safari._options, opt)
         safari._update_capabilities_with_options()
         self.assertEqual(len(safari._capabilities), 3)
-        self.assertEquals(safari._capabilities, cap)
+        self.assertEqual(safari._capabilities, cap)
 
     def test_browserstack_capability_init(self):
         cap = {
@@ -220,12 +220,12 @@ class TestBrowserDriverInit(unittest.TestCase):
             "mobileEmulation": ""
         }
         chrome = Chrome(capabilities=cap, options=opt)
-        self.assertEquals(chrome._capabilities, cap)
-        self.assertEquals(chrome._options, opt)
+        self.assertEqual(chrome._capabilities, cap)
+        self.assertEqual(chrome._options, opt)
         chrome._update_capabilities_with_options()
         self.assertTrue("goog:chromeOptions" in chrome._capabilities)
         self.assertTrue(
             "--headless" in chrome._capabilities["goog:chromeOptions"]["args"])
         self.assertFalse(
             "mobileEmulation" in chrome._capabilities["goog:chromeOptions"])
-        self.assertEquals(len(chrome._capabilities), 12)
+        self.assertEqual(len(chrome._capabilities), 12)

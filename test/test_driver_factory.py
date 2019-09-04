@@ -226,4 +226,4 @@ class DriverFactoryTest(unittest.TestCase):
         with self.assertRaises(Exception) as context:
             DriverRegistry.register_driver(driver_type="random")
         self.assertTrue(
-            'Empty or Unknown driver type, valid options: chrome, firefox, safari, ie android, ios', context.exception.message)
+            'Empty or Unknown driver type, valid options: chrome, firefox, safari, ie android, ios', context.exception)
