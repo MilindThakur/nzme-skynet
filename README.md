@@ -80,15 +80,15 @@ Test setup is managed in a default configuration file _testsetup.ini_ which can 
 [BROWSER]
 #- Generic Selenium/Cloud capabilities -#
 capabilities =  {
-    "browserName": "chrome",
-    "version": "ANY",
-    "platform": "ANY",
-    "goog:chromeOptions" : {
-      "args": ["--disable-gpu"],
-      "extensions": [],
-      "prefs": {}
-        }
-    }
+                "browserName": "chrome",
+                "version": "ANY",
+                "platform": "ANY",
+                "goog:chromeOptions" : {
+                    "args": ["--disable-gpu"],
+                    "extensions": [],
+                    "prefs": {}
+                    }
+                }
 #- Framework specific capabilities -#
 highlight = true
 resolution = maximum # e.g. maximum, 1126x830
@@ -99,23 +99,23 @@ mobileEmulation = # e.g. iPhone X, Galaxy S5 etc
 #- Generic Appium capabilities -#
 [ANDROID]
 capabilities = {
-    "platformName": "Android",
-    "platformVersion": "8.1",
-    "deviceName": "Device 01"
-    "udid": "emulator-5554",
-    "appPackage": "appPackage",
-    "appActivity": "appActivity",
-    "app": "/path/to/my.app"
-}
+                "platformName": "Android",
+                "platformVersion": "8.1",
+                "deviceName": "Device 01"
+                "udid": "emulator-5554",
+                "appPackage": "appPackage",
+                "appActivity": "appActivity",
+                "app": "/path/to/my.app"
+                }
 
 [IOS]
 capabilities = {
-    "platformName": "iOS",
-    "platformVersion": "11.0",
-    "deviceName": "iPhone 7",
-    "automationName": "XCUITest",
-    "app": "/path/to/my.app"
-    }
+                "platformName": "iOS",
+                "platformVersion": "11.0",
+                "deviceName": "iPhone 7",
+                "automationName": "XCUITest",
+                "app": "/path/to/my.app"
+                }
 
 #------- Environmental -------#
 #- Framework specific capabilities -#
