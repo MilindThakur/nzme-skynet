@@ -22,6 +22,9 @@ dist: clean
 	python setup.py sdist
 	python setup.py bdist_wheel
 
+test-release: dist
+    twine upload dist/* -r test
+
 release: dist
 	git tag `python setup.py -q version`
 	git push origin `python setup.py -q version`
