@@ -36,7 +36,7 @@ class Firefox(BrowserDriver):
         new_ff_cap = new_ff_options.to_capabilities()
 
         if "moz:firefoxOptions" in self._capabilities and "moz:firefoxOptions" in new_ff_cap:
-            for key, value in new_ff_cap["moz:firefoxOptions"].iteritems():
+            for key, value in new_ff_cap["moz:firefoxOptions"].items():
                 if not self._capabilities["moz:firefoxOptions"][key] == new_ff_cap["moz:firefoxOptions"][key]:
                     logger.debug(
                         "Updating original capabilities moz:firefoxOptions..")
