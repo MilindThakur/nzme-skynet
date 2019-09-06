@@ -4,7 +4,7 @@
 [![codecov](https://codecov.io/gh/MilindThakur/nzme-skynet/branch/master/graph/badge.svg)](https://codecov.io/gh/MilindThakur/nzme-skynet)
 
 ## **Features included:**
-* A python library to automate web apps and mobile apps across range of browsers and devices
+* A python3.6+ library to automate web apps and mobile apps across range of browsers and devices
 * Scripts to automate visual testing
 * Out of box integration with cloud testing (e.g. Sauce Labs)
 * Plugin to run REST api calls
@@ -15,15 +15,14 @@
 ## **Install Skynet package:**
  Install from source.
  
-        git clone <repo>
-        cd skynet
-        python setup.py install 
+        $ git clone <repo>
+        $ cd skynet
+        $ python setup.py install 
 
 ## **Setup instructions**
 
 ### **Install pip, web browsers, Emulators**
-* Install [pip](https://pip.pypa.io/en/stable/installing/), [git](https://git-scm.com/), [
-virtualenv](https://virtualenv.pypa.io/en/stable/installation/) / [virtualenvwrapper](https://virtualenvwrapper.readthedocs.io/en/latest/install.html)
+* Python 3.6+
 * Download [Chrome browser](https://www.google.com/chrome/browser/desktop/index.html) and [Chrome Driver](https://sites.google.com/a/chromium.org/chromedriver/)
 * Download Firefox. Firefox > v.47 requires [Marionette](https://developer.mozilla.org/en-US/docs/Mozilla/QA/Marionette) driver
 * To verify drivers are working [check these instructions](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/verify_webdriver.md)
@@ -33,43 +32,45 @@ virtualenv](https://virtualenv.pypa.io/en/stable/installation/) / [virtualenvwra
 [Selenoid](https://github.com/aerokube/selenoid), [docker-selenium](https://github.com/SeleniumHQ/docker-selenium) etc
 
 
-        git clone <repo>
-        cd skynet
-        mkvirtualenv skynet-env
-        pip install -r requirements/dev.txt
-        
-Style guide: https://www.python.org/dev/peps/pep-0008/
-    
-        python -m autopep8 -r --global-config .config-pep8 -i .
+        $ git clone <repo>
+        $ cd skynet
+        $ python3 -m venv skynet3-env
+        $ source skynet3-env/bin/activate
+        (skynet3-env) $ pip install -U pip
+        (skynet3-env) $ pip install pipenv
+        (skynet3-env) $ pipenv sync --dev
      
 ## **Run Tests**
 
-You can also run all of the tests via `tox` in your local
+You can run all of the tests via `tox` in your local
 
+        (skynet3-env) $ deactivate
+        $ sudo apt install python-tox
         $ tox
 
 For detailed run:
 
 Setup test env
 
-        ./docker_compose.sh start
-        curl -sSL http://localhost:4444/wd/hub/status | jq .value.ready | grep true
+        $ source skynet3-env/bin/activate
+        (skynet3-env) $ ./docker_compose.sh start
+        (skynet3-env) $ curl -sSL http://localhost:4444/wd/hub/status | jq .value.ready | grep true
         
 Run tests (with coverage)
 
-        py.test -vvv --cov=nzme_skynet test     
+        (skynet3-env) $ py.test -vvv --cov=nzme_skynet test     
         
 To run all the tests in parallel
 
-        py.test -n <no_of_parallel_processes> test
+        (skynet3-env) $ py.test -n <no_of_parallel_processes> test
 
 To run individual tests
 
-        py.text -q test/<test_name.py>
+        (skynet3-env) $ py.text -q test/<test_name.py>
         
 Teardown test env
 
-        ./docker_compose.sh stop
+        (skynet3-env) $ ./docker_compose.sh stop
 
 ## **BDD Test Setup**
 
@@ -135,18 +136,18 @@ One can also have separate "_testsetup.ini_" files for different runs e.g. _test
 specific capabilities only, or _testsetup_android.ini_ for android tests. This custom .ini can be passed as a 
 command line parameter for behave tests.
 
-    $ behave -D configfile=testsetup_browserstack.ini --tags=@p1
-    $ behave -D configfile=testsetup_android.ini --tags=@android-app --tags=@p1
+    (skynet3-env) $ behave -D configfile=testsetup_browserstack.ini --tags=@p1
+    (skynet3-env) $ behave -D configfile=testsetup_android.ini --tags=@android-app --tags=@p1
     
 The capabilities and environment key value options can also be updated on the commandline.
 
-    $ behave -D browserName=firefox -D version=65.0 -D local=true -D headless=true --tags=@p1
+    (skynet3-env) $ behave -D browserName=firefox -D version=65.0 -D local=true -D headless=true --tags=@p1
 
 
 ### **BDD Parallel Tests Run utility**
 Allows running BDD tests in parallel, hence saving on execution time.
 ```bash
-$ nzme-behave-parallel -h
+(skynet3-env) $ nzme-behave-parallel -h
 usage: Run behave in parallel mode for scenarios [-h] [--processes PROCESSES]
                                                  [--tags TAGS]
                                                  [--define DEFINE]
@@ -163,7 +164,7 @@ optional arguments:
 ```
 E.g. to run 4 scenarios in parallel based on tags and override test configuration
 ```bash
-$ nzme-behave-parallel -p 4 -t prod -D local=false -D browserName=firefox
+(skynet3-env) $ nzme-behave-parallel -p 4 -t prod -D local=false -D browserName=firefox
 ```
 
 ### **Supported Tags for use with Behave**
