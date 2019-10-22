@@ -1,8 +1,8 @@
 # **Skynet - Test Automation Library @ NZME - Changelog**
 
 ```bash
-0.5.0   Migrate to python 3.5+
-0.4.4   Add travis CI for build on github
+0.5.0   Migrate to python 3.6+
+0.4.4   Add travis CI for build on github, last build supporting python2.7
 0.4.3   Add ability to find element/s within the parent container, refactor browser proxy, fix chrome mobileEmulation 
         rendering
 0.4.2   Fix unittests
