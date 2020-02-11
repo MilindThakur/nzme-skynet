@@ -36,7 +36,7 @@ deploy:
   user: milind28
   password:
     secure: JY8IE14xmHZvIFe6fuNK9s9vUAGNrcU69QWvXkMVUx7Fsp9BbU9Vsq1NIj2SSvetpyFms/MuhMxP8Wvl5Ua+rSXBpt83w5X1Gs50qX72Ui1zAQhiLlZzPiubyHITQFbjlHZhv1GXzmgQohyVqo6GJ3L8tE4CscDUMGr8eIGGoVXLaUZWeBSOKtZi3eNrL5GNMBQnpEui4119a9/wFdVq5ZxiA849gba0YBrNOPf9hsKKC01egWDbku9tT+8KmMPU+xA602GQQI0KMWlRjrkJAfYp7T2TUzvw0WUJjDLQZ4Ewsy8H7yh49dnD17+Jwm72HgWmYGaII9M+fAwhKUYlMQ3abGlzp6AG9OtN++2oYTvgVEezaR5WEi1ggdI03c0FB2QjX/sBWuMcleN5F/AnsTfstkKPWAorPA+bcdrjREYfZggzeTxVVpZGnms/PlVTOtvHR6/lVGyh0L8ugpcfECfSOv5XL8xo1EM8ycnljkeWRb6f5MU31vJ5Atp1HCTqFEvjwyPFwZ/8UU3OwWVaRRMCvTvR4TpGO5oULFGNNacPkf3ecALkDVLn9wSat155dGU1VvugLjevykNNOr8d0yfW02jgXZRoj9Z2DUy8wrd1OhVuQhMzmzQ7F3Hp+X1q8LYNAQCY2JDX1VaSmlL0Y90HBpfN7C+n0hbEoJ16LUA=
-   skip_existing: true
+  skip_existing: true
   server: https://test.pypi.org/legacy/
   on:
     branch: python3_migration
