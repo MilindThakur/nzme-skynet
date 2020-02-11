@@ -114,23 +114,37 @@ def main():
     logger.info(
         "--------------------------------------------------------------------------")
     output = 0
-    failed_tests = []
+    failed_tests = passed_tests = []
     # https://stackoverflow.com/questions/1408356/keyboard-interrupts-with-pythons-multiprocessing-p
     for feature, scenario, status in pool.map_async(run_feature, features_scenarios).get(9999):
-        if status != 'PASSED':
-            if output == 0:
-                failed_tests.append((feature, scenario, status))
-                if status == "FAILED":
-                    output = 1
-                else:
-                    output = 2
+        if status == 'PASSED':
+            passed_tests.append((feature, scenario, status))
+        else:
+            failed_tests.append((feature, scenario, status))
+
+    #
+    failed_tests_including_rerun = list(set(failed_tests) - set(passed_tests))
+    # if output == 0:
+    #     failed_tests.append((feature, scenario, status))
+    #     if status == "FAILED":
+    #         output = 1
+    #     else:
+    #         output = 2
+
     logger.info(
         "--------------------------------------------------------------------------")
     end_time = datetime.now()
-    if failed_tests:
-        for failed_test in failed_tests:
+
+    if failed_tests_including_rerun:
+        output = 1
+        for failed_test in failed_tests_including_rerun:
             logger.info(
                 "{0:50}: {1} --> {2}".format(failed_test[0], failed_test[1], failed_test[2]))
+
+    # if failed_tests:
+    #     for failed_test in failed_tests:
+    #         logger.info(
+    #             "{0:50}: {1} --> {2}".format(failed_test[0], failed_test[1], failed_test[2]))
 
     logger.info("Duration: {}".format(format(end_time - start_time)))
     logger.info("Test Status: {0}".format(str(output)))
