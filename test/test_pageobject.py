@@ -45,7 +45,7 @@ class POValidation(unittest.TestCase):
         assert gresultpage.page_url is None
         gresultpage.search_result_container.will_be_visible()
         first_result_url = gresultpage.get_result_url(1)
-        assert "www.nzme.co.nz/" in first_result_url, "Unexpected {0} found in first result".format(
+        assert "www.nzme.co.nz" in first_result_url, "Unexpected {0} found in first result".format(
             first_result_url)
 
     def tearDown(self):

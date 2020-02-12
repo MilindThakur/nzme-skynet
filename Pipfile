@@ -1,0 +1,29 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+coverage = "*"
+codecov = "*"
+pytest = "*"
+pytest-xdist = "*"
+pytest-cov = "*"
+wheel = "*"
+autopep8 = "~=1.4"
+twine = "*"
+tox = "*"
+tox-pyenv = "*"
+
+[packages]
+selenium = "*"
+behave = "*"
+requests = "*"
+appium-python-client = "*"
+faker = "*"
+haralyzer = "*"
+allure-behave = "*"
+browsermob-proxy = "*"
+
+[requires]
+python_version = "3.7"
